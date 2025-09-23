@@ -16,4 +16,4 @@ Homework/week01-02/recipe-site/
 2. You should see a recipe card with ingredients, steps, and an image.  
 
 ## 📷Screenshot
-![Recipe Screenshot](./images/screenshot.png)
+![Recipe Screenshot](./images/screenshot_1.png)
