@@ -9,9 +9,11 @@ Practice basic Git workflow and prepare the repo structure.
 - Practiced `git add` / `git commit` / `git push`.
 
 ## 📂Project Structure
+```
 Homework/week01-02/
 ├── hello.txt
 └── README.md
+```
 
 ## 👀How to View
 Open `hello.txt` in any text editor.
