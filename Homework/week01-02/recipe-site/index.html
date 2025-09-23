@@ -1,29 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Recipe</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spaghetti Carbonara</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>🍝 Spaghetti Carbonara</h1>
-<img src="./images/carbonara.jpg" alt="Spaghetti Carbonara">    <h2>Ingredients</h2>
-    <ul>
-      <li>200g spaghetti</li>
-      <li>2 eggs</li>
-      <li>100g pancetta</li>
-      <li>50g parmesan cheese</li>
-      <li>Salt & pepper</li>
-    </ul>
-    <h2>Steps</h2>
-    <ol>
-      <li>Cook spaghetti in salted boiling water.</li>
-      <li>Fry pancetta until crispy.</li>
-      <li>Mix eggs and cheese in a bowl.</li>
-      <li>Combine all with pasta and season.</li>
-    </ol>
-  </div>
+  <main class="container">
+    <article class="recipe">
+      <header class="recipe__header">
+        <h1 class="recipe__title">Spaghetti Carbonara</h1>
+        <p class="recipe__subtitle">Classic Italian comfort — silky, salty, simple.</p>
+        <ul class="recipe__tags">
+          <li>⏱️ 15 min</li>
+          <li>🍽️ Serves 2–3</li>
+          <li>🧑‍🍳 Easy</li>
+        </ul>
+      </header>
+
+      <section class="recipe__grid">
+        <figure class="recipe__media">
+          <!-- 本地图片：放在 ./images/carbonara.jpg -->
+          <img src="./images/carbonara.jpg" alt="Plate of spaghetti carbonara with pancetta" />
+        </figure>
+
+        <div class="recipe__panel">
+          <h2>Ingredients</h2>
+          <ul class="list list--bullets">
+            <li>200g spaghetti</li>
+            <li>2 eggs</li>
+            <li>100g pancetta</li>
+            <li>50g parmesan cheese</li>
+            <li>Salt & pepper</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="recipe__steps">
+        <h2>Steps</h2>
+        <ol class="list list--steps">
+          <li>Cook spaghetti in well-salted boiling water.</li>
+          <li>Fry pancetta until the edges are crisp.</li>
+          <li>Whisk eggs with grated parmesan.</li>
+          <li>Toss pasta off the heat with pancetta, then the egg mixture. Season.</li>
+        </ol>
+      </section>
+    </article>
+  </main>
 </body>
 </html>
