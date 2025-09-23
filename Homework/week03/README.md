@@ -65,7 +65,6 @@ https://<your-vercel-domain>.vercel.app
 
 ## 📸 Screenshots
 
-Place images under Homework/week03/images/ and reference them here:
 ![Buttons](./images/buttons.png)
 ![Accordion](./images/accordion.png)
 
