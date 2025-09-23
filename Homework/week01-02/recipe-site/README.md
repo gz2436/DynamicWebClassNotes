@@ -24,10 +24,10 @@ Homework/week01-02/
 ## 🍝 Part 2: Week2_Recipe Site
 
 ### 📖 What I did
-	· Built a recipe page for Spaghetti Carbonara
-	· Used semantic HTML (<h1>, <ul>, <ol>, <img>)
-	· Styled with modern CSS (card layout, responsive grid, soft background)
-	· Placed Ingredients and Steps side by side in two panels
+- Built a recipe page for Spaghetti Carbonara
+- Used semantic HTML (<h1>, <ul>, <ol>, <img>)
+- Styled with modern CSS (card layout, responsive grid, soft background)
+- Placed Ingredients and Steps side by side in two panels
 
 ### 📂 Project Structure
 ```text
@@ -40,12 +40,12 @@ Homework/week01-02/recipe-site/
 ```
 
 ### ▶️ How to View
-	1.	Open recipe-site/index.html directly in a web browser
-	2.	Or deploy via GitHub Pages / Vercel for live preview
+1.	Open recipe-site/index.html directly in a web browser
+2.	Or deploy via GitHub Pages / Vercel for live preview
 
 ### 📸 Screenshot
 ![Recipe Screenshot](./recipe-site/images/screenshot_1.png)
 
 ### ✅ Summary
-	· Week01: Learned Git basics and pushed first file
-	· Week02: Designed a recipe card webpage with clean styling and responsive layout
+- Week01: Learned Git basics and pushed first file
+- Week02: Designed a recipe card webpage with clean styling and responsive layout
