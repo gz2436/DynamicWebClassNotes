@@ -11,15 +11,15 @@ The main tasks were:
 
 ## 📂 Project Structure
 Week03/
-├── my-app/
-│   ├── src/
-│   │   ├── components/      # Button + Accordion components
-│   │   ├── pages/           # ButtonsPage + AccordionPage
-│   │   └── main.jsx         # Router + Layout
-│   ├── index.html
-│   ├── tailwind.config.js
-│   └── package.json
-└── README.md
+└─ my-app/
+   ├─ src/
+   │  ├─ components/        # Button + Accordion components
+   │  ├─ pages/             # ButtonsPage + AccordionPage
+   │  └─ main.jsx           # Router + Layout
+   ├─ index.html
+   ├─ tailwind.config.js
+   ├─ package.json
+   └─ README.md
 
 ---
 
