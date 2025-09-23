@@ -1,4 +1,4 @@
-# Week 03 – Component Library (Buttons & Accordion)
+# Week3_Component Library (Buttons & Accordion)
 
 ## 📌 Overview
 Build a small component library with **React + Vite + Tailwind CSS**, and organize demo pages with **React Router**.

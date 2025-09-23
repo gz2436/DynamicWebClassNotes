@@ -1,4 +1,4 @@
-# Week 01–02 – Hello World & Recipe Site
+# Week1-2_Hello World & Recipe Site
 
 ## 📌 Overview
 These two weeks focused on:
