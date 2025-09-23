@@ -7,7 +7,7 @@ These two weeks focused on:
 
 ---
 
-## 🗂 Part 1: Hello World (Week 01)
+## 🗂 Part 1: Week1_Hello World
 
 ### 📖 What I did
 - Created a weekly homework folder
@@ -21,7 +21,7 @@ Homework/week01-02/
 └── README.md
 ```
 
-## 🍝 Part 2: Recipe Site (Week 02)
+## 🍝 Part 2: Week2_Recipe Site
 
 ### 📖 What I did
 	· Built a recipe page for Spaghetti Carbonara
