@@ -11,7 +11,7 @@ The main goals were:
 
 ## 📂 Project Structure
 
-```text
+```
 Week03/
 └─ my-app/
    ├─ src/
