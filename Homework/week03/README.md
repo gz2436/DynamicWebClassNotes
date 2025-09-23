@@ -26,20 +26,24 @@ Week03/
 
 ---
 
-## 🛠️ How to Run
+## 🛠 How to Run
+
 1. Clone this repo and navigate into the Week03 project:
    ```bash
    cd Week03/my-app
+   ```
 
-2.	Install dependencies:   
+2. Install dependencies:
    ```bash
-    npm install
+   npm install
+   ```
 
-3.	Start the dev server:
+3. Start the dev server:
    ```bash
-    npm run dev
+   npm run dev
+   ```
 
-4.	Open the local server link in your browser (usually http://localhost:5173).
+4. Open the local server link in your browser (usually `http://localhost:5173`).
 
 ## 🎨 Features
 
