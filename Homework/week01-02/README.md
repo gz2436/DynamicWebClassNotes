@@ -4,9 +4,9 @@
 Practice basic Git workflow and prepare the repo structure.
 
 ## 🧢What I did
-· Created a weekly homework folder.
-· Added a simple text file: `hello.txt`.
-· Practiced `git add` / `git commit` / `git push`.
+* Created a weekly homework folder.
+* Added a simple text file: `hello.txt`.
+* Practiced `git add` / `git commit` / `git push`.
 
 ## 📂Project Structure
 ```
