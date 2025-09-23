@@ -10,6 +10,8 @@ The main tasks were:
 ---
 
 ## 📂 Project Structure
+
+```text
 Week03/
 └─ my-app/
    ├─ src/
