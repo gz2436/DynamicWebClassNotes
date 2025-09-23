@@ -1,79 +1,75 @@
-# Week 03 – Component Library (Buttons + Accordion)
+# Week 03 – Component Library (Buttons & Accordion)
 
-## 🚀 Overview
-For this week I built a small component library with **React** and **Tailwind CSS**.  
-The main goals were:
-- Build a reusable `<Button />` component with multiple styles and states.
-- Create an `<Accordion />` that can expand and collapse smoothly.
-- Use **React Router** to organize pages (`/buttons` and `/accordion`).
+## 📌 Overview
+Build a small component library with **React + Vite + Tailwind CSS**, and organize demo pages with **React Router**.
+
+---
+
+## 🎨 Features
+1. **Button Component**
+   - Variants: primary, secondary, success, warning, danger, outline  
+   - Sizes: sm, md, lg  
+   - States: disabled, loading  
+   - Pill (rounded-full) option  
+   - Optional icons (react-icons)
+
+2. **Accordion Component**
+   - Expand/collapse panels with smooth animation  
+   - Chevron icon rotates on toggle  
+   - Typography via `@tailwindcss/typography` (prose)  
+   - English content, supports paragraphs/lists/code
+
+3. **Routing**
+   - `/buttons` – showcase all Button variants & states  
+   - `/accordion` – accordion demo with prose content
 
 ---
 
 ## 📂 Project Structure
-
+```text
+Homework/week03/my-app/
+├── src/
+│   ├── components/      # Button.jsx, Accordion.jsx
+│   ├── pages/           # ButtonsPage.jsx, AccordionPage.jsx
+│   ├── main.jsx         # Router + layout
+│   └── index.css        # Tailwind directives
+├── index.html
+├── tailwind.config.js
+├── postcss.config.js
+└── package.json
 ```
-Week03/
-└─ my-app/
-   ├─ src/
-   │  ├─ components/        # Button + Accordion components
-   │  ├─ pages/             # ButtonsPage + AccordionPage
-   │  └─ main.jsx           # Router + Layout
-   ├─ index.html
-   ├─ tailwind.config.js
-   ├─ package.json
-   └─ README.md
+
+## ▶️ How to Run
+1.	Go to the Week03 app:
+```
+   cd Homework/week03/my-app
 ```
 
----
+2.	Install dependencies:
+```
+npm install
+```
 
-## 🛠 How to Run
-
-1. Clone this repo and navigate into the Week03 project:
-   ```bash
-   cd Week03/my-app
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-
-3. Start the dev server:
-   ```bash
+3.	Start the dev server:
+```
    npm run dev
-   ```
+```
+4.	Open the local URL printed in terminal (usually http://localhost:5173).
 
-4. Open the local server link in your browser (usually `http://localhost:5173`).
+## 🔗 Live Demo (optional)
 
-## 🎨 Features
-
-1. Button Component
-	· Variants: primary, secondary, success, warning, danger, outline
-	· Sizes: sm, md, lg
-	· States: disabled, loading
-	· pill option for fully rounded buttons
-	· Supports icons via react-icons
-
-2. Accordion Component
-	· Expand/collapse panels with smooth animation
-	· Chevron icon rotates on toggle
-	· Typography enhanced with @tailwindcss/typography (prose styles)
-	· Supports rich content: paragraphs, lists, code blocks
-
-3. Routing
-	· /buttons: Demonstrates all Button variants and states
-	· /accordion: Demonstrates Accordion with English content + typography
+If you deployed to Vercel, put the link here:
+```
+https://<your-vercel-domain>.vercel.app
+```
 
 ## 📸 Screenshots
 
-### Home page
-![Home Page](./images/home.png)
+Place images under Homework/week03/images/ and reference them here:
+![Buttons](./images/buttons.png)
+![Accordion](./images/accordion.png)
 
-### Buttons page
-![Buttons Page](./images/buttons.png)
-
-### Accordion Page
-![Accordion Page](./images/accordion.png)
-
-## 🔗 Live Demo
-[Week03 Demo on Vercel](https://dynamic-web-class-notes.vercel.app/)
+## ✅ Summary
+- Built reusable UI components (Button, Accordion) with Tailwind utility classes
+- Added routing to present components on dedicated pages
+- Enhanced readability with @tailwindcss/typography
