@@ -19,12 +19,12 @@
         </ul>
       </header>
 
-      <section class="recipe__grid">
-        <figure class="recipe__media">
-          <!-- 本地图片：放在 ./images/carbonara.jpg -->
-          <img src="./images/carbonara.jpg" alt="Plate of spaghetti carbonara with pancetta" />
-        </figure>
+      <figure class="recipe__media">
+        <img src="./images/carbonara.jpg" alt="Plate of spaghetti carbonara" />
+      </figure>
 
+      <!-- 并列布局：Ingredients + Steps -->
+      <section class="recipe__grid">
         <div class="recipe__panel">
           <h2>Ingredients</h2>
           <ul class="list list--bullets">
@@ -35,16 +35,16 @@
             <li>Salt & pepper</li>
           </ul>
         </div>
-      </section>
 
-      <section class="recipe__steps">
-        <h2>Steps</h2>
-        <ol class="list list--steps">
-          <li>Cook spaghetti in well-salted boiling water.</li>
-          <li>Fry pancetta until the edges are crisp.</li>
-          <li>Whisk eggs with grated parmesan.</li>
-          <li>Toss pasta off the heat with pancetta, then the egg mixture. Season.</li>
-        </ol>
+        <div class="recipe__panel">
+          <h2>Steps</h2>
+          <ol class="list list--steps">
+            <li>Cook spaghetti in salted boiling water.</li>
+            <li>Fry pancetta until crispy.</li>
+            <li>Whisk eggs with grated parmesan.</li>
+            <li>Toss pasta off the heat with pancetta, then the egg mixture. Season.</li>
+          </ol>
+        </div>
       </section>
     </article>
   </main>
