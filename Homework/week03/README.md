@@ -1,10 +1,10 @@
 # Week 03 – Component Library (Buttons + Accordion)
 
 ## 🚀 Overview
-This week’s assignment focuses on building a small component library using **React + Tailwind CSS**.  
-The main tasks were:
-- Create a reusable `<Button />` component with multiple variants and states.
-- Implement an `<Accordion />` component with expand/collapse functionality.
+For this week I built a small component library with **React** and **Tailwind CSS**.  
+The main goals were:
+- Build a reusable `<Button />` component with multiple styles and states.
+- Create an `<Accordion />` that can expand and collapse smoothly.
 - Use **React Router** to organize pages (`/buttons` and `/accordion`).
 
 ---
@@ -31,9 +31,11 @@ Week03/
    cd Week03/my-app
 
 2.	Install dependencies:   
+   ```bash
     npm install
 
 3.	Start the dev server:
+   ```bash
     npm run dev
 
 4.	Open the local server link in your browser (usually http://localhost:5173).
