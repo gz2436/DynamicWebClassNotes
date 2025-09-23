@@ -74,3 +74,6 @@ Week03/
 
 ### Accordion Page
 ![Accordion Page](./images/accordion.png)
+
+## 🔗 Live Demo
+[Week03 Demo on Vercel](https://dynamic-web-class-notes.vercel.app/)
