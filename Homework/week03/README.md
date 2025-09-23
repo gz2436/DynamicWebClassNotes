@@ -56,11 +56,10 @@ npm install
 ```
 4.	Open the local URL printed in terminal (usually http://localhost:5173).
 
-## 🔗 Live Demo (optional)
+## 🔗 Live Demo
 
-If you deployed to Vercel, put the link here:
 ```
-https://<your-vercel-domain>.vercel.app
+https://dynamic-web-class-notes.vercel.app/
 ```
 
 ## 📸 Screenshots
