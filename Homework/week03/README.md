@@ -42,17 +42,17 @@ Homework/week03/my-app/
 ## ▶️ How to Run
 1.	Go to the Week03 app:
 ```
-   cd Homework/week03/my-app
+ cd Homework/week03/my-app
 ```
 
 2.	Install dependencies:
 ```
-npm install
+ npm install
 ```
 
 3.	Start the dev server:
 ```
-   npm run dev
+ npm run dev
 ```
 4.	Open the local URL printed in terminal (usually http://localhost:5173).
 
