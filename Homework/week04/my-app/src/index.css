@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+button > svg { margin-right: 0.25rem; }
+
+/* ---- polish: background & typography ---- */
+html, body, #root { height: 100%; }
+body {
+  @apply bg-gradient-to-b from-gray-50 to-white text-gray-800 antialiased;
+}
+
+/* 可复用的容器宽度 */
+.container {
+  @apply max-w-5xl mx-auto px-4;
+}
+
+/* 小徽章 */
+.badge {
+  @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+}
+.badge-green { @apply bg-green-100 text-green-700; }
+.badge-blue { @apply bg-blue-100 text-blue-700; }
+.badge-amber { @apply bg-amber-100 text-amber-800; }
+
+/* 卡片标题 */
+.card-title { @apply text-sm uppercase tracking-wide text-gray-500; }
