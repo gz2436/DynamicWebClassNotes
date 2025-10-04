@@ -64,7 +64,7 @@ Homework/week04/my-app/
 ## 🔗 Live Demo
 
 ```
-https://dynamic-web-class-notes-rxvv.vercel.app/
+https://dynamic-web-class-notes-jip7.vercel.app/
 ```
 
 ## 📸 Screenshots
