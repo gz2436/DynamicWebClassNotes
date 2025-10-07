@@ -2,30 +2,30 @@
 - Dropdown
 - Modal & Panel
 
-## 📌 Overview
+## Overview
 Week4 builds a small component library using **React + Vite + Tailwind CSS**.  
 
 This week focuses on reusable UI components and basic routing setup.
 
 ---
 
-## 🎨 Features
+## Features
 1. **Accordion**
-  - Expand / collapse panels with smooth animation  
-  - Chevron icon rotation & typography styling  
+    - Expand / collapse panels with smooth animation  
+    - Chevron icon rotation & typography styling  
 2. **Dropdown**
-  - Click to toggle options; closes on outside click  
-  - Clean, minimal behavior control with React state  
+    - Click to toggle options; closes on outside click  
+    - Clean, minimal behavior control with React state  
 3. **Modal**
-  - Uses React Portal (`#modal-root`)  
-  - Overlay + ESC to close + smooth transition  
+    - Uses React Portal (`#modal-root`)  
+    - Overlay + ESC to close + smooth transition  
 4. **Routing**
-  - `/accordion`, `/dropdown`, `/modal` routes  
-  - Shared layout via `Navbar` + `Panel` components  
+    - `/accordion`, `/dropdown`, `/modal` routes  
+    - Shared layout via `Navbar` + `Panel` components  
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```text
 week04/my-app/
 ├── components/     # Navbar, Panel, Accordion, Dropdown, Modal
@@ -40,7 +40,13 @@ week04/my-app/
 ## Run
 ```bash
 cd week04/my-app
+```
+
+```bash
 npm install
+```
+
+```bash
 npm run dev
 ```
 
