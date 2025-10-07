@@ -1,39 +1,60 @@
+// src/components/Accordion.jsx
 import { useState } from 'react'
-import { GoChevronDown } from 'react-icons/go'
+import PropTypes from 'prop-types'
 
-// 带动画 + 图标旋转
-export default function Accordion({ items, defaultOpen = -1 }) {
-  const [open, setOpen] = useState(defaultOpen)
+export default function Accordion({ items = [], multiple = false, className = '' }) {
+  // 用布尔数组记录每一项是否打开
+  const [openList, setOpenList] = useState(() => items.map(() => false))
 
-  const toggle = (idx) => setOpen((p) => (p === idx ? -1 : idx))
+  const toggle = (i) => {
+    setOpenList(prev => {
+      if (multiple) {
+        const next = [...prev]
+        next[i] = !next[i]
+        return next
+      } else {
+        // 互斥：只开当前，其他都关
+        return prev.map((_, idx) => idx === i ? !prev[i] : false)
+      }
+    })
+  }
 
   return (
-    <div className="divide-y border rounded-2xl bg-white shadow-sm">
-      {items.map((it, idx) => {
-        const expanded = idx === open
+    <div className={`space-y-3 ${className}`}>
+      {items.map((it, i) => {
+        const title = it.title ?? it.label ?? `Item ${i + 1}`
+        const open = !!openList[i]
         return (
-          <div key={it.id} className="p-4">
+          <div key={i} className="border rounded-lg overflow-hidden bg-white">
             <button
-              onClick={() => toggle(idx)}
-              className="w-full flex items-center justify-between text-left"
+              type="button"
+              aria-expanded={open}
+              onClick={() => toggle(i)}
+              className="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-gray-50 focus:outline-none relative z-10"
             >
-              <span className="font-medium text-slate-800">{it.label}</span>
-              <GoChevronDown
-                className={`transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
-              />
+              <span className="font-medium text-gray-900">{title}</span>
+              <span className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`} aria-hidden>▾</span>
             </button>
-
-            {/* 动画容器：max-height 做过渡，aria-hidden 便于无障碍 */}
-            <div
-              className={`overflow-hidden transition-[max-height,opacity] duration-300
-                         ${expanded ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}
-              aria-hidden={!expanded}
-            >
-              <div className="pt-2 text-slate-600">{it.content}</div>
-            </div>
+            {open && (
+              <div className="px-4 py-3 border-t text-gray-700 text-sm bg-white">
+                {it.content}
+              </div>
+            )}
           </div>
         )
       })}
     </div>
   )
+}
+
+Accordion.propTypes = {
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.node,
+      label: PropTypes.node,
+      content: PropTypes.node,
+    })
+  ).isRequired,
+  multiple: PropTypes.bool,
+  className: PropTypes.string,
 }
