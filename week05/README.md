@@ -11,16 +11,16 @@ This week adds **active navigation (NavLink)** and a **new custom page (Gallery)
 
 ## Features
 1. **Active Navbar**
-  - Replaced `<a>` with `<NavLink>` for smooth SPA navigation  
-  - Highlights the current route with active styling  
+   - Replaced `<a>` with `<NavLink>` for smooth SPA navigation  
+   - Highlights the current route with active styling  
 2. **New Page — Gallery**
-  - `/gallery` shows a simple grid built with the shared `Panel`  
-  - Demonstrates layout reuse and data mapping  
+   - `/gallery` shows a simple grid built with the shared `Panel`  
+   - Demonstrates layout reuse and data mapping  
 3. **Routing**
-  - Added `/gallery` to `App.jsx`  
-  - Kept Accordion, Dropdown, and Modal from Week4  
+   - Added `/gallery` to `App.jsx`  
+   - Kept Accordion, Dropdown, and Modal from Week4  
 4. **Deployment**
-  - Added `vercel.json` to fix SPA routing on Vercel
+   - Added `vercel.json` to fix SPA routing on Vercel
 
 ---
 
@@ -53,7 +53,7 @@ npm run dev
 
 ## Demo
 ```
-https://dynamic-web-week05.vercel.app/
+/
 ```
 
 
