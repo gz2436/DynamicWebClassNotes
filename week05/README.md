@@ -2,26 +2,28 @@
 
 ## 📘 Overview
 Week5 builds on Week4’s component library.  
+
 This week adds **active navigation (NavLink)** and a **new custom page (Gallery)** to show how to expand the app structure.
 
 ---
 
 ## ✨ Features
-- **Active Navbar**
-  - Replaced `<a>` with `<NavLink>` for smooth SPA navigation  
-  - Highlights the current route with active styling  
-- **New Page — Gallery**
-  - `/gallery` shows a simple grid built with the shared `Panel`  
-  - Demonstrates layout reuse and data mapping  
-- **Routing**
-  - Added `/gallery` to `App.jsx`  
-  - Kept Accordion, Dropdown, and Modal from Week4  
-- **Deployment**
-  - Added `vercel.json` to fix SPA routing on Vercel
+1. **Active Navbar**
+  1. Replaced `<a>` with `<NavLink>` for smooth SPA navigation  
+  2. Highlights the current route with active styling  
+2. **New Page — Gallery**
+  1. `/gallery` shows a simple grid built with the shared `Panel`  
+  2. Demonstrates layout reuse and data mapping  
+3. **Routing**
+  1. Added `/gallery` to `App.jsx`  
+  2. Kept Accordion, Dropdown, and Modal from Week4  
+4. **Deployment**
+     Added `vercel.json` to fix SPA routing on Vercel
 
 ---
 
 ## 🗂️ Structure
+```text
 week05/my-app/
 ├── components/     # Navbar (NavLink), Panel
 ├── pages/          # Accordion, Dropdown, Modal, Gallery
@@ -30,6 +32,7 @@ week05/my-app/
 ├── index.html
 ├── vite.config.js
 └── vercel.json
+```
 
 ---
 
@@ -53,6 +56,6 @@ https://dynamic-web-week05.vercel.app/
 
 
 ## ✅ Summary
-- Added NavLink navbar for active route highlight
-- Created Gallery page using shared components
-- Improved navigation, structure, and deployment
+1. Added NavLink navbar for active route highlight
+2. Created Gallery page using shared components
+3. Improved navigation, structure, and deployment
