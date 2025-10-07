@@ -3,9 +3,9 @@
 - Tailwind CSS Setup
 
 ## Overview
-Weeks 1–2 focus on setting up the development environment using **React + Vite**  
+Weeks 1–2 set up the development environment using **React + Vite + Tailwind CSS**.  
 
-and learning the basics of **Tailwind CSS**, **component structure**, and **project organization**.
+These weeks focus on understanding **component structure**, **basic layout styling**, and **project organization**.
 
 ---
 
