@@ -1,4 +1,4 @@
-// 改良版 Button：variant / size / disabled / loading
+import PropTypes from 'prop-types';
 import { twMerge } from 'tailwind-merge'
 
 export default function Button({
@@ -44,3 +44,15 @@ export default function Button({
     </button>
   )
 }
+
+Button.propTypes = {
+  variant: PropTypes.oneOf(['primary','secondary','success','warning','danger','outline']),
+  size: PropTypes.oneOf(['sm','md','lg']),
+  disabled: PropTypes.bool,
+  loading: PropTypes.bool,
+  pill: PropTypes.bool,
+  leftIcon: PropTypes.node,
+  rightIcon: PropTypes.node,
+  onClick: PropTypes.func,
+  children: PropTypes.node,
+};

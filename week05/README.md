@@ -1,73 +1,58 @@
-# Week3_Component Library (Buttons & Accordion)
+# Week5 · Component Library (Active Nav + Custom Page)
 
-## 📌 Overview
-Build a small component library with **React + Vite + Tailwind CSS**, and organize demo pages with **React Router**.
-
----
-
-## 🎨 Features
-1. **Button Component**
-   - Variants: primary, secondary, success, warning, danger, outline  
-   - Sizes: sm, md, lg  
-   - States: disabled, loading  
-   - Pill (rounded-full) option  
-   - Optional icons (react-icons)
-
-2. **Accordion Component**
-   - Expand/collapse panels with smooth animation  
-   - Chevron icon rotates on toggle  
-   - Typography via `@tailwindcss/typography` (prose)  
-   - English content, supports paragraphs/lists/code
-
-3. **Routing**
-   - `/buttons` – showcase all Button variants & states  
-   - `/accordion` – accordion demo with prose content
+## 📘 Overview
+Week5 builds on Week4’s component library.  
+This week adds **active navigation (NavLink)** and a **new custom page (Gallery)** to show how to expand the app structure.
 
 ---
 
-## 📂 Project Structure
-```text
-Homework/week03/my-app/
-├── src/
-│   ├── components/      # Button.jsx, Accordion.jsx
-│   ├── pages/           # ButtonsPage.jsx, AccordionPage.jsx
-│   ├── main.jsx         # Router + layout
-│   └── index.css        # Tailwind directives
+## ✨ Features
+- **Active Navbar**
+  - Replaced `<a>` with `<NavLink>` for smooth SPA navigation  
+  - Highlights the current route with active styling  
+- **New Page — Gallery**
+  - `/gallery` shows a simple grid built with the shared `Panel`  
+  - Demonstrates layout reuse and data mapping  
+- **Routing**
+  - Added `/gallery` to `App.jsx`  
+  - Kept Accordion, Dropdown, and Modal from Week4  
+- **Deployment**
+  - Added `vercel.json` to fix SPA routing on Vercel
+
+---
+
+## 🗂️ Structure
+week05/my-app/
+├── components/     # Navbar (NavLink), Panel
+├── pages/          # Accordion, Dropdown, Modal, Gallery
+├── App.jsx
+├── main.jsx
 ├── index.html
-├── tailwind.config.js
-├── postcss.config.js
-└── package.json
+├── vite.config.js
+└── vercel.json
+
+---
+
+## ▶️ Run
+```bash
+cd week05/my-app
 ```
 
-## ▶️ How to Run
-1.	Go to the Week03 app:
-```
-   cd Homework/week03/my-app
-```
-
-2.	Install dependencies:
-```
+```bash
 npm install
 ```
 
-3.	Start the dev server:
-```
-   npm run dev
-```
-4.	Open the local URL printed in terminal (usually http://localhost:5173).
-
-## 🔗 Live Demo
-
-```
-https://dynamic-web-class-notes.vercel.app/
+```bash
+npm run dev
 ```
 
-## 📸 Screenshots
+## 🔗 Demo
+```
+https://dynamic-web-week05.vercel.app/
+```
 
-![Buttons](./images/buttons.png)
-![Accordion](./images/accordion.png)
 
 ## ✅ Summary
-- Built reusable UI components (Button, Accordion) with Tailwind utility classes
-- Added routing to present components on dedicated pages
-- Enhanced readability with @tailwindcss/typography
+- Added NavLink navbar for active route highlight
+- Created Gallery page using shared components
+- Improved navigation, structure, and deployment
