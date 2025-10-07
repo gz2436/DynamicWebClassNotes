@@ -62,6 +62,6 @@ week03/my-app/
 
 ## Summary
    1.	Built reusable Button and Accordion components
-	2.	Practiced React props, state, and Tailwind styling
-	3.	Introduced routing between component demo pages
-	4.	Deployed successfully to Vercel
+   2.	Practiced React props, state, and Tailwind styling
+   3.	Introduced routing between component demo pages
+   4.	Deployed successfully to Vercel
