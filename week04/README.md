@@ -11,17 +11,17 @@ This week focuses on reusable UI components and basic routing setup.
 
 ## Features
 1. **Accordion**
-    - Expand / collapse panels with smooth animation  
-    - Chevron icon rotation & typography styling  
+   - Expand / collapse panels with smooth animation  
+   - Chevron icon rotation & typography styling  
 2. **Dropdown**
-    - Click to toggle options; closes on outside click  
-    - Clean, minimal behavior control with React state  
+   - Click to toggle options; closes on outside click  
+   - Clean, minimal behavior control with React state  
 3. **Modal**
-    - Uses React Portal (`#modal-root`)  
-    - Overlay + ESC to close + smooth transition  
+   - Uses React Portal (`#modal-root`)  
+   - Overlay + ESC to close + smooth transition  
 4. **Routing**
-    - `/accordion`, `/dropdown`, `/modal` routes  
-    - Shared layout via `Navbar` + `Panel` components  
+   - `/accordion`, `/dropdown`, `/modal` routes  
+   - Shared layout via `Navbar` + `Panel` components  
 
 ---
 
