@@ -1,51 +1,55 @@
-# Week1-2_Hello World & Recipe Site
+# Week1-2_Basics Setup
+- React + Vite Environment
+- Tailwind CSS Setup
 
-## 📌 Overview
-These two weeks focused on:
-- Learning the basics of **Git/GitHub workflow**
-- Building a first static webpage with **HTML + CSS**
+## Overview
+Weeks 1–2 focus on setting up the development environment using **React + Vite**  
+
+and learning the basics of **Tailwind CSS**, **component structure**, and **project organization**.
 
 ---
 
-## 🗂 Part 1: Week1_Hello World
+## Features
+1. **Project Setup**
+    - Initialized project with `npm create vite@latest`
+    - Configured **React** + **Vite** for fast dev environment  
+2. **Tailwind CSS**
+    - Installed and configured `tailwind.config.js`
+    - Verified utility classes and responsive design  
+3. **Basic Components**
+    - Created simple `Header`, `Footer`, and `Card` examples  
+    - Practiced JSX structure and styling with Tailwind  
+4. **File Organization**
+    - Introduced `components/` and `pages/` folders  
+    - Learned how to import, export, and reuse components
 
-### 📖 What I did
-- Created a weekly homework folder
-- Added a simple text file `hello.txt`
-- Practiced `git add`, `git commit`, and `git push`
-
-### 📂 Project Structure
+### Project Structure
 ```text
-Homework/week01-02/
-├── hello.txt
-└── README.md
-```
-
-## 🍝 Part 2: Week2_Recipe Site
-
-### 📖 What I did
-- Built a recipe page for Spaghetti Carbonara
-- Used semantic HTML (<h1>, <ul>, <ol>, <img>)
-- Styled with modern CSS (card layout, responsive grid, soft background)
-- Placed Ingredients and Steps side by side in two panels
-
-### 📂 Project Structure
-```text
-Homework/week01-02/recipe-site/
+week01-02/my-app/
+├── components/     # Header, Footer, Card
+├── pages/          # Home, About
+├── App.jsx
+├── main.jsx
 ├── index.html
-├── style.css
-└── images/
-    ├── carbonara.jpg
-    └── screenshot.png
+├── vite.config.js
+└── tailwind.config.js
 ```
 
-### ▶️ How to View
-1.	Open recipe-site/index.html directly in a web browser
-2.	Or deploy via GitHub Pages / Vercel for live preview
+### Run
+```bash
+ cd week01-02/my-app
+```
 
-### 📸 Screenshot
-![Recipe Screenshot](./recipe-site/images/screenshot_1.png)
+```bash
+ npm install
+```
 
-### ✅ Summary
-- Week01: Learned Git basics and pushed first file
-- Week02: Designed a recipe card webpage with clean styling and responsive layout
+```bash
+ npm run dev
+```
+
+### Summary
+   1. Set up React + Vite development environment
+   2. Installed and configured Tailwind CSS
+   3. Built simple layout components and tested styles
+   4. Prepared foundation for Week3 component library

@@ -1,11 +1,15 @@
-# Week3_Component Library (Buttons & Accordion)
+# Week3_Component Library
+- Buttons
+- Accordion
 
-## 📌 Overview
-Build a small component library with **React + Vite + Tailwind CSS**, and organize demo pages with **React Router**.
+## Overview
+Week3 introduces building a simple component library using **React + Vite + Tailwind CSS**.  
+
+It focuses on creating reusable UI elements and understanding basic component props and styling.
 
 ---
 
-## 🎨 Features
+## Features
 1. **Button Component**
    - Variants: primary, secondary, success, warning, danger, outline  
    - Sizes: sm, md, lg  
@@ -25,49 +29,39 @@ Build a small component library with **React + Vite + Tailwind CSS**, and organi
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 ```text
-Homework/week03/my-app/
-├── src/
-│   ├── components/      # Button.jsx, Accordion.jsx
-│   ├── pages/           # ButtonsPage.jsx, AccordionPage.jsx
-│   ├── main.jsx         # Router + layout
-│   └── index.css        # Tailwind directives
+week03/my-app/
+├── components/     # Button, Accordion
+├── pages/          # ButtonsPage, AccordionPage
+├── App.jsx         # Routes setup
+├── main.jsx
 ├── index.html
-├── tailwind.config.js
-├── postcss.config.js
-└── package.json
+├── vite.config.js
+└── vercel.json
 ```
 
-## ▶️ How to Run
-1.	Go to the Week03 app:
-```
- cd Homework/week03/my-app
+## Run
+```bash
+ cd week03/my-app
 ```
 
-2.	Install dependencies:
-```
+```bash
  npm install
 ```
 
-3.	Start the dev server:
-```
+```bash
  npm run dev
 ```
-4.	Open the local URL printed in terminal (usually http://localhost:5173).
 
-## 🔗 Live Demo
+## Demo
 
 ```
-https://dynamic-web-class-notes.vercel.app/
+/
 ```
 
-## 📸 Screenshots
-
-![Buttons](./images/buttons.png)
-![Accordion](./images/accordion.png)
-
-## ✅ Summary
-- Built reusable UI components (Button, Accordion) with Tailwind utility classes
-- Added routing to present components on dedicated pages
-- Enhanced readability with @tailwindcss/typography
+## Summary
+   1.	Built reusable Button and Accordion components
+	2.	Practiced React props, state, and Tailwind styling
+	3.	Introduced routing between component demo pages
+	4.	Deployed successfully to Vercel
