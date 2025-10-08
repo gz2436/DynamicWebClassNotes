@@ -5,7 +5,7 @@
 ## Overview
 Week3 introduces building a simple component library using **React + Vite + Tailwind CSS**.  
 
-It focuses on creating reusable UI elements and understanding basic component props and styling.
+This week focuses on creating reusable UI elements and understanding basic component props and styling.
 
 ---
 
