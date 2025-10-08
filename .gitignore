@@ -1,21 +1,18 @@
+# deps & builds
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/.cache/
+**/.parcel-cache/
+**/.turbo/
 
-node_modules/
-
-dist/
-
-.vite/
-
-.cache/
-
-*.log
-
+# system
 .DS_Store
+*.log
+*.zip
 
-*.swp
-
-.vscode/
-
-.idea/
-
-docs/**/node_modules/
-
+# env
+*.local
+.env
+.env.*
