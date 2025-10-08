@@ -2,6 +2,9 @@
 
 ## Weeks
 
-## Live Demo
-- Week3_(Vercel): /
-- Week4_(Vercel): /
+## Live Demo (Vercel)
+- Week1-2: 
+- Week3: 
+- Week4: 
+- Week5: 
+- Week6: 
