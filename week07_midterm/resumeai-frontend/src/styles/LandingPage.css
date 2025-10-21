@@ -28,8 +28,8 @@
   width: 24px;
   height: 24px;
   background: linear-gradient(135deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7,
-    #6a7ec8, #1a0b2e, #2d1b69, #4158d0);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 300% 300%;
   animation: gradientShift1 6s linear infinite;
   border-radius: 50%;
@@ -63,14 +63,14 @@
   width: clamp(80px, 15vw, 120px);
   height: clamp(80px, 15vw, 120px);
   background: linear-gradient(135deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7,
-    #6a7ec8, #1a0b2e, #2d1b69, #4158d0);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 300% 300%;
   animation: gradientShift3 8s linear infinite;
   border-radius: 50%;
   position: relative;
-  box-shadow: 0 8px 32px rgba(45, 27, 105, 0.4),
-              0 4px 16px rgba(65, 88, 208, 0.2);
+  box-shadow: 0 8px 32px rgba(200, 213, 224, 0.4),
+              0 4px 16px rgba(197, 217, 214, 0.2);
 }
 
 .hero-logo-large::before {
@@ -99,8 +99,8 @@
 .gradient-text {
   font-family: 'Poppins', sans-serif;
   background: linear-gradient(135deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7,
-    #6a7ec8, #1a0b2e, #2d1b69, #4158d0);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 300% 300%;
   animation: gradientShift2 7s linear infinite;
   -webkit-background-clip: text;

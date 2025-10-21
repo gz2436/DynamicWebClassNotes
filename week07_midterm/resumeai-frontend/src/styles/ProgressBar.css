@@ -25,8 +25,8 @@
   font-size: 0.875rem;
   font-weight: 600;
   background: linear-gradient(90deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7,
-    #6a7ec8, #1a0b2e, #2d1b69, #4158d0);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 300% 100%;
   animation: gradientShift4 6s linear infinite;
   -webkit-background-clip: text;
@@ -51,8 +51,8 @@
 .progress-fill {
   height: 100%;
   background: linear-gradient(90deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7,
-    #6a7ec8, #1a0b2e, #2d1b69, #4158d0);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 300% 100%;
   animation: gradientShift4 6s linear infinite;
   border-radius: 10px;
