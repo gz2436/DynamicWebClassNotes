@@ -8,3 +8,4 @@
 - Week4: 
 - Week5: https://dynamic-web-week-05.vercel.app/
 - Week6: https://dynamic-web-week-06.vercel.app/
+- Week7-midterm: https://dynamic-web-week-07-midterm.vercel.app/
