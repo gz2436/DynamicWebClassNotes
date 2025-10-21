@@ -40,7 +40,8 @@
   width: 20px;
   height: 20px;
   background: linear-gradient(135deg,
-    #1a0b2e, #2d1b69, #4158d0, #5b6bc7);
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
   background-size: 200% 200%;
   animation: gradientShift7 5s linear infinite;
   border-radius: 50%;
