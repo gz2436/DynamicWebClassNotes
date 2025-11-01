@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider defaultTheme="system" storageKey="resumeai-theme">
+        <ThemeProvider defaultTheme="light" storageKey="resumeai-theme">
           <AnimatedBackground />
           <div className="min-h-screen flex flex-col">
             <Navigation />
