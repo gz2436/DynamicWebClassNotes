@@ -158,7 +158,7 @@ export default function HomePage() {
               dream job?
             </h2>
             <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-              Join thousands of professionals who've upgraded their careers with ResumeAI.
+              Join thousands of professionals who&apos;ve upgraded their careers with ResumeAI.
             </p>
             <Link
               href="/builder"

@@ -1,5 +1,6 @@
 export interface ResumeData {
   id?: string
+  templateId?: string
   personalInfo: PersonalInfo
   summary: string
   experience: Experience[]
@@ -15,7 +16,7 @@ export interface PersonalInfo {
   location: string
   linkedin?: string
   github?: string
-  website?: string
+  portfolio?: string
 }
 
 export interface Experience {
@@ -31,7 +32,7 @@ export interface Experience {
 
 export interface Education {
   id: string
-  school: string
+  institution: string
   degree: string
   field: string
   location: string

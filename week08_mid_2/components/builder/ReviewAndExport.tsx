@@ -39,14 +39,14 @@ export default function ReviewAndExport() {
       if (resumeData.id) {
         await updateResume(resumeData.id, {
           title,
-          templateId: resumeData.templateId || 'classic',
+          template_id: resumeData.templateId || 'classic',
           content: resumeData,
         })
       } else {
         await createResume({
-          userId: user.id,
+          user_id: user.id,
           title,
-          templateId: resumeData.templateId || 'classic',
+          template_id: resumeData.templateId || 'classic',
           content: resumeData,
         })
       }

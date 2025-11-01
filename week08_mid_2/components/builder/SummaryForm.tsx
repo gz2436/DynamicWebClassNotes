@@ -97,14 +97,14 @@ export default function SummaryForm() {
           <li>• Include relevant years of experience</li>
           <li>• Mention key technical skills or domains</li>
           <li>• Keep it concise - aim for 2-4 sentences</li>
-          <li>• Tailor it to the type of role you're seeking</li>
+          <li>• Tailor it to the type of role you&apos;re seeking</li>
         </ul>
       </div>
 
       {/* Optional Note */}
       <div className="glass-g1 p-4 rounded-xl">
         <p className="text-sm text-muted-foreground">
-          <strong>Note:</strong> The professional summary is optional. You can skip this step if you prefer, but it's highly recommended as it gives employers a quick overview of your qualifications.
+          <strong>Note:</strong> The professional summary is optional. You can skip this step if you prefer, but it&apos;s highly recommended as it gives employers a quick overview of your qualifications.
         </p>
       </div>
     </div>

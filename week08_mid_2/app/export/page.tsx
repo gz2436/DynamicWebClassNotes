@@ -133,7 +133,7 @@ export default function ExportPage() {
               </div>
               <span>
                 <strong className="text-foreground">File naming:</strong> We recommend naming your file
-                as "FirstName_LastName_Resume.pdf" for professional presentation.
+                as &quot;FirstName_LastName_Resume.pdf&quot; for professional presentation.
               </span>
             </li>
           </ul>
