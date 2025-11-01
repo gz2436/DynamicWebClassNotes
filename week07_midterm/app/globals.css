@@ -1,0 +1,267 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+
+    /* Apple Liquid Glass Variables */
+    --glass-blur: 20px;
+    --glass-opacity: 0.7;
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --glass-bg-light: rgba(255, 255, 255, 0.7);
+    --glass-bg-dark: rgba(30, 41, 59, 0.7);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Dark mode glass variables */
+    --glass-bg-light: rgba(51, 65, 85, 0.7);
+    --glass-bg-dark: rgba(15, 23, 42, 0.8);
+    --glass-border: rgba(148, 163, 184, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+  }
+}
+
+@layer utilities {
+  /* Glass Effect Utilities - G1 (Light) */
+  .glass-g1 {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Glass Effect Utilities - G2 (Medium) */
+  .glass-g2 {
+    background: var(--glass-bg-light);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  /* Glass Effect Utilities - G3 (Heavy) */
+  .glass-g3 {
+    background: var(--glass-bg-dark);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Glass Card */
+  .glass-card {
+    @apply glass-g2 rounded-xl p-6;
+  }
+
+  /* Glass Modal */
+  .glass-modal {
+    @apply glass-g3 rounded-2xl p-8;
+  }
+
+  /* Smooth transitions */
+  .glass-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Gradient animation */
+  @keyframes gradient {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  .animate-gradient {
+    background-size: 200% auto;
+    animation: gradient 6s ease infinite;
+  }
+
+  /* Floating animations for background blobs - Enhanced fluidity */
+  @keyframes float-slow {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(60px, -50px) scale(1.1);
+    }
+    50% {
+      transform: translate(40px, 30px) scale(0.9);
+    }
+    75% {
+      transform: translate(-50px, 40px) scale(1.05);
+    }
+  }
+
+  @keyframes float-medium {
+    0%, 100% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    33% {
+      transform: translate(-70px, 60px) scale(1.15) rotate(3deg);
+    }
+    66% {
+      transform: translate(50px, -40px) scale(0.92) rotate(-2deg);
+    }
+  }
+
+  @keyframes float-fast {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg) scale(1);
+    }
+    20% {
+      transform: translate(45px, -55px) rotate(5deg) scale(1.12);
+    }
+    40% {
+      transform: translate(-30px, -30px) rotate(-3deg) scale(0.95);
+    }
+    60% {
+      transform: translate(-55px, 40px) rotate(4deg) scale(1.08);
+    }
+    80% {
+      transform: translate(35px, 45px) rotate(-2deg) scale(0.98);
+    }
+  }
+
+  @keyframes float-reverse {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+    }
+    25% {
+      transform: translate(-65px, 45px) scale(0.92);
+    }
+    50% {
+      transform: translate(35px, -55px) scale(1.12);
+    }
+    75% {
+      transform: translate(55px, 35px) scale(1.05);
+    }
+  }
+
+  .animate-float-slow {
+    animation: float-slow 18s ease-in-out infinite;
+  }
+
+  .animate-float-medium {
+    animation: float-medium 14s ease-in-out infinite;
+  }
+
+  .animate-float-fast {
+    animation: float-fast 10s ease-in-out infinite;
+  }
+
+  .animate-float-reverse {
+    animation: float-reverse 16s ease-in-out infinite;
+  }
+
+  .animate-float-slow-reverse {
+    animation: float-reverse 20s ease-in-out infinite reverse;
+  }
+
+  /* Liquid Glass Text Effect */
+  .liquid-glass-text {
+    display: inline-block;
+    color: white;
+    text-shadow:
+      0 0 10px rgba(255, 255, 255, 0.5),
+      0 0 20px rgba(255, 255, 255, 0.3),
+      0 0 30px rgba(255, 255, 255, 0.2),
+      0 2px 4px rgba(0, 0, 0, 0.1);
+    filter: drop-shadow(0 4px 12px rgba(255, 255, 255, 0.2));
+  }
+
+  .liquid-glass-text-accent {
+    display: inline-block;
+    background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(200, 220, 255, 0.9) 50%,
+      rgba(255, 255, 255, 0.95) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:
+      0 0 20px rgba(255, 255, 255, 0.6),
+      0 0 40px rgba(200, 220, 255, 0.4);
+    filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.3));
+    animation: shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% {
+      filter: drop-shadow(0 4px 16px rgba(255, 255, 255, 0.3)) brightness(1);
+    }
+    50% {
+      filter: drop-shadow(0 4px 20px rgba(200, 220, 255, 0.5)) brightness(1.1);
+    }
+  }
+
+  /* Respect reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    .glass-transition {
+      transition: none;
+    }
+    .animate-gradient,
+    .animate-float-slow,
+    .animate-float-medium,
+    .animate-float-fast,
+    .animate-float-reverse,
+    .liquid-glass-text-accent {
+      animation: none;
+    }
+  }
+}

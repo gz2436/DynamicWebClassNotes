@@ -1,0 +1,5 @@
+{
+  "profiles": ["ui-apple", "brand-art", "resume", "midterm"],
+  "enabled_hooks": ["skill-activation-prompt", "post-tool-use-tracker"],
+  "default_language": "en"
+}
