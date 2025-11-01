@@ -1,0 +1,84 @@
+/* Progress Bar Styles - Floating Capsule */
+.progress-bar-container {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 0.4rem 1.5rem;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1),
+              0 2px 4px rgba(0, 0, 0, 0.06);
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  min-width: 320px;
+  max-width: 380px;
+  flex: 1;
+  margin: 0 2rem;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.progress-section {
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: linear-gradient(90deg,
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
+  background-size: 300% 100%;
+  animation: gradientShift4 6s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.progress-count {
+  font-size: 0.8rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.progress-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(229, 231, 235, 0.8);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg,
+    #E5D4D1, #D9CFD3, #C8D5E0, #C5D9D6,
+    #D1D9CE, #E0D9CE, #E5D4D1);
+  background-size: 300% 100%;
+  animation: gradientShift4 6s linear infinite;
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+@keyframes gradientShift4 {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .progress-bar-container {
+    padding: 0.75rem 1.5rem;
+    top: 70px;
+  }
+
+  .progress-section {
+    font-size: 0.85rem;
+  }
+
+  .progress-count {
+    font-size: 0.8rem;
+  }
+}

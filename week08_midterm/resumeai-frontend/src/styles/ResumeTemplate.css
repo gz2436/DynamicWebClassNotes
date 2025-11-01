@@ -1,0 +1,230 @@
+/* Resume Template Styles */
+.resume-template {
+  max-width: 8.5in;
+  min-height: 11in;
+  margin: 0 auto;
+  padding: 0.75in;
+  background: white;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #1a1a1a;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Header Section */
+.resume-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.resume-name {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.resume-contact-info {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.resume-contact-info span {
+  position: relative;
+}
+
+.resume-contact-info span:not(:last-child)::after {
+  content: '|';
+  position: absolute;
+  right: -0.85rem;
+  color: #ccc;
+}
+
+/* Section Styles */
+.resume-section {
+  margin-bottom: 1.75rem;
+}
+
+.resume-section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Professional Summary */
+.resume-summary {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #333;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Work Experience */
+.resume-experience-item {
+  margin-bottom: 1.5rem;
+}
+
+.resume-experience-item:last-child {
+  margin-bottom: 0;
+}
+
+.experience-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.experience-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 0.25rem 0;
+}
+
+.experience-company {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+.experience-duration {
+  font-size: 0.85rem;
+  color: #888;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.experience-description {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0.5rem 0 0 0;
+}
+
+/* Education */
+.resume-education-item {
+  margin-bottom: 1rem;
+}
+
+.education-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.education-degree {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 0.25rem 0;
+}
+
+.education-school {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  font-weight: 500;
+}
+
+.education-year {
+  font-size: 0.85rem;
+  color: #888;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.education-major {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0.25rem 0 0 0;
+}
+
+/* Skills */
+.resume-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-tag {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  background: #f5f5f5;
+  color: #333;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+/* Print Styles */
+@media print {
+  .resume-template {
+    box-shadow: none;
+    padding: 0.5in;
+    margin: 0;
+  }
+
+  .skill-tag {
+    break-inside: avoid;
+  }
+
+  .resume-experience-item,
+  .resume-education-item {
+    break-inside: avoid;
+  }
+
+  .resume-section {
+    break-inside: avoid-page;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resume-template {
+    padding: 1.5rem;
+    box-shadow: none;
+  }
+
+  .resume-name {
+    font-size: 1.75rem;
+  }
+
+  .resume-contact-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .resume-contact-info span::after {
+    display: none;
+  }
+
+  .experience-header,
+  .education-header {
+    flex-direction: column;
+  }
+
+  .experience-duration,
+  .education-year {
+    align-self: flex-start;
+  }
+}
