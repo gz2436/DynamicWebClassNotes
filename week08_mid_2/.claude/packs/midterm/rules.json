@@ -1,0 +1,27 @@
+{
+  "skills": {
+    "midterm-kickoff-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Trigger midterm project scaffolding workflows.",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]midterm-kickoff\\b",
+          "\\bmidterm (project|scaffold)\\b"
+        ]
+      },
+      "activateSkill": "midterm-pages"
+    },
+    "midterm-pages-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Route midterm page scaffolding",
+      "promptTriggers": {
+        "keywords": ["Home","Builder","Templates","Export","page scaffold","navbar"]
+      },
+      "activateSkill": "midterm-pages"
+    }
+  }
+}
