@@ -1,8 +1,13 @@
+'use client'
+
 import Link from 'next/link'
 import { ArrowRight, FileCheck, Download, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useLanguage } from '@/lib/i18n/language-context'
 
 export default function HomePage() {
+  const { t } = useLanguage()
+
   return (
     <div className="relative overflow-hidden">
       {/* Animated Background Orb - Fixed to viewport */}
@@ -17,13 +22,12 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto text-center">
           {/* Headline */}
           <h1 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent leading-tight">
-            Create Your Perfect Resume in Minutes
+            {t.home.title}
           </h1>
 
           {/* Subheadline */}
           <p className="text-xl md:text-2xl text-muted-foreground mb-14 max-w-2xl mx-auto leading-relaxed">
-            Professional, ATS-optimized resumes powered by AI.
-            Beautiful templates with Apple-inspired design.
+            {t.home.subtitle}
           </p>
 
           {/* CTA Buttons */}
@@ -37,7 +41,7 @@ export default function HomePage() {
                 'flex items-center justify-center gap-2'
               )}
             >
-              Start Building
+              {t.home.getStarted}
               <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
             </Link>
 
@@ -50,7 +54,7 @@ export default function HomePage() {
                 'flex items-center justify-center gap-2'
               )}
             >
-              Browse Templates
+              {t.home.learnMore}
             </Link>
           </div>
         </div>
@@ -66,9 +70,9 @@ export default function HomePage() {
                   <div className="glass-g1 h-16 w-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 glass-transition shadow-md">
                     <Zap className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">AI Generation</h3>
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">{t.home.features.ai.title}</h3>
                   <p className="text-muted-foreground leading-relaxed text-base">
-                    Let AI craft compelling work descriptions and summaries tailored to your experience.
+                    {t.home.features.ai.description}
                   </p>
                 </div>
               </div>
@@ -79,9 +83,9 @@ export default function HomePage() {
                   <div className="glass-g1 h-16 w-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 glass-transition shadow-md">
                     <FileCheck className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">ATS-Optimized</h3>
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">{t.home.features.ats.title}</h3>
                   <p className="text-muted-foreground leading-relaxed text-base">
-                    All templates pass Applicant Tracking Systems with high scores.
+                    {t.home.features.ats.description}
                   </p>
                 </div>
               </div>
@@ -92,9 +96,9 @@ export default function HomePage() {
                   <div className="glass-g1 h-16 w-16 rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-3 glass-transition shadow-md">
                     <Download className="h-8 w-8 text-primary" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">Multiple Formats</h3>
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary glass-transition">{t.home.features.download.title}</h3>
                   <p className="text-muted-foreground leading-relaxed text-base">
-                    Export to PDF or DOCX with pixel-perfect formatting.
+                    {t.home.features.download.description}
                   </p>
                 </div>
               </div>
@@ -106,7 +110,7 @@ export default function HomePage() {
         <section className="py-24">
           <div className="max-w-5xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-bold text-center mb-24 bg-gradient-to-r from-foreground to-foreground/60 bg-clip-text text-transparent">
-              Three simple steps
+              {t.home.howItWorks.title}
             </h2>
 
             <div className="space-y-24 md:space-y-32">

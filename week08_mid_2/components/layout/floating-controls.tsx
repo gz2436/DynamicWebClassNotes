@@ -1,15 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Moon, Sun, Languages } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 import { useTheme } from '@/components/theme/theme-provider'
+import { useLanguage } from '@/lib/i18n/language-context'
 import { cn } from '@/lib/utils'
-
-type Language = 'en' | 'zh'
 
 export function FloatingControls() {
   const [mounted, setMounted] = useState(false)
-  const [language, setLanguage] = useState<Language>('en')
+  const { language, setLanguage } = useLanguage()
   const { theme, setTheme } = useTheme()
 
   useEffect(() => {
@@ -41,9 +40,9 @@ export function FloatingControls() {
         aria-label="Toggle theme"
       >
         {isDark ? (
-          <Sun className="h-5 w-5" />
-        ) : (
           <Moon className="h-5 w-5" />
+        ) : (
+          <Sun className="h-5 w-5" />
         )}
       </button>
 
@@ -51,19 +50,17 @@ export function FloatingControls() {
       <button
         onClick={toggleLanguage}
         className={cn(
-          'glass-g1 glass-transition relative',
+          'glass-g1 glass-transition',
           'h-12 w-12 rounded-full',
           'flex items-center justify-center',
           'hover:scale-110 active:scale-95',
-          'shadow-lg'
+          'shadow-lg',
+          'text-sm'
         )}
         aria-label="Toggle language"
         title={language === 'en' ? 'Switch to Chinese' : 'Switch to English'}
       >
-        <Languages className="h-5 w-5" />
-        <span className="absolute -bottom-1 -right-1 text-[10px] font-bold glass-g2 px-1.5 py-0.5 rounded-full">
-          {language.toUpperCase()}
-        </span>
+        {language === 'en' ? 'EN' : 'ZH'}
       </button>
     </div>
   )

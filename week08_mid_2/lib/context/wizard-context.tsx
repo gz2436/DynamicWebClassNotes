@@ -15,12 +15,26 @@ export interface WizardData {
   // Step 2: Job Description
   jobDescription: string
   detectedLanguage: 'en' | 'zh'
-  // Step 3: Background
-  workSummary: string
+  // Step 3: Background - Detailed Education
+  university: string
+  major: string
+  degree: string
+  graduationYear: string
+  gpa?: string
   educationSummary: string
+  workSummary: string
   projectsSummary: string
   style: 'professional' | 'creative' | 'technical'
   selectedTemplate: 'classic' | 'modern' | 'tech'
+  // AI Generated Content
+  aiGeneratedContent?: {
+    summary?: string
+    workExperience?: string
+    projects?: string
+    skills?: string[]
+    aiModel?: 'chatgpt' | 'gemini' | 'claude' | 'deepseek'
+    generatedAt?: string
+  }
   // Generated Resume ID
   resumeId?: string
 }
@@ -46,6 +60,11 @@ const initialData: Partial<WizardData> = {
   portfolio: '',
   jobDescription: '',
   detectedLanguage: 'en',
+  university: '',
+  major: '',
+  degree: '',
+  graduationYear: '',
+  gpa: '',
   workSummary: '',
   educationSummary: '',
   projectsSummary: '',

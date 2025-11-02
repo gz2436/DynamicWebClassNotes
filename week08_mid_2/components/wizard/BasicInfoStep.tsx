@@ -1,10 +1,10 @@
 'use client'
 
 import { useWizard } from '@/lib/context/wizard-context'
+import { useLanguage } from '@/lib/i18n/language-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const schema = z.object({
@@ -21,6 +21,7 @@ type FormData = z.infer<typeof schema>
 
 export default function BasicInfoStep() {
   const { wizardData, updateWizardData, goToNextStep } = useWizard()
+  const { t } = useLanguage()
 
   const {
     register,
@@ -50,10 +51,10 @@ export default function BasicInfoStep() {
       <div className="glass-g2 rounded-xl p-6 shadow-2xl">
         <div className="mb-6">
           <h2 className="text-2xl md:text-3xl font-bold mb-2 bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            Basic Information
+            {t.basicInfo.title}
           </h2>
           <p className="text-muted-foreground">
-            Let&apos;s start with your contact details
+            {t.basicInfo.subtitle}
           </p>
         </div>
 
@@ -61,19 +62,19 @@ export default function BasicInfoStep() {
           {/* Required Fields Section */}
           <div className="space-y-4">
             <h3 className="text-base font-semibold flex items-center gap-2">
-              Required Information
+              {t.basicInfo.requiredInfo}
               <span className="text-destructive">*</span>
             </h3>
 
             {/* Full Name */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                Full Name <span className="text-destructive">*</span>
+                {t.basicInfo.fullName} <span className="text-destructive">*</span>
               </label>
               <input
                 {...register('fullName')}
                 type="text"
-                placeholder="John Doe"
+                placeholder={t.basicInfo.placeholders.fullName}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -92,12 +93,12 @@ export default function BasicInfoStep() {
             {/* Email */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                Email <span className="text-destructive">*</span>
+                {t.basicInfo.email} <span className="text-destructive">*</span>
               </label>
               <input
                 {...register('email')}
                 type="email"
-                placeholder="john@example.com"
+                placeholder={t.basicInfo.placeholders.email}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -116,12 +117,12 @@ export default function BasicInfoStep() {
             {/* Phone */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                Phone <span className="text-destructive">*</span>
+                {t.basicInfo.phone} <span className="text-destructive">*</span>
               </label>
               <input
                 {...register('phone')}
                 type="tel"
-                placeholder="+1 (555) 123-4567"
+                placeholder={t.basicInfo.placeholders.phone}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -140,12 +141,12 @@ export default function BasicInfoStep() {
             {/* Location */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                Location <span className="text-destructive">*</span>
+                {t.basicInfo.location} <span className="text-destructive">*</span>
               </label>
               <input
                 {...register('location')}
                 type="text"
-                placeholder="New York, NY"
+                placeholder={t.basicInfo.placeholders.location}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -165,18 +166,18 @@ export default function BasicInfoStep() {
           {/* Optional Fields Section */}
           <div className="space-y-4 pt-6 border-t border-border/50">
             <h3 className="text-base font-semibold">
-              Optional Links
+              {t.basicInfo.optionalLinks}
             </h3>
 
             {/* LinkedIn */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                LinkedIn Profile
+                {t.basicInfo.linkedinProfile}
               </label>
               <input
                 {...register('linkedin')}
                 type="url"
-                placeholder="https://linkedin.com/in/johndoe"
+                placeholder={t.basicInfo.placeholders.linkedin}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -195,12 +196,12 @@ export default function BasicInfoStep() {
             {/* GitHub */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                GitHub Profile
+                {t.basicInfo.githubProfile}
               </label>
               <input
                 {...register('github')}
                 type="url"
-                placeholder="https://github.com/johndoe"
+                placeholder={t.basicInfo.placeholders.github}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -219,12 +220,12 @@ export default function BasicInfoStep() {
             {/* Portfolio */}
             <div className="space-y-2">
               <label className="block text-sm font-medium">
-                Portfolio Website
+                {t.basicInfo.portfolioWebsite}
               </label>
               <input
                 {...register('portfolio')}
                 type="url"
-                placeholder="https://johndoe.com"
+                placeholder={t.basicInfo.placeholders.portfolio}
                 className={cn(
                   'w-full px-4 py-3 rounded-2xl glass-g1',
                   'border-2 border-transparent transition-all duration-300',
@@ -241,32 +242,22 @@ export default function BasicInfoStep() {
             </div>
           </div>
 
-          {/* Navigation Buttons - Apple Glassmorphism Style */}
-          <div className="flex justify-between items-center pt-4">
-            <button
-              type="button"
-              onClick={() => window.history.back()}
-              className="px-6 py-2.5 rounded-full font-medium transition-all duration-300 flex items-center gap-2
-                         bg-white/10 backdrop-blur-xl border border-white/20
-                         hover:bg-white/20 hover:scale-105 active:scale-95
-                         text-sm shadow-lg shadow-black/5"
-            >
-              <ArrowRight className="h-4 w-4 rotate-180" />
-              Back
-            </button>
-
+          {/* Navigation Button - Apple Glassmorphism Style */}
+          <div className="flex justify-end pt-4">
             <button
               type="submit"
               disabled={!isValid}
               className={cn(
-                'px-8 py-2.5 rounded-full font-medium transition-all duration-300 flex items-center gap-2',
-                'text-sm shadow-lg',
+                'w-10 h-10 rounded-full transition-all duration-300 flex items-center justify-center',
+                'shadow-lg',
                 isValid
-                  ? 'bg-white/90 backdrop-blur-xl border border-white/40 text-gray-900 hover:bg-white hover:scale-105 active:scale-95 shadow-black/10'
+                  ? 'bg-white/90 backdrop-blur-xl border border-white/40 text-gray-900 hover:bg-white hover:scale-110 active:scale-95 shadow-black/10'
                   : 'bg-white/5 backdrop-blur-xl border border-white/10 text-gray-500 cursor-not-allowed opacity-50'
               )}
             >
-              Next <ArrowRight className="h-4 w-4" />
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </form>

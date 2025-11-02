@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme/theme-provider'
+import { LanguageProvider } from '@/lib/i18n/language-context'
 import { Navigation } from '@/components/layout/navigation'
 import { Footer } from '@/components/layout/footer'
 import { AnimatedBackground } from '@/components/layout/animated-background'
@@ -27,20 +28,22 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider defaultTheme="light" storageKey="resumeai-theme">
-          <ToastProvider>
-            <AnimatedBackground />
-            <FloatingControls />
-            <div className="min-h-screen flex flex-col">
-              <Navigation />
-              <main className="flex-1 pt-20 md:pt-24">
-                <PageTransition>
-                  {children}
-                </PageTransition>
-              </main>
-              <Footer />
-            </div>
-            <ToastContainer />
-          </ToastProvider>
+          <LanguageProvider>
+            <ToastProvider>
+              <AnimatedBackground />
+              <FloatingControls />
+              <div className="min-h-screen flex flex-col">
+                <Navigation />
+                <main className="flex-1 pt-20 md:pt-24">
+                  <PageTransition>
+                    {children}
+                  </PageTransition>
+                </main>
+                <Footer />
+              </div>
+              <ToastContainer />
+            </ToastProvider>
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
