@@ -65,10 +65,10 @@ const sampleResume = {
   projects: [],
   skills: {
     featuredSkills: [
-      { skill: 'Product Strategy', level: 5 },
-      { skill: 'Agile/Scrum', level: 5 },
-      { skill: 'Data Analysis', level: 4 },
-      { skill: 'User Research', level: 4 },
+      { skill: 'Product Strategy', rating: 5 },
+      { skill: 'Agile/Scrum', rating: 5 },
+      { skill: 'Data Analysis', rating: 4 },
+      { skill: 'User Research', rating: 4 },
     ],
     descriptions: [
       'Technical: SQL, Python, Tableau, Google Analytics, Mixpanel',
