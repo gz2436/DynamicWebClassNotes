@@ -1,10 +1,17 @@
 import OpenAI from 'openai'
 
-// DeepSeek is compatible with OpenAI SDK
-const deepseek = new OpenAI({
-  apiKey: process.env.DEEPSEEK_API_KEY,
-  baseURL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
-})
+// Lazy initialization to avoid build errors when env vars are not set
+let deepseekClient: OpenAI | null = null
+
+function getDeepSeekClient() {
+  if (!deepseekClient) {
+    deepseekClient = new OpenAI({
+      apiKey: process.env.DEEPSEEK_API_KEY || 'placeholder-key-for-build',
+      baseURL: process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com',
+    })
+  }
+  return deepseekClient
+}
 
 export async function generateWorkDescription(
   position: string,
@@ -12,6 +19,7 @@ export async function generateWorkDescription(
   responsibilities: string
 ): Promise<string[]> {
   try {
+    const deepseek = getDeepSeekClient()
     const response = await deepseek.chat.completions.create({
       model: 'deepseek-chat',
       messages: [
@@ -48,6 +56,7 @@ export async function generateSkillsSuggestions(
   experience: string[]
 ): Promise<string[]> {
   try {
+    const deepseek = getDeepSeekClient()
     const response = await deepseek.chat.completions.create({
       model: 'deepseek-chat',
       messages: [
@@ -83,6 +92,7 @@ export async function generateProfessionalSummary(
   keySkills: string[]
 ): Promise<string> {
   try {
+    const deepseek = getDeepSeekClient()
     const response = await deepseek.chat.completions.create({
       model: 'deepseek-chat',
       messages: [
@@ -108,6 +118,7 @@ export async function generateProfessionalSummary(
 
 export async function optimizeForATS(resumeText: string): Promise<string[]> {
   try {
+    const deepseek = getDeepSeekClient()
     const response = await deepseek.chat.completions.create({
       model: 'deepseek-chat',
       messages: [
