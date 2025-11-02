@@ -40,7 +40,7 @@ Format the response as JSON with keys: summary, workExperience, projects, skills
       // Use DeepSeek for all AI models (as requested)
       const summary = await generateProfessionalSummary(
         jobDescription || 'General Position',
-        '0-2',
+        0,  // Years of experience (0 for entry-level)
         [education.major, education.degree]
       )
 
