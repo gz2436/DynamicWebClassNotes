@@ -27,7 +27,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('language', lang)
   }
 
-  const t = translations[language]
+  const t = translations[language] as typeof translations.en
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t }}>
