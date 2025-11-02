@@ -3,7 +3,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { ThemeToggle } from '@/components/theme/theme-toggle'
 import { AuthButton } from '@/components/auth/auth-button'
 import { Menu, X, FileText } from 'lucide-react'
 import { useState } from 'react'
@@ -12,7 +11,6 @@ const navItems = [
   { href: '/', label: 'Home' },
   { href: '/builder', label: 'Builder' },
   { href: '/templates', label: 'Templates' },
-  { href: '/export', label: 'Export' },
 ]
 
 export function Navigation() {
@@ -69,7 +67,7 @@ export function Navigation() {
             <span>ResumeAI</span>
           </Link>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <AuthButton />
 
             {/* Mobile Menu Toggle */}

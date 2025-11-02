@@ -92,7 +92,7 @@ export default function SignupPage() {
               disabled={loading}
               className={cn(
                 'glass-g2 glass-transition w-full',
-                'px-4 py-3 rounded-2xl font-medium',
+                'px-4 py-3 rounded-full font-medium',
                 'hover:scale-105 active:scale-95',
                 'flex items-center justify-center gap-3',
                 'disabled:opacity-50 disabled:cursor-not-allowed'
@@ -112,7 +112,7 @@ export default function SignupPage() {
               disabled={loading}
               className={cn(
                 'glass-g2 glass-transition w-full',
-                'px-4 py-3 rounded-2xl font-medium',
+                'px-4 py-3 rounded-full font-medium',
                 'hover:scale-105 active:scale-95',
                 'flex items-center justify-center gap-3',
                 'disabled:opacity-50 disabled:cursor-not-allowed'
@@ -173,7 +173,7 @@ export default function SignupPage() {
               disabled={loading}
               className={cn(
                 'glass-g2 glass-transition w-full',
-                'px-4 py-3 rounded-2xl font-semibold',
+                'px-4 py-3 rounded-full font-semibold',
                 'hover:scale-105 active:scale-95',
                 'flex items-center justify-center gap-2',
                 'disabled:opacity-50 disabled:cursor-not-allowed'

@@ -50,10 +50,10 @@ export function AuthButton() {
         </Link>
         <button
           onClick={handleSignOut}
-          className="glass-g1 glass-transition px-4 py-2 rounded-full text-sm font-medium hover:scale-105"
+          className="glass-g1 glass-transition h-10 w-10 rounded-full flex items-center justify-center hover:scale-110"
+          aria-label="Sign Out"
         >
-          <LogOut className="h-4 w-4 inline mr-2" />
-          Sign Out
+          <LogOut className="h-5 w-5" />
         </button>
       </div>
     )
@@ -63,13 +63,12 @@ export function AuthButton() {
     <Link
       href="/auth/login"
       className={cn(
-        'glass-g1 glass-transition',
-        'px-4 py-2 rounded-full text-sm font-medium',
-        'hover:scale-105 flex items-center gap-2'
+        'glass-g1 glass-transition h-10 w-10 rounded-full flex items-center justify-center',
+        'hover:scale-110'
       )}
+      aria-label="Sign In"
     >
-      <LogIn className="h-4 w-4" />
-      Sign In
+      <UserIcon className="h-5 w-5" />
     </Link>
   )
 }

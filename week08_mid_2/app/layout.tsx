@@ -4,9 +4,9 @@ import './globals.css'
 import { ThemeProvider } from '@/components/theme/theme-provider'
 import { Navigation } from '@/components/layout/navigation'
 import { Footer } from '@/components/layout/footer'
-import { FixedThemeToggle } from '@/components/layout/fixed-theme-toggle'
 import { AnimatedBackground } from '@/components/layout/animated-background'
 import { PageTransition } from '@/components/layout/page-transition'
+import { FloatingControls } from '@/components/layout/floating-controls'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,9 +26,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider defaultTheme="light" storageKey="resumeai-theme">
           <AnimatedBackground />
+          <FloatingControls />
           <div className="min-h-screen flex flex-col">
             <Navigation />
-            <FixedThemeToggle />
             <main className="flex-1 pt-20 md:pt-24">
               <PageTransition>
                 {children}

@@ -1,0 +1,103 @@
+'use client'
+
+import React, { createContext, useContext, useState, ReactNode } from 'react'
+
+export interface WizardData {
+  // Step 1: Basic Info
+  fullName: string
+  email: string
+  phone: string
+  location: string
+  linkedin?: string
+  github?: string
+  portfolio?: string
+  photoUrl?: string
+  // Step 2: Job Description
+  jobDescription: string
+  detectedLanguage: 'en' | 'zh'
+  // Step 3: Background
+  workSummary: string
+  educationSummary: string
+  projectsSummary: string
+  style: 'professional' | 'creative' | 'technical'
+  selectedTemplate: 'classic' | 'modern' | 'tech'
+  // Generated Resume ID
+  resumeId?: string
+}
+
+interface WizardContextType {
+  currentStep: number
+  wizardData: Partial<WizardData>
+  goToNextStep: () => void
+  goToPreviousStep: () => void
+  updateWizardData: (data: Partial<WizardData>) => void
+  resetWizard: () => void
+}
+
+const WizardContext = createContext<WizardContextType | undefined>(undefined)
+
+const initialData: Partial<WizardData> = {
+  fullName: '',
+  email: '',
+  phone: '',
+  location: '',
+  linkedin: '',
+  github: '',
+  portfolio: '',
+  jobDescription: '',
+  detectedLanguage: 'en',
+  workSummary: '',
+  educationSummary: '',
+  projectsSummary: '',
+  style: 'professional',
+  selectedTemplate: 'classic',
+}
+
+export function WizardProvider({ children }: { children: ReactNode }) {
+  const [currentStep, setCurrentStep] = useState(1)
+  const [wizardData, setWizardData] = useState<Partial<WizardData>>(initialData)
+
+  const goToNextStep = () => {
+    if (currentStep < 4) {
+      setCurrentStep(currentStep + 1)
+    }
+  }
+
+  const goToPreviousStep = () => {
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
+  const updateWizardData = (data: Partial<WizardData>) => {
+    setWizardData(prev => ({ ...prev, ...data }))
+  }
+
+  const resetWizard = () => {
+    setCurrentStep(1)
+    setWizardData(initialData)
+  }
+
+  return (
+    <WizardContext.Provider
+      value={{
+        currentStep,
+        wizardData,
+        goToNextStep,
+        goToPreviousStep,
+        updateWizardData,
+        resetWizard,
+      }}
+    >
+      {children}
+    </WizardContext.Provider>
+  )
+}
+
+export function useWizard() {
+  const context = useContext(WizardContext)
+  if (!context) {
+    throw new Error('useWizard must be used within WizardProvider')
+  }
+  return context
+}
