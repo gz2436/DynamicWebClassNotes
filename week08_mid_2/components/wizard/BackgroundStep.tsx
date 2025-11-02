@@ -5,7 +5,7 @@ import { useWizard } from '@/lib/context/wizard-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Sparkles, Loader2 } from 'lucide-react'
+import { Sparkles, Loader2, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const schema = z.object({
@@ -17,7 +17,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export default function BackgroundStep() {
-  const { wizardData, updateWizardData, goToNextStep } = useWizard()
+  const { wizardData, updateWizardData, goToNextStep, goToPreviousStep } = useWizard()
   const [isGenerating, setIsGenerating] = useState(false)
 
   const {
@@ -124,27 +124,41 @@ export default function BackgroundStep() {
             />
           </div>
 
-          {/* Generate Button - Centered at Bottom */}
-          <div className="flex justify-center pt-4">
+          {/* Navigation Buttons - Apple Glassmorphism Style */}
+          <div className="flex justify-between items-center pt-4">
+            <button
+              type="button"
+              onClick={goToPreviousStep}
+              disabled={isGenerating}
+              className="px-6 py-2.5 rounded-full font-medium transition-all duration-300 flex items-center gap-2
+                         bg-white/10 backdrop-blur-xl border border-white/20
+                         hover:bg-white/20 hover:scale-105 active:scale-95
+                         disabled:opacity-50 disabled:cursor-not-allowed
+                         text-sm shadow-lg shadow-black/5"
+            >
+              <ArrowRight className="h-4 w-4 rotate-180" />
+              Back
+            </button>
+
             <button
               type="submit"
               disabled={!isValid || isGenerating}
               className={cn(
-                'px-10 py-4 rounded-full font-semibold transition-all duration-300 flex items-center gap-2',
+                'px-8 py-2.5 rounded-full font-medium transition-all duration-300 flex items-center gap-2',
+                'text-sm shadow-lg',
                 isValid && !isGenerating
-                  ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:scale-105 hover:shadow-2xl shadow-lg shadow-purple-500/50'
-                  : 'glass-g1 text-muted-foreground cursor-not-allowed opacity-50'
+                  ? 'bg-white/90 backdrop-blur-xl border border-white/40 text-gray-900 hover:bg-white hover:scale-105 active:scale-95 shadow-black/10'
+                  : 'bg-white/5 backdrop-blur-xl border border-white/10 text-gray-500 cursor-not-allowed opacity-50'
               )}
             >
               {isGenerating ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                  Generating with AI...
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Processing...
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-5 w-5" />
-                  Generate
+                  Continue <ArrowRight className="h-4 w-4" />
                 </>
               )}
             </button>
