@@ -13,11 +13,19 @@ export function ResumeTemplates({ resume, settings, templateId, scale = 0.5 }: P
   const { profile, workExperiences, educations } = resume
   const { themeColor } = settings
 
+  // Get background color based on template
+  const getBackgroundColor = () => {
+    if (templateId === 'technical') return '#0a0a0a'
+    if (templateId === 'creative') return '#f5f5f5'
+    return 'white'
+  }
+
   const containerStyle = {
     transform: `scale(${scale})`,
     transformOrigin: 'top left',
     width: `${100 / scale}%`,
     height: `${100 / scale}%`,
+    backgroundColor: getBackgroundColor(), // ← Fix: prevents background color leakage
   }
 
   // Classic: Traditional single column

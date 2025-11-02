@@ -132,7 +132,7 @@ export default function BackgroundStep() {
               className={cn(
                 'px-10 py-4 rounded-full font-semibold transition-all duration-300 flex items-center gap-2',
                 isValid && !isGenerating
-                  ? 'bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:scale-105 hover:shadow-2xl shadow-lg shadow-primary/50'
+                  ? 'bg-gradient-to-r from-purple-600 to-purple-500 text-white hover:scale-105 hover:shadow-2xl shadow-lg shadow-purple-500/50'
                   : 'glass-g1 text-muted-foreground cursor-not-allowed opacity-50'
               )}
             >

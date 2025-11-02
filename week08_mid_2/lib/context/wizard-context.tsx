@@ -60,12 +60,20 @@ export function WizardProvider({ children }: { children: ReactNode }) {
   const goToNextStep = () => {
     if (currentStep < 4) {
       setCurrentStep(currentStep + 1)
+      // Scroll to top smoothly when navigating to next step
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     }
   }
 
   const goToPreviousStep = () => {
     if (currentStep > 1) {
       setCurrentStep(currentStep - 1)
+      // Scroll to top smoothly when navigating to previous step
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }
     }
   }
 
