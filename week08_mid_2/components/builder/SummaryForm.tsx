@@ -3,44 +3,43 @@
 import { useResumeBuilder } from '@/lib/context/resume-builder-context'
 import { Sparkles, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { useCallback } from 'react'
+import { useAIGenerate } from '@/lib/hooks/use-ai-generate'
+import { useToast } from '@/lib/hooks/use-toast'
+
+interface GenerateResult {
+  summary: string
+}
 
 export default function SummaryForm() {
   const { resumeData, updateSummary } = useResumeBuilder()
   const { summary } = resumeData
-  const [loading, setLoading] = useState(false)
+  const { generate, isLoading } = useAIGenerate<GenerateResult>()
+  const { showToast } = useToast()
 
-  const handleGenerateSummary = async () => {
+  const handleGenerateSummary = useCallback(async () => {
     if (resumeData.experience.length === 0) {
-      alert('Please add work experience first to generate a professional summary')
+      showToast('Please add work experience first to generate a professional summary', 'warning')
       return
     }
 
-    setLoading(true)
+    const result = await generate({
+      type: 'summary',
+      context: {
+        type: 'summary',
+        experience: resumeData.experience,
+        skills: resumeData.skills,
+        education: resumeData.education,
+      },
+    })
 
-    try {
-      const response = await fetch('/api/ai/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'summary',
-          experience: resumeData.experience,
-          skills: resumeData.skills,
-          education: resumeData.education,
-        }),
-      })
-
-      if (!response.ok) throw new Error('Failed to generate')
-
-      const data = await response.json()
-      updateSummary(data.summary)
-    } catch (error) {
-      console.error('Error generating summary:', error)
-      alert('Failed to generate summary. Make sure you have configured your API key.')
-    } finally {
-      setLoading(false)
+    if (result?.summary) {
+      updateSummary(result.summary)
+      showToast('Professional summary generated successfully!', 'success')
+    } else {
+      showToast('Failed to generate summary. Please check your API key.', 'error')
     }
-  }
+  }, [resumeData, generate, updateSummary, showToast])
 
   return (
     <div className="space-y-6">
@@ -52,14 +51,14 @@ export default function SummaryForm() {
         </p>
         <button
           onClick={handleGenerateSummary}
-          disabled={loading}
+          disabled={isLoading}
           className={cn(
             'glass-g2 glass-transition px-4 py-2 rounded-xl font-medium',
             'hover:scale-105 active:scale-95 flex items-center gap-2',
             'disabled:opacity-50 disabled:cursor-not-allowed'
           )}
         >
-          {loading ? (
+          {isLoading ? (
             <>
               <Loader2 className="h-4 w-4 animate-spin" />
               Generating...

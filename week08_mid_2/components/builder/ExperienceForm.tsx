@@ -3,50 +3,54 @@
 import { useResumeBuilder } from '@/lib/context/resume-builder-context'
 import { Plus, Trash2, Sparkles, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useAIGenerate } from '@/lib/hooks/use-ai-generate'
+import { useToast } from '@/lib/hooks/use-toast'
+
+interface GenerateResult {
+  bullets: string[]
+}
 
 export default function ExperienceForm() {
   const { resumeData, addExperience, updateExperience, deleteExperience } = useResumeBuilder()
   const { experience } = resumeData
   const [generatingFor, setGeneratingFor] = useState<string | null>(null)
+  const { generate, isLoading } = useAIGenerate<GenerateResult>()
+  const { showToast } = useToast()
 
-  const handleGenerateDescription = async (expId: string) => {
+  const handleGenerateDescription = useCallback(async (expId: string) => {
     const exp = experience.find((e) => e.id === expId)
     if (!exp || !exp.position || !exp.company) {
-      alert('Please fill in the position and company first')
+      showToast('Please fill in the position and company first', 'warning')
       return
     }
 
     setGeneratingFor(expId)
 
-    try {
-      const response = await fetch('/api/ai/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'work-description',
-          position: exp.position,
-          company: exp.company,
-          responsibilities: exp.description.join('; '),
-        }),
-      })
+    const result = await generate({
+      type: 'experience',
+      context: {
+        type: 'work-description',
+        position: exp.position,
+        company: exp.company,
+        responsibilities: exp.description.join('; '),
+      },
+    })
 
-      if (!response.ok) throw new Error('Failed to generate')
+    setGeneratingFor(null)
 
-      const data = await response.json()
-      updateExperience(expId, { description: data.bullets })
-    } catch (error) {
-      console.error('Error generating description:', error)
-      alert('Failed to generate description. Make sure you have configured your API key.')
-    } finally {
-      setGeneratingFor(null)
+    if (result?.bullets) {
+      updateExperience(expId, { description: result.bullets })
+      showToast('Description generated successfully!', 'success')
+    } else {
+      showToast('Failed to generate description. Please check your API key.', 'error')
     }
-  }
+  }, [experience, generate, updateExperience, showToast])
 
-  const handleDescriptionChange = (expId: string, value: string) => {
+  const handleDescriptionChange = useCallback((expId: string, value: string) => {
     const bullets = value.split('\n').filter((line) => line.trim())
     updateExperience(expId, { description: bullets })
-  }
+  }, [updateExperience])
 
   return (
     <div className="space-y-6">

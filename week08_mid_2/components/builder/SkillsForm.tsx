@@ -3,63 +3,62 @@
 import { useResumeBuilder } from '@/lib/context/resume-builder-context'
 import { Plus, X, Sparkles, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
+import { useAIGenerate } from '@/lib/hooks/use-ai-generate'
+import { useToast } from '@/lib/hooks/use-toast'
+
+interface GenerateResult {
+  skills: string[]
+}
 
 export default function SkillsForm() {
   const { resumeData, updateSkills } = useResumeBuilder()
   const { skills } = resumeData
   const [newSkill, setNewSkill] = useState('')
-  const [loading, setLoading] = useState(false)
+  const { generate, isLoading } = useAIGenerate<GenerateResult>()
+  const { showToast } = useToast()
 
-  const addSkill = () => {
+  const addSkill = useCallback(() => {
     if (newSkill.trim() && !skills.includes(newSkill.trim())) {
       updateSkills([...skills, newSkill.trim()])
       setNewSkill('')
     }
-  }
+  }, [newSkill, skills, updateSkills])
 
-  const removeSkill = (skill: string) => {
+  const removeSkill = useCallback((skill: string) => {
     updateSkills(skills.filter((s) => s !== skill))
-  }
+  }, [skills, updateSkills])
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault()
       addSkill()
     }
-  }
+  }, [addSkill])
 
-  const handleGenerateSuggestions = async () => {
+  const handleGenerateSuggestions = useCallback(async () => {
     if (resumeData.experience.length === 0) {
-      alert('Please add work experience first to get skill suggestions')
+      showToast('Please add work experience first to get skill suggestions', 'warning')
       return
     }
 
-    setLoading(true)
+    const result = await generate({
+      type: 'skills',
+      context: {
+        type: 'skills',
+        position: resumeData.experience[0]?.position || '',
+        currentSkills: skills,
+      },
+    })
 
-    try {
-      const response = await fetch('/api/ai/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'skills',
-          position: resumeData.experience[0]?.position || '',
-          currentSkills: skills,
-        }),
-      })
-
-      if (!response.ok) throw new Error('Failed to generate')
-
-      const data = await response.json()
-      const newSkills = [...skills, ...data.skills.filter((s: string) => !skills.includes(s))]
+    if (result?.skills) {
+      const newSkills = [...skills, ...result.skills.filter((s: string) => !skills.includes(s))]
       updateSkills(newSkills)
-    } catch (error) {
-      console.error('Error generating skills:', error)
-      alert('Failed to generate skill suggestions. Make sure you have configured your API key.')
-    } finally {
-      setLoading(false)
+      showToast(`Added ${result.skills.length} new skill suggestions!`, 'success')
+    } else {
+      showToast('Failed to generate skill suggestions. Please check your API key.', 'error')
     }
-  }
+  }, [resumeData.experience, skills, generate, updateSkills, showToast])
 
   return (
     <div className="space-y-6">
@@ -74,14 +73,14 @@ export default function SkillsForm() {
           </div>
           <button
             onClick={handleGenerateSuggestions}
-            disabled={loading}
+            disabled={isLoading}
             className={cn(
               'glass-g2 glass-transition px-4 py-2 rounded-xl font-medium',
               'hover:scale-105 active:scale-95 flex items-center gap-2 whitespace-nowrap',
               'disabled:opacity-50 disabled:cursor-not-allowed'
             )}
           >
-            {loading ? (
+            {isLoading ? (
               <>
                 <Loader2 className="h-4 w-4 animate-spin" />
                 Generating...

@@ -1,12 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { getUserResumes } from '@/lib/supabase/queries'
 import { useRouter } from 'next/navigation'
 import { Plus, FileText, Calendar, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
+import type { User } from '@supabase/supabase-js'
 
 type Resume = {
   id: string
@@ -18,29 +19,11 @@ type Resume = {
 export default function DashboardPage() {
   const [resumes, setResumes] = useState<Resume[]>([])
   const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState<any>(null)
+  const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
   const supabase = createBrowserClient()
 
-  useEffect(() => {
-    checkUser()
-  }, [])
-
-  async function checkUser() {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser()
-
-    if (!user) {
-      router.push('/auth/login')
-      return
-    }
-
-    setUser(user)
-    loadResumes(user.id)
-  }
-
-  async function loadResumes(userId: string) {
+  const loadResumes = useCallback(async (userId: string) => {
     try {
       const data = await getUserResumes(userId)
       setResumes(data)
@@ -49,7 +32,30 @@ export default function DashboardPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [])
+
+  const checkUser = useCallback(async () => {
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+
+      if (!user) {
+        router.push('/auth/login')
+        return
+      }
+
+      setUser(user)
+      loadResumes(user.id)
+    } catch (error) {
+      console.error('Error checking user:', error)
+      router.push('/auth/login')
+    }
+  }, [router, supabase, loadResumes])
+
+  useEffect(() => {
+    checkUser()
+  }, [checkUser])
 
   if (loading) {
     return (

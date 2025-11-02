@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { ResumeData } from '@/lib/types/resume'
 
 export type Database = {
   public: {
@@ -9,7 +10,7 @@ export type Database = {
           user_id: string
           title: string
           template_id: string
-          content: any
+          content: ResumeData
           created_at: string
           updated_at: string
         }
@@ -18,7 +19,7 @@ export type Database = {
           user_id: string
           title: string
           template_id: string
-          content: any
+          content: ResumeData
           created_at?: string
           updated_at?: string
         }
@@ -27,7 +28,7 @@ export type Database = {
           user_id?: string
           title?: string
           template_id?: string
-          content?: any
+          content?: Partial<ResumeData>
           created_at?: string
           updated_at?: string
         }

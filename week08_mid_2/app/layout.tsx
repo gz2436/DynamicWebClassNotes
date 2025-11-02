@@ -7,6 +7,8 @@ import { Footer } from '@/components/layout/footer'
 import { AnimatedBackground } from '@/components/layout/animated-background'
 import { PageTransition } from '@/components/layout/page-transition'
 import { FloatingControls } from '@/components/layout/floating-controls'
+import { ToastProvider } from '@/lib/hooks/use-toast'
+import { ToastContainer } from '@/components/ui/toast'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,17 +27,20 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider defaultTheme="light" storageKey="resumeai-theme">
-          <AnimatedBackground />
-          <FloatingControls />
-          <div className="min-h-screen flex flex-col">
-            <Navigation />
-            <main className="flex-1 pt-20 md:pt-24">
-              <PageTransition>
-                {children}
-              </PageTransition>
-            </main>
-            <Footer />
-          </div>
+          <ToastProvider>
+            <AnimatedBackground />
+            <FloatingControls />
+            <div className="min-h-screen flex flex-col">
+              <Navigation />
+              <main className="flex-1 pt-20 md:pt-24">
+                <PageTransition>
+                  {children}
+                </PageTransition>
+              </main>
+              <Footer />
+            </div>
+            <ToastContainer />
+          </ToastProvider>
         </ThemeProvider>
       </body>
     </html>
