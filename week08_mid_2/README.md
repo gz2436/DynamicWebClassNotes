@@ -173,3 +173,5 @@ This project is part of a course assignment and is for educational purposes.
 - Built as part of NYU Dynamic Web Development course
 - Powered by DeepSeek AI for intelligent resume generation
 - UI inspired by modern design systems and Apple's design language
+
+
