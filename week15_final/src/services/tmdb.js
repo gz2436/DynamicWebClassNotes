@@ -21,7 +21,8 @@ const tmdb = axios.create({
 // Old call: tmdb.get('/movie/popular', { params: { page: 1 } })
 // New call: tmdb.get('', { params: { endpoint: '/movie/popular', page: 1 } })
 tmdb.interceptors.request.use(config => {
-    if (config.url && config.url.startsWith('/')) {
+    // Prevent recursive wrapping: Don't wrap if it's already the proxy middleware URL
+    if (config.url && config.url.startsWith('/') && !config.url.startsWith(BASE_URL)) {
         // Move the url path to 'endpoint' param
         config.params = { ...config.params, endpoint: config.url };
         config.url = BASE_URL;
