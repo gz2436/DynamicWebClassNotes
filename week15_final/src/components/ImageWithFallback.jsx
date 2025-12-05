@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ImageWithFallback = ({ src, alt, className, fallbackText = "daily_movie", loading = "lazy", ...props }) => {
+const ImageWithFallback = ({ src, alt, className, fallbackText = "daily_film", loading = "lazy", ...props }) => {
     const [error, setError] = useState(false);
 
     if (error || !src) {
@@ -8,7 +8,7 @@ const ImageWithFallback = ({ src, alt, className, fallbackText = "daily_movie", 
             <div className={`flex items-center justify-center bg-neutral-900 border border-white/10 ${className}`}>
                 <div className="border border-white/20 px-2 py-1 bg-[#080808]/20 backdrop-blur-md">
                     <span className="text-[10px] font-mono uppercase tracking-widest text-white/50 text-center block leading-none font-bold">
-                        DAILY_MOVIE
+                        DAILY_FILM
                     </span>
                 </div>
             </div>

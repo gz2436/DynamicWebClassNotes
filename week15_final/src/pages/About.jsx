@@ -33,7 +33,7 @@ const About = () => {
                         Academic<br />Project
                     </h1>
                     <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-                        DAILY_MOVIE is an experimental cinema archive built as a final project for the Dynamic Web Development course at NYU.
+                        DAILY_FILM is an experimental cinema archive built as a final project for the Dynamic Web Development course at NYU.
                     </p>
                 </section>
 

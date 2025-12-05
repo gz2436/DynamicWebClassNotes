@@ -6,7 +6,7 @@ This repository serves as a comprehensive archive of coursework, assignments, an
 
 | Week      | Project      | Demo Link |
 |-----------|--------------|-----------|
-| week15    | Daily Movie  | https://dailymovie.vercel.app/ |
+| week15    | Daily Movie  | https://daily-film.vercel.app/ |
 | week13-14 | art coll     | https://week13-14-art-collection.vercel.app/ |
 | week10-12 | todo-v4      | https://week10-12-todo-app-v4.vercel.app/ |
 | week10-12 | todo-v1      | https://week10-12-todo-app-v1.vercel.app/ |

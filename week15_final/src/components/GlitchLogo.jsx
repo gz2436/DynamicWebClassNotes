@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const GlitchLogo = ({ onClick }) => {
-    const [logoText, setLogoText] = useState('DAILY_MOVIE');
+    const [logoText, setLogoText] = useState('DAILY_FILM');
     const [isGlitching, setIsGlitching] = useState(false);
     const intervalRef = useRef(null); // Ref to store the interval ID
 
     useEffect(() => {
         return () => {
             // Cleanup on unmount
-            setLogoText('DAILY_MOVIE');
+            setLogoText('DAILY_FILM');
             setIsGlitching(false);
             if (intervalRef.current) {
                 clearInterval(intervalRef.current); // Clear interval if component unmounts during glitch
@@ -23,7 +23,7 @@ const GlitchLogo = ({ onClick }) => {
         // Trigger parent onClick (reset logic)
         if (onClick) onClick();
 
-        const originalText = 'DAILY_MOVIE';
+        const originalText = 'DAILY_FILM';
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';
 
         let iteration = 0;

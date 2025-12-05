@@ -28,7 +28,7 @@ const Manifesto = () => {
                     </h1>
                     <div className="flex flex-col md:flex-row gap-8 md:items-end justify-between">
                         <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-                            The DAILY_MOVIE engine has evolved. Our new curatorial algorithm fuses global theatrical synchronization with mathematical non-repetition.
+                            The DAILY_FILM engine has evolved. Our new curatorial algorithm fuses global theatrical synchronization with mathematical non-repetition.
                         </p>
                         <div className="text-xs font-mono text-white/40 uppercase tracking-widest">
                             UPDATED // 2025.12
@@ -107,7 +107,7 @@ const Manifesto = () => {
                             </div>
                             <div className="flex justify-between">
                                 <span className="text-white/50">CYCLE_LENGTH</span>
-                                <span className="text-white">> 3 YEARS</span>
+                                <span className="text-white">&gt; 3 YEARS</span>
                             </div>
                             <div className="w-full h-1 bg-white/10 mt-2">
                                 <div className="h-full w-full bg-gradient-to-r from-white/20 to-white"></div>

@@ -32,7 +32,7 @@ const Footer = () => {
                         state={{ resetScroll: true }}
                         className="text-white font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity block text-base"
                     >
-                        DAILY_MOVIE
+                        DAILY_FILM
                     </Link>
                     <p className="leading-relaxed">
                         Experimental cinema archive.<br />
@@ -76,7 +76,7 @@ const Footer = () => {
                         A dynamic web experiment.<br />
                         Powered by TMDB API.
                     </p>
-                    <p className="text-white/40">© 2025 Daily_Movie.</p>
+                    <p className="text-white/40">© 2025 Daily_Film.</p>
                 </div>
 
             </div>

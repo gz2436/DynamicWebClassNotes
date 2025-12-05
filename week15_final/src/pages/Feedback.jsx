@@ -37,7 +37,7 @@ const Feedback = () => {
                         System<br />Input
                     </h1>
                     <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-                        Contribute your observations to the DAILY_MOVIE archive. Your feedback helps fine-tune the recommendation algorithm.
+                        Contribute your observations to the DAILY_FILM archive. Your feedback helps fine-tune the recommendation algorithm.
                     </p>
                 </section>
 

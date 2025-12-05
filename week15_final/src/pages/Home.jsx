@@ -16,7 +16,7 @@ const Home = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // Handle explicit scroll reset (e.g. clicking DAILY_MOVIE logo)
+    // Handle explicit scroll reset (e.g. clicking DAILY_FILM logo)
     useLayoutEffect(() => {
         if (location.state?.resetScroll) {
             window.scrollTo(0, 0);
@@ -485,7 +485,7 @@ const Home = () => {
                     {/* Left: Label */}
                     <div className="md:col-span-3">
                         <div className="sticky top-12">
-                            <h2 className="text-3xl mb-4 leading-none text-white/40 uppercase font-mono font-black tracking-tighter">Why<br />This<br />Movie<br />Today?</h2>
+                            <h2 className="text-3xl mb-4 leading-none text-white/40 uppercase font-mono font-black tracking-tighter">Why<br />This<br />Film<br />Today?</h2>
                             <span className="border border-white/30 px-2 py-1 rounded-full text-white/50 uppercase tracking-widest text-[10px] font-mono font-bold -ml-2">Curator's Note</span>
 
                             {/* Recommendation Factors */}

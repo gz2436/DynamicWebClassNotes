@@ -38,7 +38,7 @@ const Layout = () => {
                 <div className={`pointer-events-auto mt-2 md:mt-6 ${showLogo ? '' : 'pointer-events-none'}`}>
                     <Link to="/" state={{ resetScroll: true }} onClick={() => window.scrollTo(0, 0)} className="group block">
                         <span className="block border border-white px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-colors backdrop-blur-md bg-black/20 font-mono font-bold">
-                            DAILY_MOVIE
+                            DAILY_FILM
                         </span>
                     </Link>
                 </div>
