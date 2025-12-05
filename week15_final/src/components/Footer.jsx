@@ -54,17 +54,18 @@ const Footer = () => {
                             </button>
                         </li>
                         <li><Link to="/about" className="hover:text-white transition-colors">ABOUT</Link></li>
+                        <li><Link to="/feedback" className="hover:text-white transition-colors">FEEDBACK</Link></li>
                     </ul>
                 </div>
 
                 {/* Col 3: Discover */}
                 <div className="space-y-4">
                     <h3 className="text-white font-bold uppercase tracking-widest">Discover</h3>
-                    <div className="flex flex-col space-y-2">
-                        <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors w-fit">Popular</Link>
-                        <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors w-fit">Now Playing</Link>
-                        <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors w-fit">Upcoming</Link>
-                        <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors w-fit">Top Rated</Link>
+                    <div className="flex flex-col space-y-2 text-white/60">
+                        <Link to="/popular" state={{ resetPage: true }} className="hover:text-white transition-colors w-fit uppercase">Popular</Link>
+                        <Link to="/now-playing" state={{ resetPage: true }} className="hover:text-white transition-colors w-fit uppercase">Now Playing</Link>
+                        <Link to="/upcoming" state={{ resetPage: true }} className="hover:text-white transition-colors w-fit uppercase">Upcoming</Link>
+                        <Link to="/top-rated" state={{ resetPage: true }} className="hover:text-white transition-colors w-fit uppercase">Top Rated</Link>
                     </div>
                 </div>
 

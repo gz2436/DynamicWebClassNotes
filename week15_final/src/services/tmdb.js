@@ -144,6 +144,24 @@ export const getCompanyDetails = async (id) => {
     }
 };
 
+export const discoverMovies = async (params = {}) => {
+    try {
+        const response = await tmdb.get('/discover/movie', {
+            params: {
+                include_adult: false,
+                include_video: false,
+                language: 'en-US',
+                sort_by: 'popularity.desc',
+                ...params
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error discovering movies:", error);
+        return { results: [], total_pages: 0 };
+    }
+};
+
 export const searchMovies = async (query) => {
     try {
         const response = await tmdb.get('/search/movie', {

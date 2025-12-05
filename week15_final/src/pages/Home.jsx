@@ -109,9 +109,13 @@ const Home = () => {
         const dates = [];
         let d = new Date(latestDate);
         // Limit to last 90 days for performance on mobile
-        const limitDate = new Date(latestDate);
-        limitDate.setDate(limitDate.getDate() - 90);
-        const effectiveStartDate = startDate > limitDate ? startDate : limitDate;
+        // RESCINDED: User requested full history from 2025-01-01
+        // const limitDate = new Date(latestDate);
+        // limitDate.setDate(limitDate.getDate() - 90);
+        // const effectiveStartDate = startDate > limitDate ? startDate : limitDate;
+
+        // Always use full range
+        const effectiveStartDate = startDate;
 
         while (d >= effectiveStartDate) {
             dates.push(new Date(d));
@@ -126,25 +130,16 @@ const Home = () => {
     const dateKey = displayDate.toISOString().split('T')[0];
 
     const dateString = isMobile
-        ? displayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
-        : displayDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
+        ? displayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+        : displayDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }).toUpperCase();
 
     // Fetch Movie for Current Date
     useEffect(() => {
         const fetchDailyMovie = async () => {
             setLoading(true);
             try {
-                // 1. Check Special Events (Manual Override)
-                const SPECIAL_EVENTS = {
-                    '2025-11-26': 269149, // Zootopia
-                };
-
                 let movieCandidate;
-
-                if (SPECIAL_EVENTS[dateKey]) {
-                    // Manual Override
-                    movieCandidate = { id: SPECIAL_EVENTS[dateKey], source: 'MANUAL_EVENT' };
-                } else if (dailyCache[dateKey]) {
+                if (dailyCache[dateKey]) {
                     // Memory Cache
                     movieCandidate = dailyCache[dateKey];
                 } else {
@@ -166,10 +161,26 @@ const Home = () => {
                 try { cachedDetail = sessionStorage.getItem(detailCacheKey); } catch (e) { }
 
                 if (cachedDetail) {
-                    setCurrentMovieDetail(JSON.parse(cachedDetail));
+                    const details = JSON.parse(cachedDetail);
+                    // Merge context ensuring we always have the "Why"
+                    if (movieCandidate.recommendationContext) {
+                        details.recommendationContext = movieCandidate.recommendationContext;
+                    }
+                    if (movieCandidate.source) {
+                        details.source = movieCandidate.source;
+                    }
+                    setCurrentMovieDetail(details);
                 } else {
                     const details = await getMovieDetails(movieCandidate.id);
                     if (details) {
+                        // Merge context before setting state
+                        if (movieCandidate.recommendationContext) {
+                            details.recommendationContext = movieCandidate.recommendationContext;
+                        }
+                        if (movieCandidate.source) {
+                            details.source = movieCandidate.source;
+                        }
+
                         setCurrentMovieDetail(details);
                         try {
                             sessionStorage.setItem(detailCacheKey, JSON.stringify(details));
@@ -431,8 +442,11 @@ const Home = () => {
                                 </p>
                             )}
                             <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                                <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance">
-                                    {movie.title}
+                                <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance flex items-end flex-wrap gap-4">
+                                    <span>{movie.title}</span>
+                                    <span className="text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest mb-1">
+                                        {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
+                                    </span>
                                 </h1>
                             </Link>
                         </div>
@@ -475,14 +489,33 @@ const Home = () => {
                             <span className="border border-white/30 px-2 py-1 rounded-full text-white/50 uppercase tracking-widest text-[10px] font-mono font-bold -ml-2">Curator's Note</span>
 
                             {/* Recommendation Factors */}
-                            <div className="mt-8 space-y-3">
-                                {movie.source === 'ZEITGEIST' && (
+                            {/* Recommendation Factors */}
+                            <div className="mt-8 space-y-4">
+                                {/* DYNAMIC CONTEXT (NEW) */}
+                                {movie.recommendationContext && (
+                                    <div className="flex flex-col gap-2 border-l-2 border-white/20 pl-4">
+                                        <div className="flex items-center gap-2 text-xs font-mono text-white/80">
+                                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${movie.recommendationContext.label === 'GLOBAL_PREMIERE'
+                                                ? 'bg-red-600 text-white'
+                                                : 'bg-white/20 text-white'
+                                                }`}>
+                                                {movie.recommendationContext.name}
+                                            </span>
+                                        </div>
+                                        <span className="text-sm text-white/50 font-mono italic">
+                                            "{movie.recommendationContext.description}"
+                                        </span>
+                                    </div>
+                                )}
+
+                                {/* FALLBACK / LEGACY LABELS (If no rich context) */}
+                                {!movie.recommendationContext && movie.source === 'ZEITGEIST' && (
                                     <div className="flex items-center gap-2 text-xs font-mono text-white/60">
                                         <span className="bg-white/20 text-white px-2 py-0.5 rounded text-[10px] font-bold">ZEITGEIST</span>
                                         <span>High Viral Velocity</span>
                                     </div>
                                 )}
-                                {movie.source === 'HIDDEN_GEM' && (
+                                {!movie.recommendationContext && movie.source === 'HIDDEN_GEM' && (
                                     <div className="flex items-center gap-2 text-xs font-mono text-white/60">
                                         <span className="bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded text-[10px] font-bold">HIDDEN_GEM</span>
                                         <span>Critical Acclaim / Low Visibility</span>
@@ -494,13 +527,17 @@ const Home = () => {
                                         <span>Temporal Relevance Override</span>
                                     </div>
                                 )}
-                                <div className="flex items-center gap-2 text-xs font-mono text-white/40">
-                                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
-                                    <span>Rating: {movie.vote_average?.toFixed(1)}/10</span>
-                                </div>
-                                <div className="flex items-center gap-2 text-xs font-mono text-white/40">
-                                    <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                                    <span>Votes: {movie.vote_count?.toLocaleString()}</span>
+
+                                {/* STANDARD METRICS */}
+                                <div className="pt-4 border-t border-white/5 space-y-2">
+                                    <div className="flex items-center gap-2 text-xs font-mono text-white/40">
+                                        <span className={`w-1.5 h-1.5 rounded-full ${movie.vote_average >= 7 ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
+                                        <span>Audience Score: {movie.vote_average?.toFixed(1)}/10</span>
+                                    </div>
+                                    <div className="flex items-center gap-2 text-xs font-mono text-white/40">
+                                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
+                                        <span>Verified Count: {movie.vote_count?.toLocaleString()}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

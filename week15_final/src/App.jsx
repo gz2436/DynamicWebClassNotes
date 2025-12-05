@@ -16,6 +16,7 @@ const About = lazy(() => import('./pages/About'));
 const PersonDetail = lazy(() => import('./pages/PersonDetail'));
 const CompanyDetail = lazy(() => import('./pages/CompanyDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Feedback = lazy(() => import('./pages/Feedback'));
 
 // Loading Fallback
 
@@ -61,6 +62,7 @@ function AnimatedRoutes() {
                         <Route path="/top-rated" element={<CategoryPage type="top_rated" title="Top Rated" />} />
                         <Route path="/person/:id" element={<PersonDetail />} />
                         <Route path="/company/:id" element={<CompanyDetail />} />
+                        <Route path="/feedback" element={<Feedback />} />
                         <Route path="*" element={<NotFound />} />
                     </Route>
                 </Routes>

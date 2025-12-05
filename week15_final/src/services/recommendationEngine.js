@@ -1,150 +1,261 @@
-import { getCuratedMovies, getHiddenGems } from './tmdb';
+import { discoverMovies } from './tmdb';
 
-const HISTORY_KEY = 'daily_movie_history_v1';
-const HISTORY_LIMIT = 30; // Keep last 30 days to avoid repeats
+// --- CONFIGURATION: WEEKLY SCHEDULE ---
+// Each day of the week gets a curated "Vibe" / "Theme".
+// This ensures variety and gives a "Reason" for the recommendation.
 
-// Deterministic Random Number Generator (Mulberry32)
-// Seed must be an integer.
-function mulberry32(a) {
-    return function () {
-        var t = a += 0x6D2B79F5;
-        t = Math.imul(t ^ (t >>> 15), t | 1);
-        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+const WEEKLY_THEMES = [
+    // SUNDAY (0): Hidden Gems (Relaxed, High Quality, Discovery)
+    {
+        id: 'HIDDEN_GEM',
+        name: 'Sunday Discovery',
+        description: 'Critically acclaimed films that deserve more attention.',
+        params: {
+            sort_by: 'vote_average.desc',
+            'vote_average.gte': 7.5,
+            'vote_count.lte': 3000,
+            'vote_count.gte': 100,
+            'primary_release_date.gte': '2010-01-01'
+        }
+    },
+    // MONDAY (1): Critics' Choice (Serious, Top Rated, Start the week strong)
+    {
+        id: 'CRITICS_CHOICE',
+        name: 'Critics\' Choice Monday',
+        description: 'Universally praised masterpieces to start your week.',
+        params: {
+            sort_by: 'vote_average.desc',
+            'vote_average.gte': 8.0,
+            'vote_count.gte': 1000
+        }
+    },
+    // TUESDAY (2): Sci-Fi / Future (Tech, Imagination)
+    {
+        id: 'SCIFI_TUESDAY',
+        name: 'Sci-Fi Tuesday',
+        description: 'Exploring the future, space, and technology.',
+        params: {
+            with_genres: '878', // Science Fiction
+            sort_by: 'popularity.desc',
+            'vote_average.gte': 6.5
+        }
+    },
+    // WEDNESDAY (3): Mid-Week Action (Energy boost)
+    {
+        id: 'ACTION_WEDNESDAY',
+        name: 'Mid-Week Adrenaline',
+        description: 'High-octane action to power through the week.',
+        params: {
+            with_genres: '28', // Action
+            sort_by: 'revenue.desc', // Blockbusters
+            'vote_average.gte': 6.0
+        }
+    },
+    // THURSDAY (4): Throwback (Movies before 2010)
+    {
+        id: 'THROWBACK_THURSDAY',
+        name: 'Throwback Thursday',
+        description: 'Modern classics and nostalgia trips.',
+        params: {
+            'primary_release_date.lte': '2010-01-01',
+            sort_by: 'vote_count.desc', // Most iconic
+            'vote_average.gte': 7.0
+        }
+    },
+    // FRIDAY (5): Pop Culture / Trending (Party, Social)
+    {
+        id: 'POP_CULTURE_FRIDAY',
+        name: 'Pop Culture Friday',
+        description: 'The most popular movies defining the zeitgeist.',
+        params: {
+            sort_by: 'popularity.desc',
+            'vote_count.gte': 500
+        }
+    },
+    // SATURDAY (6): Visual Spectacle (Fantasy, Adventure, Animation)
+    {
+        id: 'SPECTACLE_SATURDAY',
+        name: 'Spectacle Saturday',
+        description: 'Immersive worlds, fantasy, and adventure.',
+        params: {
+            with_genres: '12,14', // Adventure, Fantasy
+            sort_by: 'revenue.desc',
+            'vote_average.gte': 6.5
+        }
     }
+];
+
+// --- HOLIDAY RULES ---
+const MANUAL_OVERRIDES = {
+    // Exact Date Overrides
+    '11-26': 1084242, // Zootopia 2 (Premiere)
+};
+const CALENDAR_RULES = {
+    '01-01': { name: 'New Year', description: 'Fresh starts and new beginnings.', params: { with_keywords: '193630', sort_by: 'popularity.desc' } },
+    '02-14': { name: 'Valentine\'s Day', description: 'Love is in the air.', params: { with_genres: '10749', sort_by: 'popularity.desc' } },
+    '10-31': { name: 'Halloween', description: 'Spooky selections for the season.', params: { with_genres: '27', with_keywords: '3335', sort_by: 'popularity.desc' } },
+    '12-24': { name: 'Christmas Eve', description: 'Festive favorites.', params: { with_keywords: '207317', sort_by: 'popularity.desc' } },
+    '12-25': { name: 'Christmas', description: 'Merry Christmas!', params: { with_keywords: '207317', sort_by: 'popularity.desc' } },
+    '06': { name: 'Pride Month', description: 'Celebrating LGBTQ+ stories.', params: { with_keywords: '158718', sort_by: 'popularity.desc' } },
+};
+
+// --- CORE UTILS ---
+
+// Helper: Get Day of Year (0-365)
+function getDayOfYear(date) {
+    const start = new Date(date.getFullYear(), 0, 0);
+    const diff = (date - start) + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+    const oneDay = 1000 * 60 * 60 * 24;
+    return Math.floor(diff / oneDay);
 }
 
-// Generate a numeric seed from a date string "YYYY-MM-DD"
-function generateDailySeed(dateString) {
-    // Simple hash of the date string
+// Helper: Seed Generator
+function generateSeed(str) {
     let hash = 0;
-    for (let i = 0; i < dateString.length; i++) {
-        const char = dateString.charCodeAt(i);
+    for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
+        hash = hash & hash;
     }
     return Math.abs(hash);
 }
 
-const CACHE_KEY = 'recommendation_candidates_v1';
-const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 Hours
+// Helper: Permutation Slicing (The Magic No-Collision Algorithm)
+// Given a 'poolSize' and a 'dayIndex', return a unique index.
+// Strategy: Use a large prime stride to traverse the pool.
+function getPermutationIndex(dayIndex, poolSize, yearOffset) {
+    // 1. Stride: A prime number roughly 70% of pool size to jump around
+    // Just needs to be coprime with poolSize. Prime is safest.
+    const stride = 997;
 
-// Helper: Get Candidates with Caching
-async function getCandidates() {
-    // 1. Try Memory/Local Storage
-    try {
-        const cached = localStorage.getItem(CACHE_KEY);
-        if (cached) {
-            const { timestamp, data } = JSON.parse(cached);
-            if (Date.now() - timestamp < CACHE_TTL) {
-                console.log("Using cached recommendation candidates");
-                return data;
-            }
-        }
-    } catch (e) {
-        console.warn("Cache read failed", e);
-    }
+    // 2. Start Offset: Shifts the starting point each year so 2026 != 2025
+    const startOffset = yearOffset * 123;
 
-    console.log("Fetching new recommendation candidates...");
-
-    // 2. Fetch Fresh Data (Parallel)
-    // We fetch a few pages from both pools to get a good mix
-    // 2. Fetch Fresh Data (Parallel with Fault Tolerance)
-    // We fetch a few pages from both pools to get a good mix
-    const results = await Promise.allSettled([
-        getCuratedMovies(1),
-        getCuratedMovies(2),
-        getHiddenGems(1),
-        getHiddenGems(2)
-    ]);
-
-    const successfulData = results
-        .filter(r => r.status === 'fulfilled')
-        .map(r => r.value);
-
-    if (successfulData.length === 0) {
-        console.error("Critical Failure: All recommendation sources failed.");
-        return [];
-    }
-
-    // Flatten results
-    const poolA = [];
-    const poolB = [];
-
-    // We know the order: 0,1 are Popular; 2,3 are Gems
-    // But since we filtered, indices are lost. Let's just merge all results.
-    // Ideally we should keep track, but for simplicity, let's just dump them into a common pool first
-    // OR, we can be smarter:
-
-    const p1 = results[0].status === 'fulfilled' ? results[0].value : { results: [] };
-    const p2 = results[1].status === 'fulfilled' ? results[1].value : { results: [] };
-    const g1 = results[2].status === 'fulfilled' ? results[2].value : { results: [] };
-    const g2 = results[3].status === 'fulfilled' ? results[3].value : { results: [] };
-
-    poolA.push(...(p1.results || []), ...(p2.results || []));
-    poolB.push(...(g1.results || []), ...(g2.results || []));
-
-    // 3. Merge & Deduplicate
-    const allCandidates = new Map();
-
-    // Add Pool A (Popular)
-    poolA.forEach(m => allCandidates.set(m.id, { ...m, source: 'ZEITGEIST' }));
-
-    // Add Pool B (Gems) - Overwrites duplicates (prioritize Gem status if in both?)
-    // Actually, if it's in both, it's a popular gem. Let's keep it as Zeitgeist or mark as Hybrid?
-    // For simplicity, let's prioritize Hidden Gem source if we want to emphasize quality.
-    // But usually Zeitgeist is stronger signal for "Popular".
-    // Let's stick to: If it's in Pool B, it's a Gem.
-    poolB.forEach(m => {
-        // If already exists, we can overwrite or skip.
-        // Let's overwrite to ensure "Hidden Gem" badge appears if it qualifies.
-        allCandidates.set(m.id, { ...m, source: 'HIDDEN_GEM' });
-    });
-
-    const candidateList = Array.from(allCandidates.values());
-
-    // 4. Save to Cache
-    try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({
-            timestamp: Date.now(),
-            data: candidateList
-        }));
-    } catch (e) {
-        console.warn("Cache write failed", e);
-    }
-
-    return candidateList;
+    // 3. Formula: (Start + Day * Stride) % Size
+    return (startOffset + (dayIndex * stride)) % poolSize;
 }
 
+// --- ENGINE ---
+
 export const recommendationEngine = {
-    // Main Entry Point
+
     getDailyMovie: async (dateObj) => {
         const dateString = dateObj.toISOString().split('T')[0];
+        const monthDay = dateString.substring(5); // "MM-DD"
+        const month = dateString.substring(5, 7); // "MM"
 
-        // 1. Get Candidate Pool (Cached)
-        const finalPool = await getCandidates();
+        let context = null;
+        let params = null;
+        let poolSize = 200; // Smaller pool for holidays (Top 10 pages)
 
-        if (!finalPool || finalPool.length === 0) {
-            console.error("No candidates available for recommendation.");
-            return null;
+        // --- STEP 1: MANUAL OVERRIDES ---
+        if (MANUAL_OVERRIDES[monthDay]) {
+            console.log(`[RecEngine] Manual Override for ${dateString}: ${MANUAL_OVERRIDES[monthDay]}`);
+            return { id: MANUAL_OVERRIDES[monthDay], source: 'MANUAL_EVENT', recommendationContext: { name: 'Special Event', description: 'Curated selection for this date.' } };
         }
 
-        // 2. Deterministic Selection
-        const seed = generateDailySeed(dateString);
-        const rng = mulberry32(seed);
+        // --- STEP 1.5: GLOBAL PREMIERE CHECK (Trend Following) ---
+        // Prioritize major theatrical releases on their opening day
+        try {
+            // Search for movies releasing on this specific date
+            const premiereResp = await discoverMovies({
+                'primary_release_date.gte': dateString,
+                'primary_release_date.lte': dateString,
+                sort_by: 'popularity.desc',
+                'popularity.gte': 100, // Threshold for "Major" release
+                with_release_type: '3|2', // Theatrical releases
+                page: 1
+            });
 
-        // Select Movie
-        const selectedIndex = Math.floor(rng() * finalPool.length);
-        const selectedMovie = finalPool[selectedIndex];
+            // If a major movie is found (Pop > 100 is quite high for day-1)
+            if (premiereResp.results && premiereResp.results.length > 0) {
+                const premiere = premiereResp.results[0];
+                // Double check popularity/vote count to avoid junk
+                if (premiere.popularity > 50) {
+                    console.log(`[RecEngine] Premiere Detected: ${premiere.title}`);
+                    return {
+                        ...premiere,
+                        source: 'GLOBAL_PREMIERE',
+                        recommendationContext: {
+                            label: 'GLOBAL_PREMIERE',
+                            name: 'Global Premiere',
+                            description: `World premiere of ${premiere.title}. Be the first to watch.`
+                        }
+                    };
+                }
+            }
+        } catch (e) {
+            console.warn("Premiere check failed", e);
+        }
 
-        // 3. History Check (Client Side)
-        // We don't want to recommend the same movie too close together,
-        // BUT for a deterministic "Daily Movie", everyone should see the same thing.
-        // So we should NOT filter by user history for the *Global* Daily Movie.
-        // However, if we want to prevent *consecutive days* having same movie,
-        // the RNG usually handles this, but we can add a check if needed.
-        // For now, pure deterministic is best for "Watercooler" effect.
+        // --- STEP 2: HOLIDAY / EVENT RULES ---
+        if (CALENDAR_RULES[monthDay]) {
+            const rule = CALENDAR_RULES[monthDay];
+            context = { label: 'HOLIDAY_EVENT', name: rule.name, description: rule.description };
+            params = rule.params;
+        } else if (CALENDAR_RULES[month]) {
+            // 10% chance to trigger Monthly theme? Or enforce?
+            // Let's enforce it on Fridays or Weekends?
+            // Or just make it the default Vibe for the month if no other strong signal.
+            // For now, let's keep it simple: Exact Day match only for V1.
+            // Uncomment to enable monthly: 
+            // const rule = CALENDAR_RULES[month];
+            // params = rule.params;
+        }
 
-        return selectedMovie;
+        // 2. Weekly Schedule (Default)
+        if (!params) {
+            const dayOfWeek = dateObj.getUTCDay(); // 0 (Sun) - 6 (Sat)
+            const theme = WEEKLY_THEMES[dayOfWeek];
+
+            context = {
+                label: theme.id,
+                name: theme.name,
+                description: theme.description
+            };
+            params = theme.params;
+            poolSize = 1000; // Large pool for general recommendation (50 pages)
+        }
+
+        // 3. Coordinate Calculation (The "Why" logic)
+        // We need to map [Date] -> [Unique Movie in Pool]
+        // Assumption: Each query returns ~20 predictable results per page.
+        // Pool is conceptual: Page 1..N concatenated.
+
+        const year = dateObj.getFullYear();
+        const dayOfYear = getDayOfYear(dateObj);
+
+        // Use Permutation to find index in the pool (0 to poolSize-1)
+        const targetIndex = getPermutationIndex(dayOfYear, poolSize, year);
+
+        const resultsPerPage = 20;
+        const targetPage = Math.floor(targetIndex / resultsPerPage) + 1;
+        const indexInPage = targetIndex % resultsPerPage;
+
+        // 4. Fetch
+        try {
+            // console.log(`[RecEngine] ${dateString} | Theme: ${context.name} | PoolIdx: ${targetIndex} -> Pg ${targetPage}, Idx ${indexInPage}`);
+
+            const response = await discoverMovies({ ...params, page: targetPage });
+
+            if (response.results && response.results.length > indexInPage) {
+                const movie = response.results[indexInPage];
+                return {
+                    ...movie,
+                    source: context.label, // Legacy field
+                    recommendationContext: context // New rich context
+                };
+            } else {
+                // Determine fallback: Just take the first item of page 1 if index out of bounds
+                // (Shouldn't happen if poolSize matches reality, but API changes)
+                console.warn("[RecEngine] Index out of bounds, falling back to P1");
+                const fallback = await discoverMovies({ ...params, page: 1 });
+                return { ...fallback.results[0], source: context.label, recommendationContext: context };
+            }
+
+        } catch (e) {
+            console.error("[RecEngine] Error", e);
+            return null;
+        }
     }
 };
