@@ -1,4 +1,4 @@
-# DAILY FILM
+# Daily Film
 
 **DAILY FILM** is a cinematic discovery platform with a rigorous industrial aesthetic. It stands against the "choice paralysis" of modern streaming by offering **one single, curated film per day**.
 
