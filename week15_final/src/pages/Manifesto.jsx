@@ -1,13 +1,12 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Star, TrendingUp, History, Aperture } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Star, TrendingUp, History, Aperture, Globe, Calendar, Infinity } from 'lucide-react';
 import { motion } from 'framer-motion';
-import BackButton from '../components/BackButton';
 
 const Manifesto = () => {
     const navigate = useNavigate();
 
-    // Scroll to top on mount (since we removed global reset)
+    // Scroll to top on mount
     React.useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -20,24 +19,19 @@ const Manifesto = () => {
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black p-6 md:p-12 flex flex-col justify-center"
         >
-            {/* Header */}
-            {/* Back Button Removed as per request */}
-
-
-
             <div className="max-w-4xl mx-auto pt-24 md:pt-0 space-y-12 md:space-y-16">
 
                 {/* Title Section */}
                 <section className="space-y-8 border-b border-white/20 pb-12 text-center md:text-left">
                     <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none">
-                        Curation<br />Protocol
+                        Protocol<br />V2.0
                     </h1>
                     <div className="flex flex-col md:flex-row gap-8 md:items-end justify-between">
                         <p className="text-lg md:text-xl text-white/60 max-w-2xl leading-relaxed">
-                            The DAILY_MOVIE archive is not a random collection. Every entry is selected based on a multi-dimensional analysis of quality, impact, and legacy.
+                            The DAILY_MOVIE engine has evolved. Our new curatorial algorithm fuses global theatrical synchronization with mathematical non-repetition.
                         </p>
                         <div className="text-xs font-mono text-white/40 uppercase tracking-widest">
-                            v1.0 // 2025
+                            UPDATED // 2025.12
                         </div>
                     </div>
                 </section>
@@ -45,107 +39,107 @@ const Manifesto = () => {
                 {/* Dimensions Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
 
-                    {/* Dimension 1: The Soul */}
+                    {/* Dimension 1: Global Premiere */}
                     <div className="space-y-4 group">
-                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">The_Algorithmic_Soul</div>
+                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_01_Priority</div>
                         <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
-                            <Star className="h-5 w-5" /> The 50/50 Protocol
+                            <Globe className="h-5 w-5" /> Global Synchronization
                         </h2>
                         <p className="text-white/60 text-sm leading-relaxed h-20">
-                            We reject the tyranny of "Top 100" lists. Our engine enforces a strict balance: 50% Viral Hits (The Zeitgeist) and 50% Hidden Gems (High Score, Low Visibility).
-                        </p>
-                        <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
-                            <div className="flex justify-between">
-                                <span className="text-white/50">POOL_A (POPULAR)</span>
-                                <span className="text-white">50%</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-white/50">POOL_B (NICHE)</span>
-                                <span className="text-white">50%</span>
-                            </div>
-                            <div className="w-full h-1 bg-white/10 mt-2 flex">
-                                <div className="h-full w-1/2 bg-white"></div>
-                                <div className="h-full w-1/2 bg-white/50"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Dimension 2: Velocity */}
-                    <div className="space-y-4 group">
-                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Dimension_02</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
-                            <TrendingUp className="h-5 w-5" /> Cultural Velocity
-                        </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
-                            We track viral phenomena and box-office breakers. A film that captures the global zeitgeist deserves documentation.
-                        </p>
-                        <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
-                            <div className="flex justify-between">
-                                <span className="text-white/50">METRIC</span>
-                                <span>POPULARITY</span>
-                            </div>
-                            <div className="flex justify-between">
-                                <span className="text-white/50">THRESHOLD</span>
-                                <span className="text-blue-400">≥ 2000</span>
-                            </div>
-                            <div className="w-full h-1 bg-white/10 mt-2">
-                                <div className="h-full w-[90%] bg-white"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Dimension 3: Temporal Relevance */}
-                    <div className="space-y-4 group">
-                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Dimension_03</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
-                            <History className="h-5 w-5" /> Temporal Relevance
-                        </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
-                            Context is everything. We manually override the algorithm for significant cultural moments, ensuring the archive reflects the pulse of the present.
+                            The engine scans global theatrical databases daily. Major premieres (e.g. "Zootopia 2", "Avatar 3") override all other logic to ensure you are the first to know.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
                             <div className="flex justify-between">
                                 <span className="text-white/50">TRIGGER</span>
-                                <span>EVENT_DATE</span>
+                                <span>RELEASE_DATE == TODAY</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-white/50">PRIORITY</span>
-                                <span className="text-purple-400">ABSOLUTE</span>
+                                <span className="text-white/50">STATUS</span>
+                                <span className="text-red-500 font-bold">OVERRIDE</span>
                             </div>
                             <div className="w-full h-1 bg-white/10 mt-2">
-                                <div className="h-full w-[100%] bg-white"></div>
+                                <div className="h-full w-full bg-red-600"></div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Dimension 4: Innovation (New) */}
+                    {/* Dimension 2: Thematic Schedule */}
                     <div className="space-y-4 group">
-                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Dimension_04</div>
+                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_02_Context</div>
                         <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
-                            <Aperture className="h-5 w-5" /> Technical Innovation
+                            <Calendar className="h-5 w-5" /> Thematic Resonance
                         </h2>
                         <p className="text-white/60 text-sm leading-relaxed h-20">
-                            Pushing the boundaries of the medium. We value films that introduce new visual languages or production techniques.
+                            Every day serves a specific curatorial purpose. From "Critics' Choice Mondays" to "Pop Culture Fridays", the vibe shifts to match the human weekly cycle.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
                             <div className="flex justify-between">
-                                <span className="text-white/50">METRIC</span>
-                                <span>BUDGET_EFFICIENCY</span>
+                                <span className="text-white/50">VIBE_SHIFT</span>
+                                <span>DAILY</span>
                             </div>
                             <div className="flex justify-between">
-                                <span className="text-white/50">THRESHOLD</span>
-                                <span className="text-yellow-400">HIGH</span>
+                                <span className="text-white/50">VARIANCE</span>
+                                <span className="text-blue-400">HIGH</span>
+                            </div>
+                            <div className="w-full h-1 bg-white/10 mt-2 flex">
+                                <div className="h-full w-1/7 bg-white/20"></div>
+                                <div className="h-full w-1/7 bg-white/40"></div>
+                                <div className="h-full w-1/7 bg-white/60"></div>
+                                <div className="h-full w-1/7 bg-white/80"></div>
+                                <div className="h-full w-3/7 bg-white"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Dimension 3: Infinite Permutation */}
+                    <div className="space-y-4 group">
+                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_03_Math</div>
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                            <Infinity className="h-5 w-5" /> The Infinite Loop
+                        </h2>
+                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                            We use valid permutation slicing to map dates to unique coordinates in a 5,000+ movie pool. No repeats. No randomness. Just pure mathematical exploration.
+                        </p>
+                        <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
+                            <div className="flex justify-between">
+                                <span className="text-white/50">COLLISION_RATE</span>
+                                <span>0.00%</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-white/50">CYCLE_LENGTH</span>
+                                <span className="text-white">> 3 YEARS</span>
                             </div>
                             <div className="w-full h-1 bg-white/10 mt-2">
-                                <div className="h-full w-[85%] bg-white"></div>
+                                <div className="h-full w-full bg-gradient-to-r from-white/20 to-white"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Dimension 4: Quality Control */}
+                    <div className="space-y-4 group">
+                        <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_04_Filter</div>
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                            <Aperture className="h-5 w-5" /> Signal-to-Noise
+                        </h2>
+                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                            The database is vast, but our filter is strict. We mandate minimum vote counts and popularity thresholds to ensure only culturally significant works enter the archive.
+                        </p>
+                        <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
+                            <div className="flex justify-between">
+                                <span className="text-white/50">JUNK_FILTER</span>
+                                <span>ACTIVE</span>
+                            </div>
+                            <div className="flex justify-between">
+                                <span className="text-white/50">MIN_VOTES</span>
+                                <span className="text-yellow-400">100-3000</span>
+                            </div>
+                            <div className="w-full h-1 bg-white/10 mt-2">
+                                <div className="h-full w-[95%] bg-white"></div>
                             </div>
                         </div>
                     </div>
 
                 </div>
-
-                {/* Footer Statement */}
-
 
             </div>
         </motion.div>
