@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import BionicText from '../components/BionicText';
-import { getPopularMovies, getCuratedMovies, getMovieDetails, getImageUrl } from '../services/tmdb';
+import { getPopularMovies, getCuratedMovies, getMovieDetails } from '../services/tmdb';
 import { recommendationEngine } from '../services/recommendationEngine';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight, Grid3x3, Quote, Layers, Aperture, Film, Mic2, Shuffle } from 'lucide-react';
-import CalendarDropdown from '../components/CalendarDropdown';
-import GlitchLogo from '../components/GlitchLogo';
-import ImageWithFallback from '../components/ImageWithFallback';
+import { ArrowRight, ChevronLeft, ChevronRight, Layers, Aperture, Film, Mic2 } from 'lucide-react';
+
+import AnalysisGrid from '../components/home/AnalysisGrid';
+import HomeHero from '../components/home/HomeHero';
+import DailyContextSidebar from '../components/home/DailyContextSidebar';
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLayoutEffect } from 'react';
@@ -47,45 +48,8 @@ const Home = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const [currentMovieDetail, setCurrentMovieDetail] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isCalendarOpen, setIsCalendarOpen] = useState(false);
-    const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
+    // State for HomeHero moved to component
     const [error, setError] = useState(null);
-
-    // Refs for click-outside detection
-    const discoverRef = React.useRef(null);
-    const calendarButtonRef = React.useRef(null);
-    const calendarDropdownRef = React.useRef(null);
-
-    // Handle Click Outside & Escape
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            // Discover Menu
-            if (isDiscoverOpen && discoverRef.current && !discoverRef.current.contains(event.target)) {
-                setIsDiscoverOpen(false);
-            }
-            // Calendar Menu
-            if (isCalendarOpen &&
-                calendarDropdownRef.current && !calendarDropdownRef.current.contains(event.target) &&
-                calendarButtonRef.current && !calendarButtonRef.current.contains(event.target)) {
-                setIsCalendarOpen(false);
-            }
-        };
-
-        const handleEsc = (event) => {
-            if (event.key === 'Escape') {
-                setIsDiscoverOpen(false);
-                setIsCalendarOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleEsc);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleEsc);
-        };
-    }, [isDiscoverOpen, isCalendarOpen]);
 
     // Responsive Date Formatting (Moved to top)
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -328,223 +292,28 @@ const Home = () => {
             {/* ... (Navbar & Hero) ... */}
 
             {/* SECTION 1: THE COVER (100vh) */}
-            <div className="relative h-screen w-full overflow-hidden">
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={movie.id}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute inset-0 z-0"
-                    >
-                        {/* Full Width Background */}
-                        {/* Full Width Background */}
-                        <ImageWithFallback
-                            src={getImageUrl(movie.backdrop_path, 'original')}
-                            srcSet={`${getImageUrl(movie.backdrop_path, 'w780')} 780w, ${getImageUrl(movie.backdrop_path, 'original')} 1280w`}
-                            sizes="(max-width: 768px) 780px, 100vw"
-                            alt={movie.title}
-                            className="w-full h-full object-cover opacity-60"
-                            loading="eager"
-                        />
-                        <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
-                    </motion.div>
-                </AnimatePresence>
-
-                {/* Content Container (Constrained) */}
-                <div className="relative z-50 h-full w-full flex flex-col justify-between p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none">
-
-                    {/* Industrial Grid Lines */}
-                    <div className="absolute inset-0 z-10 pointer-events-none border-[20px] border-transparent md:border-white/5">
-                        <div className="w-full h-full border border-white/10 relative">
-                            <div className="absolute top-0 left-1/4 w-px h-full bg-white/5"></div>
-                            <div className="absolute top-0 right-1/4 w-px h-full bg-white/5"></div>
-                            <div className="absolute top-1/3 left-0 w-full h-px bg-white/5"></div>
-                            <div className="absolute bottom-1/3 left-0 w-full h-px bg-white/5"></div>
-                        </div>
-                    </div>
-
-                    {/* Top Bar */}
-                    <div className="relative w-full flex items-center justify-between z-[70] h-12 pointer-events-none">
-
-                        {/* LEFT: Discover Menu */}
-                        <div className="w-1/3 flex items-center">
-                            <div className="relative pointer-events-auto" ref={discoverRef}>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsDiscoverOpen(!isDiscoverOpen);
-                                    }}
-                                    className="text-xs font-bold uppercase tracking-widest hover:opacity-50 transition-opacity flex items-center gap-2 ml-4"
-                                >
-                                    DISCOVER
-                                </button>
-                                {/* Dropdown Menu */}
-                                {isDiscoverOpen && (
-                                    <div className="absolute top-full left-0 pt-4 z-50">
-                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3">
-                                            <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
-                                            <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
-                                            <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
-                                            <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Top Rated</Link>
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* CENTER: Title */}
-                        <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 -mt-2 md:-mt-4 pointer-events-auto">
-                            <GlitchLogo
-                                onClick={() => {
-                                    setCurrentIndex(0);
-                                    window.scrollTo(0, 0);
-                                }}
-                            />
-                        </div>
-
-                        {/* RIGHT: Date & Calendar */}
-                        <div className="text-right w-1/3 flex flex-col items-end gap-1 pr-0">
-                            <div className="relative flex items-center gap-3 mr-2 pointer-events-auto" ref={calendarButtonRef}>
-                                <button
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        setIsCalendarOpen(!isCalendarOpen);
-                                    }}
-                                    className="group flex items-center gap-2 text-xs tracking-widest uppercase font-mono font-bold hover:opacity-50 transition-opacity cursor-pointer"
-                                    title="View Archive"
-                                >
-                                    <span>{dateString}</span>
-                                    <Grid3x3 className="hidden md:block h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
-                                </button>
-                                {/* Calendar Dropdown */}
-                                <div ref={calendarDropdownRef}>
-                                    <CalendarDropdown
-                                        isOpen={isCalendarOpen}
-                                        onClose={() => setIsCalendarOpen(false)}
-                                        onDateSelect={handleDateSelect}
-                                        availableDates={availableDates}
-                                        currentDate={displayDate}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Center: Title (Moved to Bottom Left) */}
-                    <div className="relative z-20 flex-1 flex items-end justify-between pb-4 pointer-events-auto">
-                        <div className="text-left max-w-[70%]">
-                            {movie.tagline && (
-                                <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
-                                    {movie.tagline}
-                                </p>
-                            )}
-                            <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                                <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance flex items-end flex-wrap gap-4">
-                                    <span>{movie.title}</span>
-                                    <span className="text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest mb-1">
-                                        {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
-                                    </span>
-                                </h1>
-                            </Link>
-                        </div>
-
-                        {/* Random Button (Text CTA) */}
-                        <button
-                            onClick={handleRandomNavigation}
-                            className="border border-white/20 bg-black/20 backdrop-blur-sm px-4 py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center gap-2 mr-4"
-                            title="Switch to another candidate"
-                        >
-                            <Shuffle className="w-3 h-3" />
-                            <span className="hidden md:inline">REROLL</span>
-                        </button>
-                    </div>
-
-                    {/* Bottom: Specs (Real Data) */}
-                    <div className="relative z-20 flex justify-between items-end border-t border-white/20 pt-6 pointer-events-auto">
-                        <div className="space-y-1">
-                            <div className={microTextStyle}>DIR. {dir}</div>
-                            <div className={microTextStyle}>DUR. {movie.runtime} MIN</div>
-                        </div>
-
-                        <div className="text-right space-y-1">
-                            <div className={microTextStyle}>VOL. {movie.vote_average?.toFixed(1)}</div>
-                            <div className={microTextStyle}>REF. {movie.id}</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <HomeHero
+                movie={movie}
+                currentIndex={currentIndex}
+                setCurrentIndex={setCurrentIndex}
+                dateString={dateString}
+                availableDates={availableDates}
+                displayDate={displayDate}
+                handleDateSelect={handleDateSelect}
+                handleRandomNavigation={handleRandomNavigation}
+                dir={dir}
+            />
 
 
             {/* SECTION 2: BEHIND THE STORY */}
             <div className="relative z-20 bg-black border-t border-white/10">
-                <div className="max-w-5xl mx-auto px-6 py-24 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div className="max-w-5xl mx-auto px-6 py-16 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-12">
 
                     {/* Left: Label */}
-                    <div className="md:col-span-3">
-                        <div className="sticky top-12">
-                            <h2 className="text-3xl mb-4 leading-none text-white/40 uppercase font-mono font-black tracking-tighter">Why<br />This<br />Film<br />Today?</h2>
-                            <span className="border border-white/30 px-2 py-1 rounded-full text-white/50 uppercase tracking-widest text-[10px] font-mono font-bold -ml-2">Curator's Note</span>
-
-                            {/* Recommendation Factors */}
-                            {/* Recommendation Factors */}
-                            <div className="mt-8 space-y-4">
-                                {/* DYNAMIC CONTEXT (NEW) */}
-                                {movie.recommendationContext && (
-                                    <div className="flex flex-col gap-2 border-l-2 border-white/20 pl-4">
-                                        <div className="flex items-center gap-2 text-xs font-mono text-white/80">
-                                            <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${movie.recommendationContext.label === 'GLOBAL_PREMIERE'
-                                                ? 'bg-red-600 text-white'
-                                                : 'bg-white/20 text-white'
-                                                }`}>
-                                                {movie.recommendationContext.name}
-                                            </span>
-                                        </div>
-                                        <span className="text-sm text-white/50 font-mono italic">
-                                            "{movie.recommendationContext.description}"
-                                        </span>
-                                    </div>
-                                )}
-
-                                {/* FALLBACK / LEGACY LABELS (If no rich context) */}
-                                {!movie.recommendationContext && movie.source === 'ZEITGEIST' && (
-                                    <div className="flex items-center gap-2 text-xs font-mono text-white/60">
-                                        <span className="bg-white/20 text-white px-2 py-0.5 rounded text-[10px] font-bold">ZEITGEIST</span>
-                                        <span>High Viral Velocity</span>
-                                    </div>
-                                )}
-                                {!movie.recommendationContext && movie.source === 'HIDDEN_GEM' && (
-                                    <div className="flex items-center gap-2 text-xs font-mono text-white/60">
-                                        <span className="bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded text-[10px] font-bold">HIDDEN_GEM</span>
-                                        <span>Critical Acclaim / Low Visibility</span>
-                                    </div>
-                                )}
-                                {movie.source === 'MANUAL_EVENT' && (
-                                    <div className="flex items-center gap-2 text-xs font-mono text-white/60">
-                                        <span className="bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded text-[10px] font-bold">EVENT</span>
-                                        <span>Temporal Relevance Override</span>
-                                    </div>
-                                )}
-
-                                {/* STANDARD METRICS */}
-                                <div className="pt-4 border-t border-white/5 space-y-2">
-                                    <div className="flex items-center gap-2 text-xs font-mono text-white/40">
-                                        <span className={`w-1.5 h-1.5 rounded-full ${movie.vote_average >= 7 ? 'bg-green-500' : 'bg-yellow-500'}`}></span>
-                                        <span>Audience Score: {movie.vote_average?.toFixed(1)}/10</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-xs font-mono text-white/40">
-                                        <span className="w-1.5 h-1.5 bg-blue-500 rounded-full"></span>
-                                        <span>Verified Count: {movie.vote_count?.toLocaleString()}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <DailyContextSidebar movie={movie} />
 
                     {/* Right: Content */}
-                    <div className="md:col-span-9 space-y-24">
+                    <div className="md:col-span-9 space-y-12 md:space-y-24">
 
                         {/* The Hook */}
                         <div className="space-y-6 relative">
@@ -568,51 +337,31 @@ const Home = () => {
                         </div>
 
                         {/* Analysis Grid 1 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/10 pt-12">
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 text-white/50 uppercase tracking-wider text-[10px] font-bold font-mono">
-                                    <Layers className="h-4 w-4" /> THEMATIC_INDEX
-                                </div>
-                                <p className="text-white/60 text-sm font-mono">
-                                    Primary Genres: {movie.genres?.map(g => g.name).join(', ') || 'N/A'}.
-                                    <br />
-                                    Key Themes: {movie.keywords?.keywords?.slice(0, 5).map(k => k.name).join(' / ') || 'N/A'}.
-                                </p>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 text-white/50 uppercase tracking-wider text-[10px] font-bold font-mono">
-                                    <Aperture className="h-4 w-4" /> MARKET_METRICS
-                                </div>
-                                <p className="text-white/60 text-sm font-mono">
-                                    Global Resonance: {movie.vote_count} verified votes with an average rating of {movie.vote_average?.toFixed(1)}/10.
-                                    <br />
-                                    Trend Index: {movie.popularity?.toFixed(0)} points.
-                                </p>
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 border-t border-white/10 pt-8 md:pt-12">
+                            <AnalysisGrid title="THEMATIC_INDEX" icon={Layers}>
+                                Primary Genres: {movie.genres?.map(g => g.name).join(', ') || 'N/A'}.
+                                <br />
+                                Key Themes: {movie.keywords?.keywords?.slice(0, 5).map(k => k.name).join(' / ') || 'N/A'}.
+                            </AnalysisGrid>
+                            <AnalysisGrid title="MARKET_METRICS" icon={Aperture}>
+                                Global Resonance: {movie.vote_count} verified votes with an average rating of {movie.vote_average?.toFixed(1)}/10.
+                                <br />
+                                Trend Index: {movie.popularity?.toFixed(0)} points.
+                            </AnalysisGrid>
                         </div>
 
                         {/* Analysis Grid 2 */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 border-t border-white/10 pt-12">
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 text-white/50 uppercase tracking-wider text-[10px] font-bold font-mono">
-                                    <Film className="h-4 w-4" /> PRODUCTION_DATA
-                                </div>
-                                <p className="text-white/60 text-sm font-mono">
-                                    Produced by {movie.production_companies?.map(c => c.name).join(', ') || 'Independent Studios'}.
-                                    <br />
-                                    Released on {new Date(movie.release_date).toLocaleDateString('en-US', { dateStyle: 'long' })}.
-                                </p>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="flex items-center gap-2 text-white/50 uppercase tracking-wider text-[10px] font-bold font-mono">
-                                    <Mic2 className="h-4 w-4" /> LINGUISTIC_DATA
-                                </div>
-                                <p className="text-white/60 text-sm font-mono">
-                                    Original Audio: {movie.original_language?.toUpperCase() || 'UNK'}.
-                                    <br />
-                                    Available Languages: {movie.spoken_languages?.map(l => l.english_name).join(', ') || 'N/A'}.
-                                </p>
-                            </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 border-t border-white/10 pt-8 md:pt-12">
+                            <AnalysisGrid title="PRODUCTION_DATA" icon={Film}>
+                                Produced by {movie.production_companies?.map(c => c.name).join(', ') || 'Independent Studios'}.
+                                <br />
+                                Released on {new Date(movie.release_date).toLocaleDateString('en-US', { dateStyle: 'long' })}.
+                            </AnalysisGrid>
+                            <AnalysisGrid title="LINGUISTIC_DATA" icon={Mic2}>
+                                Original Audio: {movie.original_language?.toUpperCase() || 'UNK'}.
+                                <br />
+                                Available Languages: {movie.spoken_languages?.map(l => l.english_name).join(', ') || 'N/A'}.
+                            </AnalysisGrid>
                         </div>
 
                         {/* Analysis Grid 3: Production Log & Cross Reference */}
