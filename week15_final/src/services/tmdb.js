@@ -1,19 +1,32 @@
 import axios from 'axios';
 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
+// PROXY ARCHITECTURE:
+// We now route requests through our own /api/tmdb endpoint.
+// This hides the API Key from the client-side network tab.
+
+// Detect if we are in "Proxy Mode" (Production/Preview) or "Direct Mode" (Local without Proxy)
+// ideally we use proxy for both.
+const BASE_URL = '/api/tmdb';
 
 // Simple in-memory cache
 const cache = new Map();
 
 // Create an axios instance
 const tmdb = axios.create({
-    baseURL: BASE_URL,
-    params: {
-        api_key: API_KEY,
-        language: 'en-US',
-    },
-    timeout: 10000, // 10s timeout
+    baseURL: '', // We constructs full URL manually to adapt for the proxy
+    timeout: 10000,
+});
+
+// Helper to standardise calls to the proxy
+// Old call: tmdb.get('/movie/popular', { params: { page: 1 } })
+// New call: tmdb.get('', { params: { endpoint: '/movie/popular', page: 1 } })
+tmdb.interceptors.request.use(config => {
+    if (config.url && config.url.startsWith('/')) {
+        // Move the url path to 'endpoint' param
+        config.params = { ...config.params, endpoint: config.url };
+        config.url = BASE_URL;
+    }
+    return config;
 });
 
 // Retry Logic

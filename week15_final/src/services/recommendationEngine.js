@@ -152,7 +152,13 @@ export const recommendationEngine = {
                 // (Shouldn't happen if poolSize matches reality, but API changes)
                 console.warn("[RecEngine] Index out of bounds, falling back to P1");
                 const fallback = await discoverMovies({ ...params, page: 1 });
-                return { ...fallback.results[0], source: context.label, recommendationContext: context };
+
+                if (fallback?.results?.length > 0) {
+                    return { ...fallback.results[0], source: context.label, recommendationContext: context };
+                }
+
+                console.warn("[RecEngine] Fallback failed (Index out of bounds / Empty P1 fallback).");
+                return null;
             }
 
         } catch (e) {
