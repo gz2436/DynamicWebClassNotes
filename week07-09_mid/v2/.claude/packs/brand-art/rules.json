@@ -1,0 +1,18 @@
+{
+  "skills": {
+    "brand-art-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Enable brand art asset workflows when the profile is active.",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]art-(kickoff|inject|audit)\\b",
+          "\\bbrand art\\b",
+          "\\bhero (illustration|gradient)\\b"
+        ]
+      },
+      "activateSkill": "art-audit"
+    }
+  }
+}

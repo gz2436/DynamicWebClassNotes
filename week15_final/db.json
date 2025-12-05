@@ -1,0 +1,18 @@
+{
+    "watchlist": [
+        {
+            "id": 550,
+            "title": "Fight Club",
+            "poster_path": "/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
+            "vote_average": 8.4,
+            "addedAt": "2025-12-01"
+        },
+        {
+            "id": 27205,
+            "title": "Inception",
+            "poster_path": "/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+            "vote_average": 8.3,
+            "addedAt": "2025-12-02"
+        }
+    ]
+}

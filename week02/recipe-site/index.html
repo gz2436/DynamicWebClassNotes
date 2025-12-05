@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spaghetti Carbonara</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <article class="recipe">
+      <header class="recipe__header">
+        <h1 class="recipe__title">Spaghetti Carbonara</h1>
+        <p class="recipe__subtitle">Classic Italian comfort — silky, salty, simple.</p>
+        <ul class="recipe__tags">
+          <li>⏱️ 15 min</li>
+          <li>🍽️ Serves 2–3</li>
+          <li>🧑‍🍳 Easy</li>
+        </ul>
+      </header>
+
+      <figure class="recipe__media">
+        <img src="./images/carbonara.jpg" alt="Plate of spaghetti carbonara" />
+      </figure>
+
+      <!-- 并列布局：Ingredients + Steps -->
+      <section class="recipe__grid">
+        <div class="recipe__panel">
+          <h2>Ingredients</h2>
+          <ul class="list list--bullets">
+            <li>200g spaghetti</li>
+            <li>2 eggs</li>
+            <li>100g pancetta</li>
+            <li>50g parmesan cheese</li>
+            <li>Salt & pepper</li>
+          </ul>
+        </div>
+
+        <div class="recipe__panel">
+          <h2>Steps</h2>
+          <ol class="list list--steps">
+            <li>Cook spaghetti in salted boiling water.</li>
+            <li>Fry pancetta until crispy.</li>
+            <li>Whisk eggs with grated parmesan.</li>
+            <li>Toss pasta off the heat with pancetta, then the egg mixture. Season.</li>
+          </ol>
+        </div>
+      </section>
+    </article>
+  </main>
+</body>
+</html>

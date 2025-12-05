@@ -1,0 +1,43 @@
+{
+  "skills": {
+    "resume-ui-pack-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Enable resume builder UI pack workflows.",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]resume-kickoff\\b",
+          "\\bresume (builder|layout)\\b"
+        ]
+      },
+      "activateSkill": "resume-ui-pack"
+    },
+    "resume-ats-audit-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Suggest ATS compliance review for resume content.",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]resume-templates\\b",
+          "\\bATS (check|audit)\\b"
+        ]
+      },
+      "activateSkill": "resume-ats-audit"
+    },
+    "resume-export-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "medium",
+      "description": "Guide resume export and template synchronization.",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]resume-templates-sync\\b",
+          "\\bresume export\\b"
+        ]
+      },
+      "activateSkill": "resume-export"
+    }
+  }
+}

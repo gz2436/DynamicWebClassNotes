@@ -1,0 +1,136 @@
+:root {
+  --surface: #ffffff;
+  --ink: #0f172a;
+  --muted: #64748b;
+  --line: #eef2f7;
+  --accent: #ef4444;
+  --shadow: 0 12px 30px rgba(2, 6, 23, .08);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  background: linear-gradient(135deg, #fffdf5, #fdfaf6); /* 浅米色渐变 */
+}
+
+.container {
+  max-width: 980px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.recipe {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  padding: 28px;
+}
+
+/* Header */
+.recipe__title {
+  margin: 0;
+  font-size: clamp(28px, 4.5vw, 40px);
+  text-align: center;
+}
+.recipe__subtitle {
+  margin: 6px 0 14px;
+  color: var(--muted);
+  text-align: center;
+}
+.recipe__tags {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding: 0;
+  list-style: none;
+  margin: 0 0 20px;
+}
+.recipe__tags li {
+  background: #f1f5ff;
+  color: #1e40af;
+  border: 1px solid #e2e8ff;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+/* Media */
+.recipe__media {
+  margin: 0 0 24px;
+  text-align: center;
+}
+.recipe__media img {
+  max-width: 480px;
+  width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(2, 6, 23, .08);
+}
+
+/* Grid: Ingredients + Steps */
+.recipe__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+@media (min-width: 768px) {
+  .recipe__grid {
+    grid-template-columns: 1fr 1fr; /* 并排两列 */
+  }
+}
+
+.recipe__panel {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 14px rgba(15,23,42,.05);
+}
+
+h2 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 6px;
+}
+
+/* Lists */
+.list { margin: 0; }
+.list--bullets {
+  margin-left: 20px;
+  line-height: 1.7;
+}
+.list--bullets li::marker { color: var(--accent); }
+
+.list--steps {
+  counter-reset: step;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.list--steps li {
+  position: relative;
+  padding-left: 40px;
+  margin: 10px 0;
+  line-height: 1.6;
+}
+.list--steps li::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.15em;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eef2ff;
+  color: #1e3a8a;
+  font-weight: bold;
+  box-shadow: inset 0 0 0 2px #c7d2fe;
+}

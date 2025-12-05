@@ -1,0 +1,22 @@
+{
+  "skills": {
+    "ui-apple-apply-router": {
+      "type": "system",
+      "enforcement": "suggest",
+      "priority": "high",
+      "promptTriggers": {
+        "intentPatterns": [
+          "^\\s*[/|:]ui-apple\\b"
+        ],
+        "keywords": [
+          "apple",
+          "glass",
+          "blur",
+          "液态",
+          "frosted"
+        ]
+      },
+      "activateSkill": "ui-apple-apply"
+    }
+  }
+}
