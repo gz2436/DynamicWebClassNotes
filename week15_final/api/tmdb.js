@@ -26,25 +26,31 @@ export default async function handler(request, response) {
         return response.status(403).json({ error: 'Invalid Endpoint' });
     }
 
-    // 3. Cache Strategy (Redis)
+    // 3. Cache Strategy (Redis) - Fail Safe
+    // We strictly separate Cache logic from Core logic so Redis failures don't crash the app
+    let cachedData = null;
+    const sortedParams = Object.keys(queryParams).sort().reduce((acc, key) => {
+        acc[key] = queryParams[key];
+        return acc;
+    }, {});
+    const cacheKey = `tmdb_cache:${endpoint}:${new URLSearchParams(sortedParams).toString()}`;
+
     try {
-        // Sort keys to ensure consistent cache key regardless of param order
-        const sortedParams = Object.keys(queryParams).sort().reduce((acc, key) => {
-            acc[key] = queryParams[key];
-            return acc;
-        }, {});
+        cachedData = await kv.get(cacheKey);
+    } catch (e) {
+        console.warn(`[Cache Read Failed] ${e.message}`);
+        // Proceed without cache
+    }
 
-        const cacheKey = `tmdb_cache:${endpoint}:${new URLSearchParams(sortedParams).toString()}`;
+    if (cachedData) {
+        response.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
+        response.setHeader('X-Cache', 'HIT');
+        return response.status(200).json(cachedData);
+    }
 
-        // Try Cache
-        const cachedData = await kv.get(cacheKey);
-        if (cachedData) {
-            response.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
-            response.setHeader('X-Cache', 'HIT');
-            return response.status(200).json(cachedData);
-        }
-
-        // Cache MISS -> Fetch TMDB
+    // 4. Core Logic: Fetch TMDB
+    // This is the critical path. If this fails, we error.
+    try {
         const url = `https://api.themoviedb.org/3${endpoint}`;
         const searchParams = new URLSearchParams(queryParams);
         searchParams.append('api_key', apiKey);
@@ -59,9 +65,13 @@ export default async function handler(request, response) {
 
         const data = await tmdbRes.json();
 
-        // Write to Cache (Expire in 1 hour)
-        // Fire and forget usually ok, but await ensures it's saved
-        await kv.set(cacheKey, data, { ex: 3600 });
+        // 5. Write to Cache (Fire & Forget)
+        try {
+            // await ensures we catch errors, but we don't return them to user
+            await kv.set(cacheKey, data, { ex: 3600 });
+        } catch (e) {
+            console.warn(`[Cache Write Failed] ${e.message}`);
+        }
 
         response.setHeader('Cache-Control', 'public, max-age=3600, s-maxage=3600');
         response.setHeader('X-Cache', 'MISS');
@@ -69,8 +79,6 @@ export default async function handler(request, response) {
 
     } catch (error) {
         console.error('Proxy Error:', error);
-        // Fallback: If KV fails, still return data but no caching
-        // Note: For production reliability, we might just bypass cache on error
         return response.status(500).json({ error: 'Internal Server Error', details: error.message });
     }
 }
