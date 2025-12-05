@@ -42,7 +42,7 @@ Built with **React 19**, **Vite**, and **Tailwind CSS**, it features a sophistic
 
 ### 1. Global Timezone Synchronization
 **Problem**: A user in Tokyo and a user in New York might see different "Daily Films" if the app relied on local client time.
-**Solution**: We implemented strict **UTC-based Date Normalization**.
+**Solution**: I implemented strict **UTC-based Date Normalization**.
 ```javascript
 // From src/utils/dateUtils.js
 const today = new Date();
@@ -53,11 +53,11 @@ This ensures that "Today's Film" refreshes simultaneously worldwide, creating a 
 ### 2. Database-Free "Non-Repetition"
 **Problem**: How to ensure we don't recommend the same movie twice in a short period without a database to store history?
 **Solution**: **Seeded Permutation Slicing**.
-We pre-fetch a large pool of candidates (e.g., 20 top-rated Sci-Fi movies). Instead of picking random indices, we use a **Linear Congruential Generator (LCG)** seeded by the *year* to shuffle the list deterministically. We then map the *day of the year* to an index in this shuffled list.
+I pre-fetch a large pool of candidates (e.g., 20 top-rated Sci-Fi movies). Instead of picking random indices, I use a **Linear Congruential Generator (LCG)** seeded by the *year* to shuffle the list deterministically. I then map the *day of the year* to an index in this shuffled list.
 Result: A guaranteed unique sequence for the entire year, purely client-side.
 
 ### 3. Handling "Global Premieres" vs. "Evergreen"
-**Problem**: We wanted the app to automatically feature major blockbusters (like *Zootopia 2*) on their release day, but revert to "Classic Gems" on normal days.
+**Problem**: I wanted the app to automatically feature major blockbusters (like *Zootopia 2*) on their release day, but revert to "Classic Gems" on normal days.
 **Solution**: **3-Tier Priority System**.
 1.  **Manual Override**: Checks `src/config/curation.js` for hardcoded dates (e.g., Holidays, Premieres).
 2.  **Global Premiere**: Queries TMDB for major releases with high outgoing buzz (`popularity > 1500`) dropping *today*.
@@ -66,7 +66,7 @@ Result: A guaranteed unique sequence for the entire year, purely client-side.
 ### 4. Taming the Monolith
 **Problem**: The `Home.jsx` component grew to >700 lines, mixing data fetching, complex grid layouts, and state management.
 **Solution**: **Refactoring & Decomposition**.
-We extracted logical clusters into dedicated components:
+I extracted logical clusters into dedicated components:
 *   `HomeHero.jsx`: Encapsulates the immersive cover, glitch logo, and date navigation.
 *   `AnalysisGrid.jsx`: Reusable UI for the data-heavy analysis sections.
 *   `DailyContextSidebar.jsx`: Isolates the dynamic "Why This Film Today" logic.
@@ -75,7 +75,7 @@ This reduced `Home.jsx` to a clean coordinator view (~250 lines).
 ### 5. API Security & Rate Limiting
 **Problem**: Client-side API calls exposed the TMDB Key and risked hitting rate limits (429 Too Many Requests) under load.
 **Solution**: **Serverless Proxy + Caching**.
-We deployed a Vercel Serverless Function (`api/tmdb.js`) to act as a secure gateway. This hides the key from the browser. Furthermore, we integrated **Redis (@vercel/kv)** at the edge to cache popular requests (like the "Daily Movie" payload) for 1 hour. This reduced API calls by >90% and improved response time from 300ms to <20ms for cached hits.
+I deployed a Vercel Serverless Function (`api/tmdb.js`) to act as a secure gateway. This hides the key from the browser. Furthermore, I integrated **Redis (@vercel/kv)** at the edge to cache popular requests (like the "Daily Movie" payload) for 1 hour. This reduced API calls by >90% and improved response time from 300ms to <20ms for cached hits.
 
 ---
 
