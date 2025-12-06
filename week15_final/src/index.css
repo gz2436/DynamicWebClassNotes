@@ -1,4 +1,6 @@
 @import '@fontsource/inter';
+@import '@fontsource/inter/700.css'; /* Bold */
+@import '@fontsource/inter/900.css'; /* Black */
 @import "tailwindcss";
 
 :root {
