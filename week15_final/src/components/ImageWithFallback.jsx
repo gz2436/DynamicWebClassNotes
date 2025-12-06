@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 const ImageWithFallback = ({ src, alt, className, fallbackText = "daily_film", loading = "lazy", ...props }) => {
     const [error, setError] = useState(false);
 
-    if (error || !src) {
+    const imgSrc = props.desktopSrc || src;
+
+    if (error || !imgSrc) {
         return (
             <div className={`flex items-center justify-center bg-neutral-900 border border-white/10 ${className}`}>
                 <div className="border border-white/20 px-2 py-1 bg-[#080808]/20 backdrop-blur-md">
@@ -15,9 +17,26 @@ const ImageWithFallback = ({ src, alt, className, fallbackText = "daily_film", l
         );
     }
 
+    if (props.mobileSrc) {
+        return (
+            <picture className={className}>
+                <source media="(max-width: 768px)" srcSet={props.mobileSrc} />
+                <source media="(min-width: 769px)" srcSet={props.desktopSrc || src} />
+                <img
+                    src={props.desktopSrc || src}
+                    alt={alt}
+                    className={className}
+                    onError={() => setError(true)}
+                    loading={loading}
+                    {...props}
+                />
+            </picture>
+        );
+    }
+
     return (
         <img
-            src={src}
+            src={imgSrc}
             alt={alt}
             className={className}
             onError={() => setError(true)}

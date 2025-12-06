@@ -43,6 +43,8 @@ const MovieHero = ({ movie, crew }) => {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <ImageWithFallback
+                    mobileSrc={getImageUrl(movie.poster_path, 'w780')}
+                    desktopSrc={getImageUrl(movie.backdrop_path, 'original')}
                     src={getImageUrl(movie.backdrop_path, 'original')}
                     alt={movie.title}
                     className="w-full h-full object-cover opacity-60"

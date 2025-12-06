@@ -73,9 +73,9 @@ const HomeHero = ({
                     className="absolute inset-0 z-0"
                 >
                     <ImageWithFallback
+                        mobileSrc={getImageUrl(movie.poster_path, 'w780')}
+                        desktopSrc={getImageUrl(movie.backdrop_path, 'original')}
                         src={getImageUrl(movie.backdrop_path, 'original')}
-                        srcSet={`${getImageUrl(movie.backdrop_path, 'w780')} 780w, ${getImageUrl(movie.backdrop_path, 'original')} 1280w`}
-                        sizes="(max-width: 768px) 780px, 100vw"
                         alt={movie.title}
                         className="w-full h-full object-cover opacity-60"
                         loading="eager"
