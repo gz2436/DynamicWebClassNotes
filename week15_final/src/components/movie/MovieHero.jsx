@@ -47,10 +47,11 @@ const MovieHero = ({ movie, crew }) => {
                     desktopSrc={getImageUrl(movie.backdrop_path, 'original')}
                     src={getImageUrl(movie.backdrop_path, 'original')}
                     alt={movie.title}
-                    className="w-full h-full object-cover opacity-60"
+                    className="w-full h-full object-cover opacity-80"
                 />
-                <div className="absolute inset-0 bg-[#080808]/20 mix-blend-multiply" />
-                {/* Gradient Overlay for Text Readability */}
+                {/* Removed mix-blend-multiply for cleaner look */}
+                <div className="absolute inset-0 bg-[#080808]/10" />
+                {/* Gradient Overlay for Text Readability - kept but minimized if needed, for now standard gradient is fine */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#080808] via-[#080808]/40 to-transparent" />
             </div>
 
@@ -92,7 +93,7 @@ const MovieHero = ({ movie, crew }) => {
                     )}
 
                     {/* Main Title - Centered & Huge */}
-                    <h1 className="text-5xl md:text-9xl font-black leading-none tracking-tighter uppercase text-white mix-blend-overlay opacity-90 w-full break-words px-2 drop-shadow-2xl">
+                    <h1 className="text-5xl md:text-9xl font-black leading-none tracking-tighter uppercase text-white opacity-100 w-full break-words px-2 drop-shadow-2xl">
                         {movie.title}
                     </h1>
 

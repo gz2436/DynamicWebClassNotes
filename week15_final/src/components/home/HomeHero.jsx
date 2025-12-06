@@ -77,10 +77,11 @@ const HomeHero = ({
                         desktopSrc={getImageUrl(movie.backdrop_path, 'original')}
                         src={getImageUrl(movie.backdrop_path, 'original')}
                         alt={movie.title}
-                        className="w-full h-full object-cover opacity-60"
+                        className="w-full h-full object-cover opacity-80"
                         loading="eager"
                     />
-                    <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
+                    {/* Removed mix-blend-multiply for cleaner look */}
+                    <div className="absolute inset-0 bg-black/10" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
                 </motion.div>
             </AnimatePresence>
@@ -174,7 +175,8 @@ const HomeHero = ({
                             </p>
                         )}
                         <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                            <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance">
+                            {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
+                            <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
                                 {movie.title}
                                 <span className="inline-block align-middle ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest align-super">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
