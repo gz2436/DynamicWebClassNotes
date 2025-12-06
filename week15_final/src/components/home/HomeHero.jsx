@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import GlitchLogo from '../GlitchLogo';
 import CalendarDropdown from '../CalendarDropdown';
 import ImageWithFallback from '../ImageWithFallback';
+import SharePosterModal from '../share/SharePosterModal';
 import { getImageUrl } from '../../services/tmdb';
 
 const HomeHero = ({
@@ -20,6 +21,7 @@ const HomeHero = ({
 }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
+    const [isShareOpen, setIsShareOpen] = useState(false);
 
     // Refs
     const discoverRef = useRef(null);
@@ -165,31 +167,42 @@ const HomeHero = ({
 
                 {/* Center: Title */}
                 <div className="relative z-20 flex-1 flex items-end justify-between pb-4 pointer-events-auto">
-                    <div className="text-left max-w-[70%]">
+                    <div className="text-left max-w-[70%] md:max-w-[60%]">
                         {movie.tagline && (
                             <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
                                 {movie.tagline}
                             </p>
                         )}
                         <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                            <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance flex items-end flex-wrap gap-4">
-                                <span>{movie.title}</span>
-                                <span className="text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest mb-1">
+                            <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase mix-blend-overlay opacity-90 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance">
+                                {movie.title}
+                                <span className="inline-block align-middle ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest align-super">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
                                 </span>
                             </h1>
                         </Link>
                     </div>
 
-                    {/* Random Button */}
-                    <button
-                        onClick={handleRandomNavigation}
-                        className="border border-white/20 bg-black/20 backdrop-blur-sm px-4 py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center gap-2 mr-4"
-                        title="Switch to another candidate"
-                    >
-                        <Shuffle className="w-3 h-3" />
-                        <span className="hidden md:inline">REROLL</span>
-                    </button>
+                    {/* Action Group */}
+                    <div className="flex flex-col md:flex-row items-end md:items-center gap-2 md:gap-4 ml-4 mb-1 mt-4 md:mt-0 translate-y-2 md:translate-y-0 mr-4 md:mr-0">
+                        <button
+                            onClick={() => setIsShareOpen(true)}
+                            className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:px-4 md:py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none"
+                            title="Share"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
+                            <span className="hidden md:inline">SHARE</span>
+                        </button>
+
+                        <button
+                            onClick={handleRandomNavigation}
+                            className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:px-4 md:py-2 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none"
+                            title="Switch to another candidate"
+                        >
+                            <Shuffle className="w-4 h-4" />
+                            <span className="hidden md:inline">REROLL</span>
+                        </button>
+                    </div>
                 </div>
 
                 {/* Bottom: Specs */}
@@ -199,12 +212,21 @@ const HomeHero = ({
                         <div className={microTextStyle}>DUR. {movie.runtime} MIN</div>
                     </div>
 
-                    <div className="text-right space-y-1">
+                    <div className="text-right space-y-1 mr-4 md:mr-0">
                         <div className={microTextStyle}>VOL. {movie.vote_average?.toFixed(1)}</div>
                         <div className={microTextStyle}>REF. {movie.id}</div>
                     </div>
                 </div>
             </div>
+
+            {/* Share Modal */}
+            {isShareOpen && (
+                <SharePosterModal
+                    movie={movie}
+                    isDaily={true}
+                    onClose={() => setIsShareOpen(false)}
+                />
+            )}
         </div>
     );
 };

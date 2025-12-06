@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getImageUrl } from '../../services/tmdb';
 import ImageWithFallback from '../ImageWithFallback';
-import FloatingBackButton from '../FloatingBackButton';
+import SharePosterModal from '../share/SharePosterModal';
+import GlitchLogo from '../GlitchLogo';
 
 const MovieHero = ({ movie, crew }) => {
+    const navigate = useNavigate();
+    const [isShareOpen, setIsShareOpen] = useState(false);
+
     const {
         title,
         backdrop_path,
@@ -22,12 +27,21 @@ const MovieHero = ({ movie, crew }) => {
     const writers = crew?.filter(person => person.department === 'Writing').slice(0, 2);
 
     return (
-        <div className="relative w-full min-h-[90vh] flex items-end text-white overflow-hidden">
-            {/* Floating Back Button */}
-            <FloatingBackButton />
+        <div className="relative min-h-[100dvh] w-full flex items-end text-white overflow-hidden">
+
+            {/* Share Modal - High Z-Index to ensure it sits on top */}
+            {isShareOpen && (
+                <div className="absolute inset-0 z-[100] pointer-events-auto">
+                    <SharePosterModal
+                        movie={movie}
+                        isDaily={false}
+                        onClose={() => setIsShareOpen(false)}
+                    />
+                </div>
+            )}
 
             {/* Background Image */}
-            <div className="absolute inset-0">
+            <div className="absolute inset-0 z-0">
                 <ImageWithFallback
                     src={getImageUrl(movie.backdrop_path, 'original')}
                     alt={movie.title}
@@ -40,56 +54,95 @@ const MovieHero = ({ movie, crew }) => {
 
             {/* Industrial Grid Lines (Overlay) */}
             <div className="absolute inset-0 z-10 pointer-events-none">
-                <div className="w-full h-full border-x border-white/10 relative max-w-[1920px] mx-auto">
-                    <div className="absolute top-0 left-1/4 w-px h-full bg-white/5"></div>
-                    <div className="absolute top-0 right-1/4 w-px h-full bg-white/5"></div>
-                    <div className="absolute bottom-0 left-0 w-full h-px bg-white/10"></div>
+                <div className="w-full h-full border-[20px] border-transparent md:border-white/5 relative max-w-[1920px] mx-auto">
+                    <div className="w-full h-full border border-white/10 relative">
+                        <div className="absolute top-0 left-1/4 w-px h-full bg-white/5"></div>
+                        <div className="absolute top-0 right-1/4 w-px h-full bg-white/5"></div>
+                        <div className="absolute top-1/3 left-0 w-full h-px bg-white/5"></div>
+                        <div className="absolute bottom-1/3 left-0 w-full h-px bg-white/5"></div>
+                    </div>
                 </div>
             </div>
 
-            {/* Content Container */}
-            <div className="absolute inset-0 z-20 flex flex-col justify-end p-6 md:p-12 max-w-[1920px] mx-auto">
+            {/* Content Container - Centered Layout */}
+            <div className="relative z-50 h-full w-full flex flex-col p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none">
 
+                {/* Top Bar - Spacer for Global Header */}
+                <div className="relative w-full h-16 md:h-20 shrink-0 pointer-events-none" />
 
+                {/* Center Content: Title & Specs */}
+                <div className="flex-1 flex flex-col items-center justify-center text-center gap-4 z-20 pointer-events-auto min-h-0">
 
-                {/* Status Block (Above Title) */}
-                <div className="flex flex-col items-start gap-1 mb-4">
-                    <span className="text-[10px] uppercase tracking-widest text-white/50">STATUS: {movie.status}</span>
-                    <span className="text-[10px] uppercase tracking-widest text-white/50">RELEASE: {movie.release_date}</span>
-                    <span className="text-[10px] uppercase tracking-widest text-white/50 border border-white/20 px-2 py-1 mt-1">REF_ID: {movie.id}</span>
-                </div>
+                    {/* Database Status - Centered & Safe */}
+                    <div className="flex flex-col items-center gap-1 mb-2 opacity-60 hover:opacity-100 transition-opacity">
+                        <span className="text-[9px] uppercase tracking-[0.2em] text-white/40">// DATABASE_VIEW</span>
+                        <div className="flex items-center gap-2 border border-white/10 px-2 py-0.5 rounded-full bg-black/20">
+                            <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(34,197,94,0.8)]"></div>
+                            <span className="text-[10px] font-mono text-white/80">ID: {movie.id}</span>
+                        </div>
+                    </div>
 
-                {/* Main Title Area */}
-                <div className="mb-8">
+                    {/* Tagline */}
                     {movie.tagline && (
-                        <p className="text-white/60 text-sm font-mono mb-2 tracking-wide max-w-2xl uppercase">
+                        <p className="text-white/50 text-xs md:text-sm font-mono tracking-[0.2em] uppercase max-w-2xl px-4">
                             // {movie.tagline}
                         </p>
                     )}
-                    <h1 className="text-5xl md:text-8xl font-black leading-none tracking-tighter uppercase text-white mix-blend-overlay opacity-90">
+
+                    {/* Main Title - Centered & Huge */}
+                    <h1 className="text-5xl md:text-9xl font-black leading-none tracking-tighter uppercase text-white mix-blend-overlay opacity-90 w-full break-words px-2 drop-shadow-2xl">
                         {movie.title}
                     </h1>
-                </div>
 
-                {/* Bottom Specs Bar */}
-                <div className="flex flex-wrap gap-8 md:gap-16 border-t border-white/20 pt-4">
-                    <div className="flex flex-col">
-                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1">RATING</span>
-                        <span className="text-xl font-bold">{(movie.vote_average || 0).toFixed(1)} <span className="text-xs text-white/40 font-normal">/ 10</span></span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1">RUNTIME</span>
-                        <span className="text-xl font-bold">{movie.runtime} <span className="text-xs text-white/40 font-normal">MIN</span></span>
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1">GENRE</span>
-                        <div className="flex gap-2">
-                            {(movie.genres || []).map(g => (
-                                <span key={g.id} className="text-sm font-bold uppercase">{g.name}</span>
-                            ))}
+                    {/* Specs Row - Centered Integers */}
+                    <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xs md:text-sm font-bold uppercase tracking-wider text-white/80 mt-2">
+                        {/* Rating */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-white/40">RATING</span>
+                            <span className="bg-white/10 px-2 py-0.5 rounded text-white">{(movie.vote_average || 0).toFixed(1)}</span>
+                        </div>
+                        <span className="text-white/20">/</span>
+
+                        {/* Runtime */}
+                        <div className="flex items-center gap-2">
+                            <span className="text-white/40">TIME</span>
+                            <span>{movie.runtime} MIN</span>
+                        </div>
+                        <span className="text-white/20">/</span>
+
+                        {/* Genre */}
+                        <div className="text-white/90">
+                            {(movie.genres || []).slice(0, 3).map(g => g.name).join(' · ')}
                         </div>
                     </div>
+
+                    {/* Overview / Teaser (Optional - Short) */}
+                    {/* <p className="max-w-lg text-white/60 text-sm line-clamp-3 md:line-clamp-none">{movie.overview}</p> */}
                 </div>
+
+                {/* Bottom: Action Buttons - Centered */}
+                <div className="w-full flex justify-center items-end pb-safe shrink-0 z-30 pointer-events-auto mt-8 mb-8 md:mb-10">
+                    <div className="flex items-center gap-4">
+                        <button
+                            onClick={() => setIsShareOpen(true)}
+                            className="group border border-white/20 bg-black/40 backdrop-blur-md px-5 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center gap-2 md:gap-3 rounded-none hover:scale-105 active:scale-95"
+                            title="Share Poster"
+                        >
+                            <svg className="w-3.5 h-3.5 md:w-4 md:h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
+                            <span>SHARE</span>
+                        </button>
+
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="group border border-white/20 bg-black/40 backdrop-blur-md px-5 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center gap-2 md:gap-3 rounded-none hover:scale-105 active:scale-95"
+                            title="Return"
+                        >
+                            <svg className="w-3.5 h-3.5 md:w-4 md:h-4 transition-transform group-hover:-translate-x-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
+                            <span>BACK</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     );
