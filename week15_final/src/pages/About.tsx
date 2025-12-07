@@ -25,7 +25,7 @@ const About: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black p-6 md:p-12 relative overflow-hidden">
+        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black px-8 py-8 md:p-12 relative overflow-hidden">
 
             {/* Giant Watermark */}
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.03] select-none whitespace-nowrap">
@@ -36,11 +36,11 @@ const About: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-24 space-y-24 relative z-10"
+                className="max-w-4xl mx-auto pt-20 md:pt-24 space-y-12 md:space-y-24 relative z-10"
             >
 
                 {/* Header Section */}
-                <motion.section variants={itemVariants} className="space-y-8">
+                <motion.section variants={itemVariants} className="space-y-6 md:space-y-8">
                     <div className="relative">
                         {/* Glitch-style Header Layering */}
                         <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none relative z-10 mix-blend-difference">
@@ -60,7 +60,7 @@ const About: React.FC = () => {
                 <motion.section variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-8">
 
                     {/* Course Card */}
-                    <div className="group border border-white/10 bg-white/5 p-8 hover:bg-white/10 transition-colors duration-500 flex flex-col items-start">
+                    <div className="group border border-white/10 bg-white/5 px-6 py-4 md:p-8 hover:bg-white/10 transition-colors duration-500 flex flex-col items-start">
                         <div className="flex items-center gap-2 text-white/40 uppercase tracking-widest text-[10px] font-bold mb-6">
                             <BookOpen className="h-3 w-3" /> Course_ID: DM-GY-9103
                         </div>
@@ -79,7 +79,7 @@ const About: React.FC = () => {
                     </div>
 
                     {/* School Card */}
-                    <div className="group border border-white/10 bg-white/5 p-8 hover:bg-white/10 transition-colors duration-500 flex flex-col items-start">
+                    <div className="group border border-white/10 bg-white/5 px-6 py-4 md:p-8 hover:bg-white/10 transition-colors duration-500 flex flex-col items-start">
                         <div className="flex items-center gap-2 text-white/40 uppercase tracking-widest text-[10px] font-bold mb-6">
                             <School className="h-3 w-3" /> Institution
                         </div>

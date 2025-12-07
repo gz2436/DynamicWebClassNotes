@@ -61,7 +61,7 @@ const Feedback: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black p-6 md:p-12 relative overflow-hidden">
+        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black px-8 py-4 md:p-12 relative overflow-hidden">
 
             {/* Giant Watermark */}
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.03] select-none whitespace-nowrap">
@@ -72,11 +72,11 @@ const Feedback: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-24 space-y-24 relative z-10"
+                className="max-w-4xl mx-auto pt-10 md:pt-24 space-y-8 md:space-y-24 relative z-10"
             >
 
                 {/* Header Section */}
-                <motion.section variants={itemVariants} className="space-y-8">
+                <motion.section variants={itemVariants} className="space-y-4 md:space-y-8">
                     <div className="relative">
                         <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none relative z-10 mix-blend-difference">
                             System<br />Input
@@ -124,18 +124,19 @@ const Feedback: React.FC = () => {
                                     </button>
                                 </motion.div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="space-y-12">
+                                <form onSubmit={handleSubmit} className="space-y-6 md:space-y-12">
 
                                     {/* Email Input */}
                                     <div className="group relative">
-                                        <label className="block text-[10px] uppercase tracking-widest text-white/40 mb-2 group-focus-within:text-white transition-colors">Identifier (Optional)</label>
+                                        <label className="block text-[10px] uppercase tracking-widest text-white/40 mb-2 group-focus-within:text-white transition-colors">Identifier (EMAIL // REQUIRED)</label>
                                         <div className="relative">
                                             <input
+                                                required
                                                 type="email"
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
-                                                placeholder="USER_ID // EMAIL"
-                                                className="w-full bg-white/5 border border-white/10 focus:border-white px-6 py-4 text-sm md:text-base font-bold tracking-wider text-white placeholder-white/20 focus:outline-none focus:bg-white/10 transition-all rounded-none"
+                                                placeholder="NAME@EXAMPLE.COM"
+                                                className="w-full bg-white/5 border border-white/10 focus:border-white px-6 py-3 md:py-4 text-sm md:text-base font-bold tracking-wider text-white placeholder-white/20 focus:outline-none focus:bg-white/10 transition-all rounded-none"
                                             />
                                             {/* Blinking Cursor Decoration */}
                                             <div className="absolute right-4 top-1/2 -translate-y-1/2 w-1.5 h-4 bg-white/50 animate-pulse pointer-events-none hidden group-focus-within:block" />
@@ -152,7 +153,7 @@ const Feedback: React.FC = () => {
                                                 onChange={(e) => setMessage(e.target.value)}
                                                 rows={5}
                                                 placeholder="ENTER_DATA..."
-                                                className="w-full bg-white/5 border border-white/10 focus:border-white px-6 py-4 text-sm md:text-base font-bold tracking-wider text-white placeholder-white/20 focus:outline-none focus:bg-white/10 transition-all resize-none rounded-none leading-relaxed"
+                                                className="w-full bg-white/5 border border-white/10 focus:border-white px-6 py-3 md:py-4 text-sm md:text-base font-bold tracking-wider text-white placeholder-white/20 focus:outline-none focus:bg-white/10 transition-all resize-none rounded-none leading-relaxed"
                                             />
                                             {/* Blinking Cursor Decoration */}
                                             <div className="absolute right-4 bottom-4 w-1.5 h-4 bg-white/50 animate-pulse pointer-events-none hidden group-focus-within:block" />

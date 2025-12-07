@@ -48,7 +48,7 @@ const Manifesto: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black p-6 md:p-12 relative overflow-hidden">
+        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black px-8 py-8 md:p-12 relative overflow-hidden">
 
             {/* Background Watermark */}
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.03] select-none">
@@ -59,11 +59,11 @@ const Manifesto: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-24 space-y-12 md:space-y-16 relative z-10"
+                className="max-w-4xl mx-auto pt-10 md:pt-24 space-y-8 md:space-y-12 relative z-10"
             >
 
                 {/* Title Section */}
-                <motion.section variants={itemVariants} className="space-y-8 border-b border-white/20 pb-12 text-center md:text-left">
+                <motion.section variants={itemVariants} className="space-y-6 md:space-y-8 border-b border-white/20 pb-8 md:pb-12 text-left">
                     <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none">
                         Protocol<br />V3.0
                     </h1>
@@ -78,18 +78,18 @@ const Manifesto: React.FC = () => {
                 </motion.section>
 
                 {/* Dimensions Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-16">
 
                     {/* Dimension 1: Global Premiere */}
                     <motion.div variants={itemVariants} className="space-y-4 group">
                         <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_01_Priority</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 mb-2">
                             <motion.div variants={iconVariants} whileHover="hover">
                                 <Globe className="h-5 w-5" />
                             </motion.div>
                             Global Synchronization
                         </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                        <p className="text-white/60 text-sm leading-relaxed mb-4">
                             The engine scans global theatrical databases daily. Major premieres (e.g. "Zootopia 2", "Avatar 3") override all other logic to ensure you are the first to know.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
@@ -110,13 +110,13 @@ const Manifesto: React.FC = () => {
                     {/* Dimension 2: Thematic Schedule */}
                     <motion.div variants={itemVariants} className="space-y-4 group">
                         <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_02_Context</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 mb-2">
                             <motion.div variants={iconVariants} whileHover="hover">
                                 <Calendar className="h-5 w-5" />
                             </motion.div>
                             Thematic Resonance
                         </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                        <p className="text-white/60 text-sm leading-relaxed mb-4">
                             Every day serves a specific curatorial purpose. From "Critics' Choice Mondays" to "Pop Culture Fridays", the vibe shifts to match the human weekly cycle.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
@@ -141,13 +141,13 @@ const Manifesto: React.FC = () => {
                     {/* Dimension 3: Infinite Permutation */}
                     <motion.div variants={itemVariants} className="space-y-4 group">
                         <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_03_Math</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 mb-2">
                             <motion.div variants={iconVariants} whileHover="hover">
                                 <Infinity className="h-5 w-5" />
                             </motion.div>
                             The Infinite Loop
                         </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                        <p className="text-white/60 text-sm leading-relaxed mb-4">
                             We use valid permutation slicing to map dates to unique coordinates in a 5,000+ movie pool. No repeats. No randomness. Just pure mathematical exploration.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
@@ -168,13 +168,13 @@ const Manifesto: React.FC = () => {
                     {/* Dimension 4: Quality Control */}
                     <motion.div variants={itemVariants} className="space-y-4 group">
                         <div className="text-[10px] uppercase tracking-widest text-white/40 mb-2 group-hover:text-white transition-colors">Tier_04_Filter</div>
-                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 h-8">
+                        <h2 className="text-xl font-bold uppercase flex items-center gap-2 mb-2">
                             <motion.div variants={iconVariants} whileHover="hover">
                                 <Aperture className="h-5 w-5" />
                             </motion.div>
                             Signal-to-Noise
                         </h2>
-                        <p className="text-white/60 text-sm leading-relaxed h-20">
+                        <p className="text-white/60 text-sm leading-relaxed mb-4">
                             The database is vast, but our filter is strict. We mandate minimum vote counts and popularity thresholds to ensure only culturally significant works enter the archive.
                         </p>
                         <div className="bg-white/5 p-4 border border-white/10 font-mono text-xs space-y-2 group-hover:bg-white/10 transition-colors">
