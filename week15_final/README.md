@@ -27,7 +27,7 @@
 <br/>
 
 <div align="center">
-  <img src="share_poster.png" alt="Detail View" width="100%" />
+  <img src="docs/share_poster.png" alt="Share Poster" width="100%" />
   <p><em>Social Share Interface: High-Fidelity Poster Rendering</em></p>
 </div>
 
