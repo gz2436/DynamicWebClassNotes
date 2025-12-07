@@ -2,21 +2,38 @@
 
 This repository serves as a comprehensive archive of coursework, assignments, and projects completed for the Dynamic Web Development course at New York University. It documents the progression from fundamental web technologies to advanced single-page application architecture using modern React ecosystems.
 
+## Technical Stack
+<div align="center">
+
+[![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=ff0000)](https://reactjs.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=ff5500)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-000000?style=for-the-badge&logo=typescript&logoColor=ffaa00)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-000000?style=for-the-badge&logo=vite&logoColor=ffff00)](https://vitejs.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-000000?style=for-the-badge&logo=tailwindcss&logoColor=aaff00)](https://tailwindcss.com/)
+<br/>
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-000000?style=for-the-badge&logo=framer&logoColor=00ff55)](https://www.framer.com/motion/)
+[![Supabase](https://img.shields.io/badge/Supabase-000000?style=for-the-badge&logo=supabase&logoColor=00aaff)](https://supabase.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-000000?style=for-the-badge&logo=openai&logoColor=0055ff)](https://openai.com/)
+[![Gemini](https://img.shields.io/badge/Gemini-000000?style=for-the-badge&logo=googlegemini&logoColor=5500ff)](https://deepmind.google/technologies/gemini/)
+[![TMDb](https://img.shields.io/badge/TMDb-000000?style=for-the-badge&logo=themoviedatabase&logoColor=aa00ff)](https://www.themoviedb.org/)
+
+</div>
+
 ## Live Demos
 
-| Week      | Project      | Demo Link |
-|-----------|--------------|-----------|
-| week15    | Daily Movie  | https://daily-film.vercel.app/ |
-| week13-14 | art coll     | https://week13-14-art-collection.vercel.app/ |
-| week10-12 | todo-v4      | https://week10-12-todo-app-v4.vercel.app/ |
-| week10-12 | todo-v1      | https://week10-12-todo-app-v1.vercel.app/ |
-| week08-09 | mid-2        | https://week07-09-mid-resumeai-v2.vercel.app/ |
-| week07    | mid-1        | https://week07-09-mid-resumeai-v1.vercel.app/ |
-| week06    | mini apps    | https://week06-react-mini-app.vercel.app/ |
-| week05    | foundations  | https://week05-router-demo.vercel.app/ |
-| week04    | modal acc    | https://week04-modal-accordion.vercel.app/ |
-| week03    | comp lib     | https://week03-component-library.vercel.app/ |
-| week02    | react basic  | https://week02-react-basics.vercel.app/ |
+| Week | Project | Demo Link |
+|:---|:---|:---|
+| **Week 15** | Daily Movie | [![Final_Project](https://img.shields.io/badge/Final_Project-000000?style=for-the-badge&logo=vercel&logoColor=00ff41)](https://daily-film.vercel.app/) |
+| **Week 13-14** | Art Collection | [![Art_Collection](https://img.shields.io/badge/Art_Collection-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week13-14-art-collection.vercel.app/) |
+| **Week 10-12** | Todo v4 | [![Todo_App_v4](https://img.shields.io/badge/Todo_App_v4-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week10-12-todo-app-v4.vercel.app/) |
+| **Week 10-12** | Todo v1 | [![Todo_App_v1](https://img.shields.io/badge/Todo_App_v1-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week10-12-todo-app-v1.vercel.app/) |
+| **Week 08-09** | ResumeAI v2 | [![Mid_Project_v2](https://img.shields.io/badge/Mid_Project_v2-000000?style=for-the-badge&logo=googlegemini&logoColor=00ff41)](https://week07-09-mid-resumeai-v2.vercel.app/) |
+| **Week 07** | ResumeAI v1 | [![Mid_Project_v1](https://img.shields.io/badge/Mid_Project_v1-000000?style=for-the-badge&logo=googlegemini&logoColor=00ff41)](https://week07-09-mid-resumeai-v1.vercel.app/) |
+| **Week 06** | Mini Apps | [![Mini_Apps](https://img.shields.io/badge/Mini_Apps-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week06-react-mini-app.vercel.app/) |
+| **Week 05** | Foundations | [![Router_Demo](https://img.shields.io/badge/Router_Demo-000000?style=for-the-badge&logo=reactrouter&logoColor=00ff41)](https://week05-router-demo.vercel.app/) |
+| **Week 04** | Modal Acc | [![Modal_UI](https://img.shields.io/badge/Modal_UI-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week04-modal-accordion.vercel.app/) |
+| **Week 03** | Comp Lib | [![Component_Lib](https://img.shields.io/badge/Component_Lib-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week03-component-library.vercel.app/) |
+| **Week 02** | React Basic | [![React_Basics](https://img.shields.io/badge/React_Basics-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week02-react-basics.vercel.app/) |
 
 ## Repository Overview
 
@@ -25,7 +42,7 @@ The codebase is organized chronologically, reflecting the weekly curriculum and 
 ### Curriculum Progression
 
 *   **Week 01: Course Overview**
-    *   [Dynamic_Web_F25_Graduate](https://github.com/kadee80/dynamic_web_f25_graduate)
+    *   [![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
 
 *   **Week 02-05: Foundations**
     *   Introduction to HTML5, CSS3, and JavaScript (ES6+).
@@ -52,21 +69,10 @@ The codebase is organized chronologically, reflecting the weekly curriculum and 
     *   Advanced styling with Tailwind CSS and component libraries.
     *   Project: Art Collection Explorer.
 
-*   **Week 15: Final Project (DAILY MOVIE)**
+*   **Week 15: Final Project (DAILY_FILM)**
     *   Culmination of the semester's learning.
     *   A production-grade movie discovery platform built with React 19, Vite, and TMDb API.
     *   Features include custom caching strategies, bionic reading, and industrial design aesthetics.
-
-## Technical Stack
-
-Throughout the semester, the following technologies were utilized:
-
-*   **Frontend Frameworks:** React, Next.js
-*   **Languages:** JavaScript (ES6+), TypeScript
-*   **Styling:** CSS3, Tailwind CSS, CSS Modules
-*   **Build Tools:** Vite, Webpack
-*   **Backend Services:** Supabase (PostgreSQL, Auth)
-*   **APIs:** OpenAI, The Movie Database (TMDb), Harvard Art Museums
 
 ## Author
 
