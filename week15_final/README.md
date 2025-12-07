@@ -2,7 +2,7 @@
 
 [![Live Demo](https://img.shields.io/badge/Live_Demo-daily--film.vercel.app-000000?style=for-the-badge&logo=vercel&logoColor=00ff41)](https://daily-film.vercel.app/)
 [![React 19](https://img.shields.io/badge/React_19-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://react.dev/)
-[![Vite](https://img.shields.io/badge/Vite-000000?style=for-the-badge&logo=vite&logoColor=00ff41)](https://vitejs.dev/)
+[![Vite](https://img.shields.io/badge/Vite-000000?style=for-the-badge&logo=vite&logoColor=00cc33)](https://vitejs.dev/)
 
 **DAILY FILM** is a cinematic discovery platform designed to combat choice paralysis. It offers **one single, curated film per day**, selected through a deterministic algorithm.
 
