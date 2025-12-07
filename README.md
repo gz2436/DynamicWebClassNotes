@@ -1,8 +1,8 @@
-# Dynamic Web - Fall 2025
+# Dynamic_Web_Fall_2025
 
 This repository serves as a comprehensive archive of coursework, assignments, and projects completed for the Dynamic Web course at New York University. It documents the progression from fundamental web technologies to advanced single-page application architecture using modern React ecosystems.
 
-## Technical Stack
+## Technical_Stack
 <div align="center">
 
 [![React](https://img.shields.io/badge/React-000000?style=for-the-badge&logo=react&logoColor=ff0000)](https://reactjs.org/)
@@ -19,7 +19,7 @@ This repository serves as a comprehensive archive of coursework, assignments, an
 
 </div>
 
-## Live Demos
+## Live_Demos
 
 | Week | Project | Demo Link |
 |:---|:---|:---|
@@ -35,14 +35,14 @@ This repository serves as a comprehensive archive of coursework, assignments, an
 | **Week 03** | Comp Lib | [![Component_Lib](https://img.shields.io/badge/Component_Lib-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week03-component-library.vercel.app/) |
 | **Week 02** | React Basic | [![React_Basics](https://img.shields.io/badge/React_Basics-000000?style=for-the-badge&logo=react&logoColor=00ff41)](https://week02-react-basics.vercel.app/) |
 
-## Repository Overview
+## Repository_Overview
 
 The codebase is organized chronologically, reflecting the weekly curriculum and the increasing complexity of the concepts covered.
 
-### Curriculum Progression
+### Curriculum_Progression
 
 *   **Week 01: Course Overview**
-    *   [![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
+      [![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
 
 *   **Week 02-05: Foundations**
     *   Introduction to HTML5, CSS3, and JavaScript (ES6+).
