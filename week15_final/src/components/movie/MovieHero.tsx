@@ -92,6 +92,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                     <SharePosterModal
                         movie={movie}
                         isDaily={false}
+                        date={undefined} // Explicitly no date for generic detail view
                         onClose={() => setIsShareOpen(false)}
                     />
                 </div>

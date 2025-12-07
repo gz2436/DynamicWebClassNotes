@@ -9,13 +9,13 @@ interface CalendarDropdownProps {
     currentDate: Date | null;
 }
 
-const CalendarDropdown: React.FC<CalendarDropdownProps> = ({
+const CalendarDropdown = ({
     isOpen,
     onClose,
     onDateSelect,
     availableDates,
     currentDate
-}) => {
+}: CalendarDropdownProps) => {
     if (!isOpen) return null;
 
     const [viewDate, setViewDate] = useState<Date>(currentDate || new Date());

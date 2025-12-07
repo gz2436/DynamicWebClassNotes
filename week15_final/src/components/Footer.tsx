@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
                         Experimental cinema archive.<br />
                         Est. 2025. New York, NY.<br />
                         <span className="inline-block mt-2 px-1.5 py-0.5 border border-white/20 rounded text-[9px] uppercase tracking-wider text-white/30">
-                            v3.0.0 (STABLE)
+                            v3.0.0
                         </span>
                     </p>
                 </div>

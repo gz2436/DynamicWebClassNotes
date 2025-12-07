@@ -2,15 +2,17 @@ import React, { useEffect, useState, useLayoutEffect, useMemo, MouseEvent, Keybo
 
 // Force Refresh 3 (Removed comment)
 import BionicText from '../components/BionicText'; // Import without extension if possible, or matches
-import { getCuratedMovies, discoverMovies } from '../services/tmdbClient';
+import { getCuratedMovies, discoverMovies, getImageUrl } from '../services/tmdbClient';
 import { recommendationEngine } from '../services/recommendationEngine';
-import { MOOD_PRESETS } from '../config/curation';
+
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, Layers, Aperture, Film, Mic2 } from 'lucide-react';
 
 import AnalysisGrid from '../components/home/AnalysisGrid.tsx';
 import HomeHero from '../components/home/HomeHero.tsx';
 import DailyContextSidebar from '../components/home/DailyContextSidebar.tsx';
+import ImageWithFallback from '../components/ImageWithFallback.tsx';
+import ExpandableSection from '../components/home/ExpandableText.tsx';
 
 import { motion } from 'framer-motion';
 // Removed unused useScrollRestoration if not used? It was imported in JSX
@@ -71,8 +73,7 @@ const Home: React.FC = () => {
     const [loading, setLoading] = useState(true); // Still needed for selection phase
     const [errorCode, setErrorCode] = useState<string | null>(null);
 
-    // V3.0 Mood Discovery
-    const [selectedMood, setSelectedMood] = useState<string | null>(null);
+
 
     // Responsive Date Formatting
     const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -121,42 +122,18 @@ const Home: React.FC = () => {
             try {
                 let movieCandidate: MovieCandidate | undefined;
 
-                // Priority 1: Mood Filtering (V3.0)
-                if (selectedMood) {
-                    const moodConfig = MOOD_PRESETS.find(m => m.id === selectedMood);
-                    if (moodConfig) {
-                        try {
-                            const randomPage = Math.floor(Math.random() * 3) + 1;
-                            const response = await discoverMovies({ ...moodConfig.params, page: randomPage });
 
-                            if (response.results && response.results.length > 0) {
-                                const randomIdx = Math.floor(Math.random() * response.results.length);
-                                const candidate = response.results[randomIdx] as MovieCandidate;
-                                candidate.source = 'MOOD_DISCOVERY';
-                                candidate.recommendationContext = {
-                                    name: moodConfig.label,
-                                    description: `Curated for the ${moodConfig.label} vibe.`
-                                };
-                                movieCandidate = candidate;
-                            }
-                        } catch (e) {
-                            console.error("Mood fetch failed", e);
-                        }
-                    }
-                }
 
                 // Priority 2: Cache or Rec Engine (Standard Flow)
-                if (!movieCandidate) {
-                    if (dailyCache[dateKey] && !selectedMood) {
-                        movieCandidate = dailyCache[dateKey];
-                    } else {
-                        // Ask Recommendation Engine
-                        const recMovie = await recommendationEngine.getDailyMovie(displayDate) as MovieCandidate;
-                        movieCandidate = recMovie;
+                // Ask Recommendation Engine
+                if (dailyCache[dateKey]) {
+                    movieCandidate = dailyCache[dateKey];
+                } else {
+                    const recMovie = await recommendationEngine.getDailyMovie(displayDate) as MovieCandidate;
+                    movieCandidate = recMovie;
 
-                        if (!selectedMood && movieCandidate) {
-                            setDailyCache(prev => ({ ...prev, [dateKey]: movieCandidate! }));
-                        }
+                    if (movieCandidate) {
+                        setDailyCache(prev => ({ ...prev, [dateKey]: movieCandidate! }));
                     }
                 }
 
@@ -183,7 +160,7 @@ const Home: React.FC = () => {
         };
 
         fetchDailyMovie();
-    }, [dateKey, selectedMood]);
+    }, [dateKey]);
 
     // React Query: Fetch Full Details for the selected candidate
     // Cast null ID to skip query (enabled: false)
@@ -217,7 +194,6 @@ const Home: React.FC = () => {
     const activeMovie = finalMovie || displayedMovie;
 
     const handlePrev = () => {
-        if (selectedMood) setSelectedMood(null);
         const maxIndex = Math.floor((latestDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
         if (currentIndex < maxIndex) {
             setCurrentIndex(prev => prev + 1);
@@ -225,24 +201,16 @@ const Home: React.FC = () => {
     };
 
     const handleNext = () => {
-        if (selectedMood) setSelectedMood(null);
         if (currentIndex > 0) {
             setCurrentIndex(prev => prev - 1);
         }
     };
 
     const handleDateSelect = (index: number) => {
-        setSelectedMood(null);
         setCurrentIndex(index);
     };
 
-    const handleMoodSelect = (moodId: string | null) => {
-        if (!moodId || moodId === selectedMood) {
-            setSelectedMood(null);
-        } else {
-            setSelectedMood(moodId);
-        }
-    };
+
 
     if (error) {
         return (
@@ -268,7 +236,7 @@ const Home: React.FC = () => {
     }
 
     const movie = activeMovie;
-    const isToday = currentIndex === 0 && !selectedMood;
+    const isToday = currentIndex === 0;
 
     // Dynamic Coordinates
     // const lat = movie ? (movie.id % 90).toFixed(4) : '00.0000';
@@ -312,7 +280,7 @@ const Home: React.FC = () => {
                 onClick={handlePrev}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handlePrev(); }}
                 aria-label="Previous Day"
-                className={`fixed inset-y-0 left-0 w-16 min-[2050px]:w-[calc(50vw-960px)] z-30 flex items-center justify-center group cursor-pointer md:hover:bg-white/5 transition-colors outline-none focus-visible:bg-white/10 pointer-events-none md:pointer-events-auto ${currentIndex >= Math.floor((latestDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) && !selectedMood ? 'hidden' : ''}`}
+                className={`fixed inset-y-0 left-0 w-16 min-[2050px]:w-[calc(50vw-960px)] z-30 flex items-center justify-center group cursor-pointer md:hover:bg-white/5 transition-colors outline-none focus-visible:bg-white/10 pointer-events-none md:pointer-events-auto ${currentIndex >= Math.floor((latestDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24)) ? 'hidden' : ''}`}
             >
                 <ChevronLeft className="hidden md:block text-white opacity-0 group-hover:opacity-100 transition-opacity h-8 w-8" />
             </div>
@@ -342,15 +310,12 @@ const Home: React.FC = () => {
                 handleDateSelect={handleDateSelect}
                 handleRandomNavigation={handleRandomNavigation}
                 dir={dir}
-                // V3 Props
-                currentMood={selectedMood}
-                onMoodSelect={handleMoodSelect}
             />
 
 
             {/* SECTION 2: BEHIND THE STORY */}
             <div className="relative z-20 bg-black border-t border-white/10">
-                <div className="max-w-5xl mx-auto px-6 py-16 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-12">
+                <div className="max-w-5xl mx-auto px-6 py-8 md:py-32 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
 
                     {/* Left: Label (Daily Context Sidebar) */}
                     <DailyContextSidebar movie={movie} />
@@ -368,12 +333,10 @@ const Home: React.FC = () => {
                             <div className="">
                                 {/* Fixed height container to prevent layout jump */}
                                 <div className="min-h-[120px] md:min-h-[80px]">
-                                    <p className="text-base md:text-xl leading-relaxed text-white font-mono tracking-tight mb-4">
-                                        <TypewriterText text={selectedReview ? selectedReview.cleanContent : (movie.tagline || movie.overview)} />
-                                    </p>
+                                    <ExpandableSection key={movie.id} text={selectedReview ? selectedReview.cleanContent : (movie.tagline || movie.overview)} />
                                 </div>
                                 {selectedReview && (
-                                    <div className="text-right">
+                                    <div className="text-right mt-4">
                                         <span className="text-[10px] uppercase tracking-widest text-[#00ff41] font-mono border-b border-[#00ff41]/30 pb-1">
                                             // INTELLIGENCE_SOURCE: {selectedReview.author}
                                         </span>
@@ -464,7 +427,7 @@ const Home: React.FC = () => {
                         </div>
 
                         {/* Analysis Grid 2: Swapped Positions (Linguistic Left, Production Right) */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                        <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
                             {/* Replaced Linguistic Data with Financial Intelligence */}
                             <AnalysisGrid title="FINANCIAL_INTELLIGENCE" icon={Mic2} className="h-full">
                                 <div className="space-y-4 h-full flex flex-col justify-center">
@@ -521,8 +484,8 @@ const Home: React.FC = () => {
                                         state={{ category: 'popular', fromHome: true }}
                                         className="snap-center shrink-0 w-[140px] group relative aspect-[2/3] bg-white/5 border border-white/10 overflow-hidden hover:border-white/40 transition-colors"
                                     >
-                                        <img
-                                            src={`https://image.tmdb.org/t/p/w342${sim.poster_path}`}
+                                        <ImageWithFallback
+                                            src={getImageUrl(sim.poster_path, 'w342')}
                                             alt={sim.title}
                                             className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 duration-500"
                                             loading="lazy"
@@ -558,41 +521,5 @@ const Home: React.FC = () => {
     );
 };
 
-const TypewriterText = ({ text }: { text: string }) => {
-    const [displayedText, setDisplayedText] = useState('');
-    const [isComplete, setIsComplete] = useState(false);
-
-    useEffect(() => {
-        setDisplayedText('');
-        setIsComplete(false);
-        let i = 0;
-        const speed = 15; // ms per char
-
-        const timer = setInterval(() => {
-            if (i < text.length) {
-                setDisplayedText((prev) => prev + text.charAt(i));
-                i++;
-            } else {
-                clearInterval(timer);
-                setIsComplete(true);
-            }
-        }, speed);
-
-        return () => clearInterval(timer);
-    }, [text]);
-
-    return (
-        <span className="relative inline-block w-full">
-            {/* Invisible Phantom Text to hold layout height */}
-            <span className="opacity-0 select-none pointer-events-none">{text}</span>
-
-            {/* Visible Typewriter Text overlay */}
-            <span className="absolute top-0 left-0 w-full h-full">
-                {displayedText}
-                {!isComplete && <span className="animate-pulse inline-block w-2 h-4 bg-[#00ff41] ml-1 align-middle" />}
-            </span>
-        </span>
-    );
-};
 
 export default Home;

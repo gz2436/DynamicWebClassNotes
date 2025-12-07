@@ -10,10 +10,11 @@ const getImageUrl = (path: string | null | undefined, size = 'w780') => {
 interface SharePosterModalProps {
     movie: Movie;
     onClose: () => void;
-    isDaily?: boolean;
+    isDaily?: boolean; // Keep for layout distinction if needed
+    date?: Date | string; // The specific date for this movie recommendation
 }
 
-const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isDaily }) => {
+const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isDaily, date }) => {
     const posterRef = useRef<HTMLDivElement>(null);
     const [isGenerating, setIsGenerating] = useState(false);
     const [posterSrc, setPosterSrc] = useState<string | null>(null);
@@ -238,7 +239,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
             ctx.lineWidth = 1.5 * SCALE; // Border thickness
             ctx.strokeStyle = '#FFFFFF';
 
-            const topY = isLandscape ? 50 * SCALE : 50 * SCALE; // Center of the box
+            const topY = isLandscape ? 30 * SCALE : 30 * SCALE; // Center of the box
 
             const brandText = "DAILY_FILM";
             const letterGap = 4 * SCALE;
@@ -273,9 +274,21 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
             }
 
             // Date (Moved down slightly due to box)
-            if (isDaily) {
-                const dateText = new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase();
-                const yearText = new Date().getFullYear().toString();
+            // Logic: Show date if provided (priority) OR if isDaily (fallback to today)
+            const displayDate = date ? new Date(date) : (isDaily ? new Date() : null);
+            const useUTC = !!date; // If date provided, it's a UTC midnight record. If fallback to new Date(), it's local.
+
+            if (displayDate) {
+                const dateText = displayDate.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: '2-digit',
+                    timeZone: useUTC ? 'UTC' : undefined
+                }).toUpperCase();
+
+                const yearText = displayDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    timeZone: useUTC ? 'UTC' : undefined
+                });
 
                 ctx.textBaseline = 'top';
                 ctx.font = fontMono(14, 'bold');
@@ -294,15 +307,14 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 // Match DOM: p-12 (48px), pb-16 (64px), gap-4 (16px)
                 // Reference Base: 800px width
 
-                const p12 = 48 * SCALE;
-                const pb16 = 64 * SCALE;
-                const mr2 = 8 * SCALE;
+                const p12 = 40 * SCALE;
+                const pb16 = 40 * SCALE;
+                const mr2 = 0;
 
                 // QR Logic (Bottom Right)
-                // DOM: Inside p-12 pb-16 container, with mb-2 mr-2 (extra margin)
-                const qrSize = 50 * SCALE;
-                const qrRightMargin = p12 + mr2;
-                const qrBottomMargin = pb16 + mr2;
+                const qrSize = 44 * SCALE;
+                const qrRightMargin = p12;
+                const qrBottomMargin = pb16;
 
                 const qrX = WIDTH - qrRightMargin - qrSize;
                 const qrY = HEIGHT - qrBottomMargin - qrSize;
@@ -312,15 +324,6 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 ctx.shadowBlur = 12 * SCALE;
                 ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
                 ctx.restore();
-
-                // "SCAN FOR INFO" - Centered under QR? No, DOM says flex-col items-center.
-                ctx.textAlign = 'center';
-                ctx.fillStyle = 'rgba(255,255,255,0.4)';
-                ctx.font = fontMono(8, 'normal');
-                // The text is below QR. In DOM it is gap-3 (12px).
-                // But wait, the previous code put it to the left? DOM structure is flex-col for QR group.
-                // Let's place it centred below QR.
-                ctx.fillText("SCAN FOR INFO", qrX + (qrSize / 2), qrY + qrSize + (12 * SCALE));
 
 
                 // Text Content (Bottom Left)
@@ -408,35 +411,48 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 }
 
             } else {
-                // === PORTRAIT LAYOUT (Minimal Centered) ===
-                // Align Center
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'top'; // Reset
+                // === PORTRAIT LAYOUT (Optimized: Similar to Landscape) ===
+                // Align Left
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
 
-                // 2. CENTER-BOTTOM: MOVIE INFO
-                const qrSize = 64 * SCALE;
-                const footerMargin = 32 * SCALE;
-                const qrY = HEIGHT - footerMargin - qrSize - (16 * SCALE);
+                const pSide = 32 * SCALE;
+                const pBottom = 48 * SCALE;
 
-                let cursorY = qrY - (40 * SCALE);
+                // 2. QR Code (Bottom Right)
+                const qrSize = 50 * SCALE;
+                const qrX = WIDTH - pSide - qrSize;
+                const qrY = HEIGHT - pBottom - qrSize;
+
+                ctx.save();
+                ctx.shadowColor = 'rgba(0,0,0,0.8)';
+                ctx.shadowBlur = 12 * SCALE;
+                ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+                ctx.restore();
+
+                // 3. MOVIE INFO (Bottom Left)
+                let cursorY = HEIGHT - pBottom;
 
                 // Specs
                 ctx.fillStyle = 'rgba(255,255,255,0.8)';
-                ctx.font = fontMono(10, 'bold');
+                ctx.font = fontMono(12, 'bold');
                 const specs = `${movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}   |   ${movie.runtime}m   |   ★ ${movie.vote_average?.toFixed(1)}`;
-                ctx.fillText(specs, centerX, cursorY);
+                ctx.fillText(specs, pSide, cursorY);
+
+                // Move up
+                cursorY -= (14 * SCALE);
+                cursorY -= (20 * SCALE);
 
                 // Title
-                cursorY -= (24 * SCALE);
                 ctx.fillStyle = '#FFFFFF';
-                ctx.shadowColor = 'rgba(255,255,255,0.3)';
-                ctx.shadowBlur = 25 * SCALE;
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 40 * SCALE;
 
-                const titleSize = 42;
+                const titleSize = 56; // Larger on mobile
                 ctx.font = fontSans(titleSize, '900');
                 const titleSpacing = -0.05 * titleSize * SCALE;
-                const lineHeight = titleSize * 1.0 * SCALE;
-                const maxTitleWidth = WIDTH - (PAD * 3);
+                const lineHeight = titleSize * 0.9 * SCALE;
+                const maxTitleWidth = WIDTH - (pSide * 2) - qrSize - 20; // Avoid QR intersection? Or just wrap.
 
                 const words = (movie.title || '').toUpperCase().split(' ');
                 let lines = [];
@@ -452,10 +468,10 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 }
                 lines.push(currentLine);
 
-                lines.reverse().forEach(line => {
+                lines.reverse().forEach((line) => {
                     cursorY -= lineHeight;
                     if ('letterSpacing' in ctx) (ctx as any).letterSpacing = `${titleSpacing}px`;
-                    ctx.fillText(line, centerX, cursorY);
+                    ctx.fillText(line, pSide, cursorY);
                 });
                 if ('letterSpacing' in ctx) (ctx as any).letterSpacing = '0px';
                 ctx.shadowColor = 'transparent';
@@ -463,22 +479,11 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 // Tagline
                 if (movie.tagline) {
                     cursorY -= (16 * SCALE);
+                    cursorY -= (10 * SCALE);
                     ctx.fillStyle = 'rgba(255,255,255,0.8)';
-                    ctx.font = fontMono(9, 'italic');
-                    ctx.fillText(`“ ${movie.tagline.toUpperCase()} ”`, centerX, cursorY);
+                    ctx.font = fontMono(10, 'italic');
+                    ctx.fillText(`“ ${movie.tagline.toUpperCase()} ”`, pSide, cursorY);
                 }
-
-                // 3. FOOTER: QR
-                ctx.save();
-                ctx.shadowColor = 'rgba(0,0,0,0.8)';
-                ctx.shadowBlur = 12 * SCALE;
-                ctx.drawImage(qrImage, centerX - (qrSize / 2), qrY, qrSize, qrSize);
-                ctx.restore();
-
-                // "SCAN FOR INFO"
-                ctx.fillStyle = 'rgba(255,255,255,0.4)';
-                ctx.font = fontMono(8, 'normal');
-                ctx.fillText("SCAN FOR INFO", centerX, qrY + qrSize + (12 * SCALE));
             }
 
             // --- DONE ---
@@ -571,7 +576,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                         </div>
 
                         {/* 2. Top Area (Centered Brand for both) */}
-                        <div className={`relative z-10 w-full flex flex-col items-center justify-center gap-1 ${isLandscape ? 'pt-10' : 'pt-10'}`}>
+                        <div className={`relative z-10 w-full flex flex-col items-center justify-center gap-1 ${isLandscape ? 'pt-6' : 'pt-6'}`}>
                             <div className="flex flex-col items-center">
                                 {/* NAMEPLATE STYLE: Border + Tight Padding */}
                                 <div className="border border-white/90 px-3 py-[3px] flex items-center justify-center">
@@ -581,22 +586,33 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                                 </div>
                             </div>
 
-                            {isDaily && (
-                                <div className="flex flex-col items-center text-center mt-3">
-                                    <span className="text-[14px] font-bold tracking-widest font-mono text-white drop-shadow-md">
-                                        {new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit' }).toUpperCase()}
-                                    </span>
-                                    <span className="text-[10px] font-mono tracking-widest uppercase text-white/60 mt-1 drop-shadow-md">
-                                        {new Date().getFullYear()}
-                                    </span>
-                                </div>
-                            )}
+                            {(isDaily || date) && (() => {
+                                const displayDate = date ? new Date(date) : new Date();
+                                const useUTC = !!date;
+                                return (
+                                    <div className="flex flex-col items-center text-center mt-3">
+                                        <span className="text-[14px] font-bold tracking-widest font-mono text-white drop-shadow-md">
+                                            {displayDate.toLocaleDateString('en-US', {
+                                                month: 'short',
+                                                day: '2-digit',
+                                                timeZone: useUTC ? 'UTC' : undefined
+                                            }).toUpperCase()}
+                                        </span>
+                                        <span className="text-[10px] font-mono tracking-widest uppercase text-white/60 mt-1 drop-shadow-md">
+                                            {displayDate.toLocaleDateString('en-US', {
+                                                year: 'numeric',
+                                                timeZone: useUTC ? 'UTC' : undefined
+                                            })}
+                                        </span>
+                                    </div>
+                                );
+                            })()}
                         </div>
 
                         {/* 3. Bottom Area */}
                         {isLandscape ? (
                             // === LANDSCAPE DOM (Left Bottom) ===
-                            <div className="absolute bottom-0 left-0 w-full p-12 pb-16 flex items-end justify-between z-10">
+                            <div className="absolute bottom-0 left-0 w-full p-10 pb-10 flex items-end justify-between z-10">
                                 {/* Left: Text Content */}
                                 <div className="flex flex-col items-start text-left max-w-[65%] gap-4">
                                     {movie.tagline && (
@@ -619,7 +635,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                                 </div>
 
                                 {/* Right: QR Code */}
-                                <div className="flex flex-col items-center gap-3 shrink-0 mb-2 mr-2">
+                                <div className="flex flex-col items-center gap-3 shrink-0 mb-0 mr-0">
                                     <div className="w-12 h-12 bg-white/10 p-1 backdrop-blur-sm rounded-sm">
                                         <img
                                             src="/IMG_2764.PNG"
@@ -627,28 +643,24 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                                             className="w-full h-full object-contain block"
                                         />
                                     </div>
-                                    <span className="text-[8px] font-mono tracking-widest uppercase text-white/40">
-                                        SCAN FOR INFO
-                                    </span>
                                 </div>
                             </div>
                         ) : (
-                            // === PORTRAIT DOM (Centered Bottom) ===
-                            <div className="absolute bottom-0 left-0 right-0 z-10 w-full p-8 pb-10 flex flex-col items-center justify-end gap-6 text-center">
-                                {/* Text Group */}
-                                <div className="flex flex-col items-center gap-3">
+                            // === PORTRAIT DOM (Unified Left-Align) ===
+                            <div className="absolute bottom-0 left-0 w-full p-8 pb-12 flex items-end justify-between z-10">
+                                {/* Left: Text Content */}
+                                <div className="flex flex-col items-start text-left max-w-[65%] gap-3">
                                     {movie.tagline && (
-                                        <p className="text-[9px] font-mono italic tracking-widest text-white/80 opacity-80">
+                                        <p className="text-[10px] font-mono italic tracking-widest text-white/80 opacity-80 pl-1">
                                             “ {movie.tagline.toUpperCase()} ”
                                         </p>
                                     )}
 
-                                    <h1 className="text-4xl font-black uppercase leading-[1.0] tracking-tighter font-sans break-words w-full px-2"
-                                        style={{ color: '#ffffff', textShadow: '0 0 25px rgba(255,255,255,0.3)' }}>
+                                    <h1 className="text-5xl font-black uppercase leading-[0.9] tracking-tighter font-sans break-words w-full text-white drop-shadow-2xl">
                                         {movie.title}
                                     </h1>
 
-                                    <div className="flex items-center gap-3 text-[10px] font-bold uppercase tracking-wider text-white/80 mt-1">
+                                    <div className="flex items-center gap-4 text-[12px] font-bold uppercase tracking-wider text-white/80 mt-2 pl-1 font-mono">
                                         <span>{movie.release_date ? movie.release_date.split('-')[0] : 'N/A'}</span>
                                         <span className="opacity-40">|</span>
                                         <span>{movie.runtime}m</span>
@@ -657,19 +669,15 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                                     </div>
                                 </div>
 
-                                {/* QR Floating Centered */}
-                                <div className="flex flex-col items-center gap-3 shrink-0 mt-4">
-                                    <div className="w-16 h-16">
+                                {/* Right: QR Code */}
+                                <div className="flex flex-col items-center gap-3 shrink-0 mb-0 mr-0">
+                                    <div className="w-12 h-12 bg-white/10 p-1 backdrop-blur-sm rounded-sm">
                                         <img
                                             src="/IMG_2764.PNG"
                                             alt="QR"
                                             className="w-full h-full object-contain block"
-                                            style={{ filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.8))' }}
                                         />
                                     </div>
-                                    <span className="text-[8px] font-mono tracking-widest uppercase text-white/40">
-                                        SCAN FOR INFO
-                                    </span>
                                 </div>
                             </div>
                         )}

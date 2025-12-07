@@ -23,9 +23,18 @@ const DailyContextSidebar: React.FC<DailyContextSidebarProps> = ({ movie }) => {
             transition={{ delay: 0.8, duration: 0.6, ease: "easeOut" }}
             className="md:col-span-3"
         >
-            <div className="sticky top-12">
-                <h2 className="text-3xl mb-4 leading-none text-white/40 uppercase font-mono font-black tracking-tighter">Why<br />This<br />Film<br />Today?</h2>
-                <span className="border border-white/30 px-2 py-1 rounded-full text-white/50 uppercase tracking-widest text-[10px] font-mono font-bold -ml-2">Curator's Note</span>
+            <div className="md:sticky md:top-12">
+                <div className="flex flex-row md:flex-col items-baseline md:items-start justify-between md:justify-start gap-4 mb-4 md:mb-4">
+                    <h2 className="text-xl md:text-3xl leading-none text-white/40 uppercase font-mono font-black tracking-tighter whitespace-nowrap md:whitespace-normal">
+                        <span className="md:hidden">Why This Film Today?</span>
+                        <span className="hidden md:inline">
+                            Why<br />This<br />Film<br />Today?
+                        </span>
+                    </h2>
+                    <span className="border border-white/30 px-2 py-0.5 md:py-1 rounded-full text-white/50 uppercase tracking-widest text-[9px] md:text-[10px] font-mono font-bold md:-ml-2 shrink-0">
+                        Curator's Note
+                    </span>
+                </div>
 
                 {/* Recommendation Factors */}
                 <div className="mt-8 space-y-4">

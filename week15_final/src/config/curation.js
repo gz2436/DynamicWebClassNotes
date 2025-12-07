@@ -98,13 +98,4 @@ export const CALENDAR_RULES = {
     '06': { name: 'Pride Month', description: 'Celebrating LGBTQ+ stories.', params: { with_keywords: '158718', sort_by: 'popularity.desc' } },
 };
 
-// --- MOOD CONFIGURATION (V3.0) ---
-export const MOOD_PRESETS = [
-    { id: 'NEON_NOIR', label: 'Neon Noir', params: { with_genres: '878,53', with_keywords: '9826', sort_by: 'vote_average.desc' } }, // Cyberpunk/Thriller
-    { id: 'DREAMY', label: 'Dreamy', params: { with_genres: '14,10749,16', sort_by: 'popularity.desc' } }, // Fantasy/Romance/Animation
-    { id: 'GRITTY', label: 'Gritty', params: { with_genres: '80,53', sort_by: 'vote_count.desc' } }, // Crime/Thriller
-    { id: 'FEEL_GOOD', label: 'Feel Good', params: { with_genres: '35,10751,10402', sort_by: 'popularity.desc' } }, // Comedy/Family/Music
-    { id: 'MIND_BENDING', label: 'Mind Bending', params: { with_genres: '9648,878', sort_by: 'vote_average.desc' } }, // Mystery/Sci-Fi
-    { id: 'ADRENALINE', label: 'Adrenaline', params: { with_genres: '28,12', sort_by: 'revenue.desc' } }, // Action/Adventure
-    { id: 'MELANCHOLY', label: 'Melancholy', params: { with_genres: '18,10749', with_keywords: '10683', sort_by: 'vote_average.desc' } }, // Drama/Romance
-];
+

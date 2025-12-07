@@ -13,15 +13,22 @@
 ## Interface Preview
 
 <div align="center">
-  <img src="docs/home_dossier.png" alt="Cinematic Dossier" width="100%" />
-  <p><em>The v3.0 Dossier Interface: Industrial Grids & Real-Time Intelligence</em></p>
+  <img src="docs/main_interface.png" alt="Cinematic Dossier" width="100%" />
+  <p><em>Main Interface: The Daily Curated Cinema Experience</em></p>
 </div>
 
 <br/>
 
 <div align="center">
   <img src="docs/movie_detail.png" alt="Detail View" width="100%" />
-  <p><em>Detail View: Native Canvas-Generated Posters & Contextual Metadata</em></p>
+  <p><em>Movie Context: Adaptive Hero Layout & Key Metrics</em></p>
+</div>
+
+<br/>
+
+<div align="center">
+  <img src="share_poster.png" alt="Detail View" width="100%" />
+  <p><em>Social Share Interface: High-Fidelity Poster Rendering</em></p>
 </div>
 
 ---

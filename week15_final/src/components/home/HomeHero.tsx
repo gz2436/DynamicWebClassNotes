@@ -8,7 +8,7 @@ import ImageWithFallback from '../ImageWithFallback';
 import SharePosterModal from '../share/SharePosterModal.tsx';
 import { getImageUrl } from '../../services/tmdbClient';
 import useEngagement from '../../hooks/useEngagement'; // Hook
-import MoodSelector from './MoodSelector.tsx';
+
 import { Movie } from '../../types/tmdb';
 
 interface HomeHeroProps {
@@ -21,8 +21,6 @@ interface HomeHeroProps {
     handleDateSelect: (index: number) => void;
     handleRandomNavigation: (e: React.MouseEvent | React.KeyboardEvent) => void;
     dir: string;
-    currentMood: string | null;
-    onMoodSelect: (moodId: string | null) => void;
 }
 
 const HomeHero: React.FC<HomeHeroProps> = ({
@@ -35,8 +33,6 @@ const HomeHero: React.FC<HomeHeroProps> = ({
     handleDateSelect,
     handleRandomNavigation,
     dir,
-    currentMood,
-    onMoodSelect
 }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
@@ -239,9 +235,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                 </div>
 
                 {/* Mood Selector (V3.0) - More Spacing */}
-                <div className="relative z-[60] w-full flex justify-center mt-6 md:mt-8 pointer-events-none">
-                    <MoodSelector currentMood={currentMood} onSelect={onMoodSelect} />
-                </div>
+
 
                 {/* Center: Title */}
                 <div className="relative z-20 flex-1 flex items-end justify-between pb-4 pointer-events-auto">
@@ -253,7 +247,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         )}
                         <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
                             {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
-                            <h1 className="text-4xl md:text-6xl font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
+                            <h1 className="text-5xl md:text-7xl 2xl:text-8xl font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
                                 {movie.title}
                                 <span className="inline-block align-middle ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest align-super">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
@@ -268,7 +262,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                        Mobile: 2 Columns (Vertical Stacks)
                        Desktop: Single Row (Horizontal) 
                     */}
-                    <div className="flex flex-row items-end gap-2 md:gap-0 ml-4 mb-0 md:mb-1">
+                    <div className="flex flex-row items-end gap-2 md:gap-0 ml-4 mb-0 md:mb-1 mr-4 md:mr-0">
 
                         {/* Group 1: Personal (Mobile: Col, Desktop: Row) */}
                         <div className="flex flex-col md:flex-row items-end gap-2 md:gap-2">
@@ -346,7 +340,8 @@ const HomeHero: React.FC<HomeHeroProps> = ({
             {isShareOpen && (
                 <SharePosterModal
                     movie={movie}
-                    isDaily={true}
+                    isDaily={true} // HomeHero is theoretically the "Daily" view, but can show past dates.
+                    date={displayDate} // Explicitly pass the currently viewed date
                     onClose={() => setIsShareOpen(false)}
                 />
             )}
