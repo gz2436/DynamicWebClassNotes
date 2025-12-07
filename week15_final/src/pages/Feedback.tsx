@@ -11,15 +11,37 @@ const Feedback: React.FC = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setStatus('SUBMITTING');
-        // Fake API delay
-        setTimeout(() => {
-            setStatus('SUCCESS');
-            setEmail('');
-            setMessage('');
-        }, 1500);
+
+        try {
+            const response = await fetch('https://formspree.io/f/xyzrdglk', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    message: message
+                })
+            });
+
+            if (response.ok) {
+                setStatus('SUCCESS');
+                setEmail('');
+                setMessage('');
+            } else {
+                console.error('Submission failed');
+                // Optional: setStatus('ERROR') or alert user
+                alert('Transmission failed. Please try again.');
+                setStatus('IDLE');
+            }
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            alert('Transmission error. Please check your connection.');
+            setStatus('IDLE');
+        }
     };
 
     const containerVariants = {
