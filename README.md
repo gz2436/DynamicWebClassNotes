@@ -1,4 +1,4 @@
-# Dynamic_Web_Fall_2025
+# Dynamic_Web Fall 2025
 
 This repository serves as a comprehensive archive of coursework, assignments, and projects completed for the Dynamic Web course at New York University. It documents the progression from fundamental web technologies to advanced single-page application architecture using modern React ecosystems.
 
@@ -41,8 +41,9 @@ The codebase is organized chronologically, reflecting the weekly curriculum and 
 
 ### Curriculum_Progression
 
-*   **Week 01: Course Overview**
-      [![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
+**Week 01: Course Overview**
+
+[![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
 
 *   **Week 02-05: Foundations**
     *   Introduction to HTML5, CSS3, and JavaScript (ES6+).
