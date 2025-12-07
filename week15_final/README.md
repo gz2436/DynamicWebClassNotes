@@ -13,6 +13,8 @@ Built with **React 19**, **Vite**, and **Tailwind CSS**, it features a sophistic
 *   **Atmosphere Calibration**: Implemented "Let the Light In" strategy (Hero Opacity 60% → 80%, removed `multiply` blends) to solve visual "suffocation".
 *   **Industrial UI Language**: Implemented **Glitch Effects** and **Bionic Reading** (highlighting initial letters) to enhance data readability and brand identity.
 *   **Dual-Mode Poster Engine**: Engineered a responsive generator outputting 16:9 Cinematic wallpapers (Desktop) and 9:16 Story assets (Mobile).
+*   **Alternate Vision Engine**: Algorithmic selection of "B-Side" wallpapers for detail pages. Filters for high-res alternate angles to prevent visual redundancy.
+*   **Local Timezone Synchronization**: Switched from strict UTC to Local System Time. Solved the issue where "Tomorrow's Movie" appeared prematurely for users in Western timezones (e.g., EST evenings).
 *   **WYSIWYG Synchronization**: Aligned Canvas calculation engine strictly with DOM Tailwind classes (e.g., Padding 48px) for pixel-perfect downloads.
 
 **v1.5: Core Systems & Resiliency**

@@ -113,7 +113,7 @@ export const getMovieDetails = async (id) => {
     try {
         const response = await tmdb.get(`/movie/${id}`, {
             params: {
-                append_to_response: 'credits,release_dates,similar,keywords,videos,reviews'
+                append_to_response: 'credits,release_dates,similar,keywords,videos,reviews,images'
             }
         });
         return response.data;

@@ -64,7 +64,9 @@ const Home = () => {
     const getUTCDate = (dateStr) => new Date(dateStr.endsWith('Z') ? dateStr : dateStr + 'Z');
     const startDate = getUTCDate('2025-01-01T00:00:00');
     const targetToday = getUTCDate('2025-12-02T00:00:00');
-    const todayStr = new Date().toISOString().split('T')[0];
+    // Use Local Time instead of UTC to prevent "Tomorrow's Movie" showing up at 8PM EST
+    const now = new Date();
+    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
     const realNow = getUTCDate(todayStr + 'T00:00:00');
     const latestDate = realNow > targetToday ? realNow : targetToday;
 

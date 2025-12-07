@@ -26,6 +26,30 @@ const MovieHero = ({ movie, crew }) => {
     const director = crew?.find(person => person.job === 'Director');
     const writers = crew?.filter(person => person.department === 'Writing').slice(0, 2);
 
+    // ALTERNATE BACKDROP LOGIC
+    // Purpose: Provide a fresh visual on Detail Page different from Home Page.
+    // Logic: Find the highest rated backdrop that is NOT the main poster.
+    const getAlternateBackdrop = () => {
+        if (!movie?.images?.backdrops || movie.images.backdrops.length < 2) return movie.backdrop_path;
+
+        // 1. Filter: Must be aspect ratio ~1.77 (16:9), High Res, and NOT the main one
+        const candidates = movie.images.backdrops.filter(img =>
+            img.file_path !== movie.backdrop_path &&
+            img.width > 1280 &&
+            img.vote_average > 0 // decent quality
+        );
+
+        // 2. Sort by Popularity (vote_count) to find the "next best" official image
+        if (candidates.length > 0) {
+            candidates.sort((a, b) => b.vote_count - a.vote_count);
+            return candidates[0].file_path;
+        }
+
+        return movie.backdrop_path;
+    };
+
+    const heroImage = getAlternateBackdrop();
+
     return (
         <div className="relative min-h-[100dvh] w-full flex items-end text-white overflow-hidden">
 
@@ -44,8 +68,8 @@ const MovieHero = ({ movie, crew }) => {
             <div className="absolute inset-0 z-0">
                 <ImageWithFallback
                     mobileSrc={getImageUrl(movie.poster_path, 'w780')}
-                    desktopSrc={getImageUrl(movie.backdrop_path, 'original')}
-                    src={getImageUrl(movie.backdrop_path, 'original')}
+                    desktopSrc={getImageUrl(heroImage, 'original')}
+                    src={getImageUrl(heroImage, 'original')}
                     alt={movie.title}
                     className="w-full h-full object-cover opacity-80"
                 />
