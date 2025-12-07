@@ -4,13 +4,13 @@
 [![React 19](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react)](https://react.dev/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
-**DAILY FILM** is a cinematic discovery platform with a rigorous industrial aesthetic. It stands against the "choice paralysis" of modern streaming by offering **one single, curated film per day**.
+**DAILY FILM** is a cinematic discovery platform designed to combat choice paralysis. It offers **one single, curated film per day**, selected through a deterministic algorithm.
 
 > "The antidote to algorithmic fatigue."
 
 ---
 
-## 📸 Visual Showcase
+## Interface Preview
 
 <div align="center">
   <img src="docs/home_dossier.png" alt="Cinematic Dossier" width="100%" />
@@ -26,42 +26,42 @@
 
 ---
 
-## ⚡️ Key Engineering Features
+## Key Features
 
-### 1. No-Database Recommendation Engine
-A deterministic algorithm (`src/services/recommendationEngine.js`) uses the current date as a random seed. This ensures every user globally sees the exact same "Film of the Day" without requiring a centralized backend database.
+### Deterministic Recommendation System
+A client-side algorithm (`src/services/recommendationEngine.js`) uses the current date as a seed to generate recommendations. This ensures consistent "Film of the Day" selection across all global users without needing a backend database.
 
-### 2. Cinematic Dossier Interface (v3.0)
-The "Why" section features a classified military aesthetic:
-*   **Industrial Data Cards**: Corner-bracketed containers with scan-line hover effects.
-*   **Phantom Typewriter**: A kinetic typography engine that types out reviews without layout shifts.
-*   **Real-Time Intelligence**: Dynamic SVG gauges and sparklines visualizing financial and audience metrics.
+### Industrial UI/UX Design
+The interface adopts an "Industrial Dossier" aesthetic featuring:
+*   **Data Cards**: Interactive containers with hover states.
+*   **Kinetic Typography**: Typewriter-style text rendering for reviews.
+*   **Data Visualization**: Visual representations of financial and audience metrics.
 
-### 3. Visual Persistence System
-Implemented a "Stale-While-Revalidate" strategy that prevents black-screen flashes during navigation. The UI holds the previous state until the new data is fully resolved, creating a seamless, app-like feel.
+### Navigation State Management
+Uses a "Stale-While-Revalidate" approach to transitions. The previous UI state persists until new data resolves, eliminating screen flicker and providing a smoother user experience.
 
 ---
 
-## 🛠 Project Architecture
+## Architecture
 
 *   **Core**: React 19, Vite, TypeScript
-*   **Styling**: Tailwind CSS (Custom "Industrial" Config)
-*   **Animation**: Framer Motion (Page transitions, Micro-interactions)
-*   **Data Source**: TMDB API (The Movie Database)
-*   **Deployment**: Vercel (Serverless Proxy for API security)
+*   **Styling**: Tailwind CSS
+*   **Animation**: Framer Motion
+*   **Data Source**: TMDB API
+*   **Deployment**: Vercel
 
-```
+```text
 src/
-├── components/         # Reusable UI atoms (AnalysisGrid, DailyContextSidebar)
-├── config/             # Strategic configuration (Curation Rules)
-├── hooks/              # Custom logic (useMovies, useScrollRestoration)
-├── pages/              # Route views (Home, MovieDetail, About)
-└── services/           # Business logic (Recommendation Engine)
+├── components/         # Reusable UI atoms
+├── config/             # Configuration files
+├── hooks/              # Custom React hooks
+├── pages/              # Route views
+└── services/           # Business logic
 ```
 
 ---
 
-## 🚀 Quick Start
+## Development Setup
 
 1.  **Install dependencies:**
     ```bash
@@ -76,26 +76,23 @@ src/
 
 ---
 
-## 📜 Engineering Release Log
+## Version History
 
-### v3.0.0 (FINAL): The "Immersion" Update
-*Focus: Deep Interaction & Visual Intelligence*
-*   **Cinematic Dossier**: Full redesign of the analysis section into a "Classified Intel" format with industrial grids and kinetic type.
-*   **Financial Intelligence**: Integrated real-time Budget, Revenue, and ROI metrics to provide high-value context.
-*   **Creative Context**: Shifted sidebar focus from generic stats to "Visionary" (Director) and "Starring" (Cast) billing.
-*   **Visual Persistence**: Solved navigation "blinking" by persisting stale UI states during data fetches.
+### v3.0.0 (FINAL)
+*   **Cinematic Dossier**: Redesigned analysis section with grid layout.
+*   **Financial Metrics**: Added budget, revenue, and ROI data.
+*   **Sidebar Updates**: Focused on Director and Cast information.
+*   **Visual Persistence**: Fixed navigation flickering.
 
-### v2.0.0: The "Aesthetic" Update
-*Focus: Atmosphere & Core Engines*
-*   **Native Canvas Engine**: Browser-native generation of sharable social assets (Posters/Stories) without cross-origin tainting.
-*   **Atmosphere System**: "Let the Light In" lighting calibration and grainy noise overlays for texture.
-*   **Global Time Sync**: Solved the "Tomorrow's Movie" timezone leak by locking recommendations to local client time.
+### v2.0.0
+*   **Canvas Engine**: Added browser-native asset generation.
+*   **Visual Atmosphere**: Implemented lighting calibration and noise overlays.
+*   **Time Sync**: Localized recommendation locking.
 
-### v1.0.0: The "Foundation"
-*Focus: Architecture & Security*
-*   **Hybrid Proxy**: Dual-strategy API proxy (Serverless/Middleware) to secure TMDB keys.
-*   **Edge Caching**: Redis-backed caching for high-volume API requests.
-*   **PWA Readiness**: Manifest configuration for native-like mobile installation.
+### v1.0.0
+*   **Architecture**: Initial setup with React and Vite.
+*   **Security**: API key protection.
+*   **PWA**: Manifest configuration.
 
 ---
 
