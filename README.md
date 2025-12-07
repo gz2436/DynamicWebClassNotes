@@ -41,9 +41,9 @@ The codebase is organized chronologically, reflecting the weekly curriculum and 
 
 ### Curriculum_Progression
 
-**Week 01: Course Overview**
+*   **Week 01: Course Overview**
 
-[![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
+    [![Dynamic_Web_F25_Graduate](https://img.shields.io/badge/Dynamic_Web_F25_Graduate-000000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/kadee80/dynamic_web_f25_graduate)
 
 *   **Week 02-05: Foundations**
     *   Introduction to HTML5, CSS3, and JavaScript (ES6+).
