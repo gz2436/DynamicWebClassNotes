@@ -72,7 +72,7 @@ const Feedback: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-10 md:pt-24 space-y-8 md:space-y-24 relative z-10"
+                className="max-w-4xl mx-auto pt-20 md:pt-24 space-y-8 md:space-y-24 relative z-10"
             >
 
                 {/* Header Section */}
