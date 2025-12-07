@@ -1,38 +1,67 @@
-# Daily Film
+# DAILY FILM
+
+[![Live Demo](https://img.shields.io/badge/Live_Demo-daily--film.vercel.app-00ff41?style=for-the-badge&logo=vercel)](https://daily-film.vercel.app/)
+[![React 19](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
 **DAILY FILM** is a cinematic discovery platform with a rigorous industrial aesthetic. It stands against the "choice paralysis" of modern streaming by offering **one single, curated film per day**.
 
-Built with **React 19**, **Vite**, and **Tailwind CSS**, it features a sophisticated client-side recommendation engine that deterministically selects movies based on date, theme, and premiere schedules—without requiring a backend database.
+> "The antidote to algorithmic fatigue."
 
 ---
 
-### Engineering Release Log
+## 📸 Visual Showcase
 
-**v2.0: Visual Overhaul & Performance**
-*   **Native Canvas Rendering**: Replaced `html2canvas` with native `CanvasRenderingContext2D` to solve cross-origin tainting and pixel-fuzzy rendering.
-*   **Atmosphere Calibration**: Implemented "Let the Light In" strategy (Hero Opacity 60% → 80%, removed `multiply` blends) to solve visual "suffocation".
-*   **Industrial UI Language**: Implemented **Glitch Effects** and **Bionic Reading** (highlighting initial letters) to enhance data readability and brand identity.
-*   **Dual-Mode Poster Engine**: Engineered a responsive generator outputting 16:9 Cinematic wallpapers (Desktop) and 9:16 Story assets (Mobile).
-*   **Alternate Vision Engine**: Algorithmic selection of "B-Side" wallpapers for detail pages. Filters for high-res alternate angles to prevent visual redundancy.
-*   **Local Timezone Synchronization**: Switched from strict UTC to Local System Time. Solved the issue where "Tomorrow's Movie" appeared prematurely for users in Western timezones (e.g., EST evenings).
-*   **WYSIWYG Synchronization**: Aligned Canvas calculation engine strictly with DOM Tailwind classes (e.g., Padding 48px) for pixel-perfect downloads.
+<div align="center">
+  <img src="docs/home_dossier.png" alt="Cinematic Dossier" width="100%" />
+  <p><em>The v3.0 Dossier Interface: Industrial Grids & Real-Time Intelligence</em></p>
+</div>
 
-**v1.5: Core Systems & Resiliency**
-*   **Dual-Strategy Proxy**: Engineered a hybrid proxy (Serverless for Prod, Middleware for Dev) to secure the TMDB API Key.
-*   **Edge Caching Layer**: Integrated Vercel KV (Redis) to cache high-volume API responses, reducing latency from 300ms to <20ms.
-*   **Axios Interceptor**: Implemented global request interception with **Exponential Backoff Retry** logic to handle API timeouts gracefully.
-*   **Deterministic Algorithm**: Designed a "Seeded Chaos" recommendation engine using the current date (`YYYY-MM-DD`) as a seed for global content synchronization.
+<br/>
 
-**v1.0: Foundation & UX**
-*   **PWA Readiness**: Configured `manifest.json` and meta tags for native-like installability on mobile devices (Add to Home Screen).
-*   **Smart State Management**: Implemented `useScrollRestoration` hook and `sessionStorage` caching to persist scroll positions and API data across navigation.
-*   **Dynamic Open Graph**: Implemented dynamic SEO meta tags (`og:image`) for rich social link previews.
-*   **Resilient Fallback System**: Engineered cascading image loaders (`ImageWithFallback`) to prevent broken UI states.
-*   **Vite Architecture**: Migrated from Next.js to Vite for optimized static deployment.
+<div align="center">
+  <img src="docs/movie_detail.png" alt="Detail View" width="100%" />
+  <p><em>Detail View: Native Canvas-Generated Posters & Contextual Metadata</em></p>
+</div>
 
 ---
 
-## Quick Start
+## ⚡️ Key Engineering Features
+
+### 1. No-Database Recommendation Engine
+A deterministic algorithm (`src/services/recommendationEngine.js`) uses the current date as a random seed. This ensures every user globally sees the exact same "Film of the Day" without requiring a centralized backend database.
+
+### 2. Cinematic Dossier Interface (v3.0)
+The "Why" section features a classified military aesthetic:
+*   **Industrial Data Cards**: Corner-bracketed containers with scan-line hover effects.
+*   **Phantom Typewriter**: A kinetic typography engine that types out reviews without layout shifts.
+*   **Real-Time Intelligence**: Dynamic SVG gauges and sparklines visualizing financial and audience metrics.
+
+### 3. Visual Persistence System
+Implemented a "Stale-While-Revalidate" strategy that prevents black-screen flashes during navigation. The UI holds the previous state until the new data is fully resolved, creating a seamless, app-like feel.
+
+---
+
+## 🛠 Project Architecture
+
+*   **Core**: React 19, Vite, TypeScript
+*   **Styling**: Tailwind CSS (Custom "Industrial" Config)
+*   **Animation**: Framer Motion (Page transitions, Micro-interactions)
+*   **Data Source**: TMDB API (The Movie Database)
+*   **Deployment**: Vercel (Serverless Proxy for API security)
+
+```
+src/
+├── components/         # Reusable UI atoms (AnalysisGrid, DailyContextSidebar)
+├── config/             # Strategic configuration (Curation Rules)
+├── hooks/              # Custom logic (useMovies, useScrollRestoration)
+├── pages/              # Route views (Home, MovieDetail, About)
+└── services/           # Business logic (Recommendation Engine)
+```
+
+---
+
+## 🚀 Quick Start
 
 1.  **Install dependencies:**
     ```bash
@@ -47,39 +76,28 @@ Built with **React 19**, **Vite**, and **Tailwind CSS**, it features a sophistic
 
 ---
 
-## Technical Architecture
+## 📜 Engineering Release Log
 
-*   **Core**: React 19, Vite
-*   **Styling**: Tailwind CSS (Utility-first, Custom "Industrial" Config)
-*   **Animation**: Framer Motion (Page transitions, Micro-interactions)
-*   **Data**: TMDB API (The Movie Database)
-*   **Routing**: React Router DOM v7
-*   **Proxy**: Vercel Serverless Function + Vite Plugin Middleware
+### v3.0.0 (FINAL): The "Immersion" Update
+*Focus: Deep Interaction & Visual Intelligence*
+*   **Cinematic Dossier**: Full redesign of the analysis section into a "Classified Intel" format with industrial grids and kinetic type.
+*   **Financial Intelligence**: Integrated real-time Budget, Revenue, and ROI metrics to provide high-value context.
+*   **Creative Context**: Shifted sidebar focus from generic stats to "Visionary" (Director) and "Starring" (Cast) billing.
+*   **Visual Persistence**: Solved navigation "blinking" by persisting stale UI states during data fetches.
 
-### Key Engineering Features
-*   **Zero-DB Recommendation Engine**: A custom deterministic algorithm (`src/services/recommendationEngine.js`) uses the current date as a seed to generate unique daily picks.
-*   **Secure API Proxy**: A dual-strategy proxy architecture ensures the TMDB API Key is never exposed to the client. Requests are routed through a Node.js Serverless function (Production) or a robust Vite middleware (Development/Preview).
-*   **Config-Driven Curation**: All curation logic (Weekly Themes, Holiday Rules, Manual Overrides) is decoupled in `src/config/curation.js`.
-*   **Component Architecture**: Complex views like `Home.jsx` are decomposed into atomic sub-components (`HomeHero`, `DailyContextSidebar`, `AnalysisGrid`) for maintainability.
+### v2.0.0: The "Aesthetic" Update
+*Focus: Atmosphere & Core Engines*
+*   **Native Canvas Engine**: Browser-native generation of sharable social assets (Posters/Stories) without cross-origin tainting.
+*   **Atmosphere System**: "Let the Light In" lighting calibration and grainy noise overlays for texture.
+*   **Global Time Sync**: Solved the "Tomorrow's Movie" timezone leak by locking recommendations to local client time.
 
----
-
-
----
-
-## Project Structure
-
-```
-src/
-├── components/         # Reusable UI atoms
-│   ├── home/           # Home-specific ecosystem (Hero, Sidebar, Grid)
-│   └── ...
-├── config/             # Strategic configuration (Curation Rules)
-├── hooks/              # Custom logic (ScrollRestoration)
-├── pages/              # Route views
-└── services/           # Business logic (TMDB API, Recommendation Engine)
-```
+### v1.0.0: The "Foundation"
+*Focus: Architecture & Security*
+*   **Hybrid Proxy**: Dual-strategy API proxy (Serverless/Middleware) to secure TMDB keys.
+*   **Edge Caching**: Redis-backed caching for high-volume API requests.
+*   **PWA Readiness**: Manifest configuration for native-like mobile installation.
 
 ---
 
 *Data provided by The Movie Database (TMDb).*
+*Lead Engineer: Gavin Zhang | Fall 2025*

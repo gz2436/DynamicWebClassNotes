@@ -1,22 +1,23 @@
 import React, { Suspense, lazy, useState, useEffect } from 'react';
+// Force Refresh 2
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
-import PageLoader from './components/PageLoader';
-import ScrollManager from './components/ScrollManager';
+import PageLoader from './components/PageLoader.tsx';
+import ScrollManager from './components/ScrollManager.tsx';
 import { AnimatePresence } from 'framer-motion';
 
 // Eager load critical pages
-import Home from './pages/Home';
-import Layout from './components/Layout';
+import Home from './pages/Home.tsx';
+import NotFound from './pages/NotFound.tsx';
+import Layout from './components/Layout.tsx';
 
 // Lazy load secondary pages
-const MovieDetail = lazy(() => import('./pages/MovieDetail'));
-const CategoryPage = lazy(() => import('./pages/CategoryPage'));
-const Manifesto = lazy(() => import('./pages/Manifesto'));
-const About = lazy(() => import('./pages/About'));
-const PersonDetail = lazy(() => import('./pages/PersonDetail'));
-const CompanyDetail = lazy(() => import('./pages/CompanyDetail'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Feedback = lazy(() => import('./pages/Feedback'));
+const MovieDetail = lazy(() => import('./pages/MovieDetail.tsx'));
+const CategoryPage = lazy(() => import('./pages/CategoryPage.tsx'));
+const Manifesto = lazy(() => import('./pages/Manifesto.tsx'));
+const About = lazy(() => import('./pages/About.tsx'));
+const PersonDetail = lazy(() => import('./pages/PersonDetail.tsx'));
+const CompanyDetail = lazy(() => import('./pages/CompanyDetail.tsx'));
+const Feedback = lazy(() => import('./pages/Feedback.tsx'));
 
 // Loading Fallback
 
