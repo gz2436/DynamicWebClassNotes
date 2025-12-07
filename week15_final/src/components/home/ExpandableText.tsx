@@ -62,7 +62,7 @@ const ExpandableSection: React.FC<ExpandableSectionProps> = ({ text }) => {
             {isLong && (
                 <button
                     onClick={() => setIsExpanded(!isExpanded)}
-                    className="text-[10px] uppercase font-bold tracking-widest text-[#00ff41] hover:text-white flex items-center gap-2 mt-2 select-none"
+                    className="text-[10px] uppercase font-bold tracking-widest text-[#00ff41] hover:text-white flex items-center gap-2 mt-2 select-none md:ml-auto"
                 >
                     {isExpanded ? 'COLLAPSE [-]' : 'READ_FULL_DOSSIER [+]'}
                 </button>

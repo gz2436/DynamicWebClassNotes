@@ -59,7 +59,7 @@ const Manifesto: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-32 space-y-12 md:space-y-16 relative z-10"
+                className="max-w-4xl mx-auto pt-24 space-y-12 md:space-y-16 relative z-10"
             >
 
                 {/* Title Section */}

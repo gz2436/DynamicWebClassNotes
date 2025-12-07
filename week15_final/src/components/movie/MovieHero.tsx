@@ -168,7 +168,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({
             <div className="relative z-50 h-full w-full flex flex-col p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none">
 
                 {/* Top Bar - Spacer for Global Header */}
-                <div className="relative w-full h-16 md:h-20 shrink-0 pointer-events-none" />
+                <div className="relative w-full h-24 md:h-20 shrink-0 pointer-events-none" />
 
                 {/* Center Content: Title & Specs */}
                 <div className="flex-1 flex flex-col items-center justify-center text-center gap-4 z-20 pointer-events-auto min-h-0">
@@ -195,23 +195,23 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                     </h1>
 
                     {/* Specs Row - Centered Integers */}
-                    <div className="flex flex-wrap items-center justify-center gap-3 md:gap-6 text-xs md:text-sm font-bold uppercase tracking-wider text-white/80 mt-2">
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-6 text-[10px] md:text-sm font-bold uppercase tracking-wider text-white/80 mt-4 md:mt-2">
                         {/* Rating */}
                         <div className="flex items-center gap-2">
                             <span className="text-white/40">RATING</span>
                             <span className="bg-white/10 px-2 py-0.5 rounded text-white">{(movie.vote_average || 0).toFixed(1)}</span>
                         </div>
-                        <span className="text-white/20">/</span>
+                        <span className="text-white/20 hidden md:inline">/</span>
 
                         {/* Runtime */}
                         <div className="flex items-center gap-2">
                             <span className="text-white/40">TIME</span>
                             <span>{movie.runtime} MIN</span>
                         </div>
-                        <span className="text-white/20">/</span>
+                        <span className="text-white/20 hidden md:inline">/</span>
 
                         {/* Genre */}
-                        <div className="text-white/90">
+                        <div className="text-white/90 w-full md:w-auto text-center">
                             {(movie.genres || []).slice(0, 3).map(g => g.name).join(' · ')}
                         </div>
                     </div>
@@ -221,13 +221,13 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                 </div>
 
                 {/* Bottom: Action Buttons - Centered */}
-                <div className="w-full flex justify-center items-end pb-safe shrink-0 z-30 pointer-events-auto mt-8 mb-8 md:mb-10">
-                    <div className="flex items-center gap-4">
+                <div className="w-full flex justify-center items-end pb-safe shrink-0 z-30 pointer-events-auto mt-6 mb-8 md:mb-10">
+                    <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 w-full">
 
                         {/* Engagement: Seen It */}
                         <button
                             onClick={toggleSeen}
-                            className={`group border ${isSeen ? 'border-green-500/50 bg-green-500/20 text-green-400' : 'border-white/20 bg-black/40 text-white/60'} backdrop-blur-md px-3 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 w-10 md:w-auto hover:border-white hover:text-black rounded-none`}
+                            className={`group border ${isSeen ? 'border-green-500/50 bg-green-500/20 text-green-400' : 'border-white/20 bg-black/40 text-white/60'} backdrop-blur-md px-3 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 min-w-[3.5rem] md:min-w-0 md:w-auto hover:border-white hover:text-black rounded-none`}
                             title={isSeen ? "Seen" : "Mark as Seen"}
                         >
                             {isSeen ? <Check className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -237,7 +237,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                         {/* Engagement: Bucket List */}
                         <button
                             onClick={toggleBucket}
-                            className={`group border ${isInBucket ? 'border-orange-500/50 bg-orange-500/20 text-orange-400' : 'border-white/20 bg-black/40 text-white/60'} backdrop-blur-md px-3 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 w-10 md:w-auto hover:border-white hover:text-black rounded-none`}
+                            className={`group border ${isInBucket ? 'border-orange-500/50 bg-orange-500/20 text-orange-400' : 'border-white/20 bg-black/40 text-white/60'} backdrop-blur-md px-3 py-2 text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-all flex items-center justify-center gap-2 min-w-[3.5rem] md:min-w-0 md:w-auto hover:border-white hover:text-black rounded-none`}
                             title={isInBucket ? "In Bucket List" : "Add to Bucket List"}
                         >
                             {isInBucket ? <Bookmark className="w-4 h-4 fill-current" /> : <Plus className="w-4 h-4" />}

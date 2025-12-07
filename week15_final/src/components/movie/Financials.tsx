@@ -10,6 +10,7 @@ interface FinancialsProps {
 const Financials: React.FC<FinancialsProps> = ({ movie }) => {
     const budget = movie.budget || 0;
     const revenue = movie.revenue || 0;
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
     const financialData = [
         { name: 'Budget', value: budget, color: '#333333' },
@@ -24,12 +25,13 @@ const Financials: React.FC<FinancialsProps> = ({ movie }) => {
     return (
         <div className="px-10 py-6 md:p-12 border-r border-white/10 flex flex-col h-full">
             <h3 className="text-xs uppercase tracking-widest text-white/50 mb-6 font-mono flex items-center gap-2">
-                <DollarSign className="h-4 w-4" /> // FINANCIAL_METRICS
+                <DollarSign className="hidden md:block h-4 w-4" /> // FINANCIAL_METRICS
             </h3>
 
-            <div className="flex flex-col md:flex-row gap-8 flex-1">
-                {/* Chart (Responsive) */}
-                <div className="w-full md:w-48 h-48 border border-white/10 bg-white/5 p-2 shrink-0">
+            {/* Mobile: Row Layout (Chart Left, Data Right) */}
+            <div className="flex flex-row gap-4 md:gap-8 flex-1 items-center md:items-stretch">
+                {/* Chart (Fixed small width on mobile) */}
+                <div className="w-24 h-24 md:w-48 md:h-48 border border-white/10 bg-white/5 p-1 md:p-2 shrink-0">
                     <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={financialData}>
                             <Tooltip
@@ -38,8 +40,7 @@ const Financials: React.FC<FinancialsProps> = ({ movie }) => {
                                 itemStyle={{ color: '#fff' }}
                                 formatter={(value: number) => formatCurrency(value)}
                             />
-                            <Legend iconSize={8} wrapperStyle={{ fontSize: '10px', textTransform: 'uppercase', opacity: 0.5 }} />
-                            <Bar dataKey="value" radius={[0, 0, 0, 0]} barSize={20}>
+                            <Bar dataKey="value" radius={[0, 0, 0, 0]} barSize={isMobile ? 10 : 20} isAnimationActive={false}>
                                 {financialData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={entry.color} stroke="transparent" />
                                 ))}
@@ -48,33 +49,33 @@ const Financials: React.FC<FinancialsProps> = ({ movie }) => {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Data Points (Right, Distributed Top/Bottom) */}
-                <div className="flex flex-col justify-between py-1 text-right flex-1 items-end">
+                {/* Data Points (Right) */}
+                <div className="flex flex-col justify-between py-1 text-right flex-1 min-w-0">
                     {/* Top: Popularity & Vote */}
-                    <div className="space-y-2 w-full">
-                        <div className="flex justify-end items-baseline gap-3">
-                            <span className="text-[10px] text-white/40 uppercase tracking-wider">POPULARITY</span>
-                            <span className="text-xs font-mono font-bold">{movie.popularity?.toFixed(0)}</span>
+                    <div className="space-y-1 md:space-y-2 w-full mb-auto">
+                        <div className="flex justify-between md:justify-end items-center md:items-baseline gap-2">
+                            <span className="text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider">POPULARITY</span>
+                            <span className="text-[10px] md:text-xs font-mono font-bold">{movie.popularity?.toFixed(0)}</span>
                         </div>
-                        <div className="flex justify-end items-baseline gap-3">
-                            <span className="text-[10px] text-white/40 uppercase tracking-wider">VOTE_COUNT</span>
-                            <span className="text-xs font-mono font-bold">{movie.vote_count}</span>
+                        <div className="flex justify-between md:justify-end items-center md:items-baseline gap-2">
+                            <span className="text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider">VOTE_COUNT</span>
+                            <span className="text-[10px] md:text-xs font-mono font-bold">{movie.vote_count}</span>
                         </div>
                     </div>
 
                     {/* Bottom: Budget, Revenue, ROI */}
-                    <div className="space-y-2 w-full">
-                        <div className="flex justify-end items-baseline gap-3 border-b border-white/10 pb-1">
-                            <span className="text-[10px] text-white/40 uppercase tracking-wider">BUDGET</span>
-                            <span className="text-xs font-mono font-bold">{formatCurrency(movie.budget)}</span>
+                    <div className="space-y-1 md:space-y-2 w-full mt-2">
+                        <div className="flex justify-between md:justify-end items-center md:items-baseline gap-2 border-b border-white/10 pb-0.5">
+                            <span className="text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider">BUDGET</span>
+                            <span className="text-[10px] md:text-xs font-mono font-bold truncate">{formatCurrency(movie.budget)}</span>
                         </div>
-                        <div className="flex justify-end items-baseline gap-3 border-b border-white/10 pb-1">
-                            <span className="text-[10px] text-white/40 uppercase tracking-wider">REVENUE</span>
-                            <span className="text-xs font-mono font-bold">{formatCurrency(movie.revenue)}</span>
+                        <div className="flex justify-between md:justify-end items-center md:items-baseline gap-2 border-b border-white/10 pb-0.5">
+                            <span className="text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider">REVENUE</span>
+                            <span className="text-[10px] md:text-xs font-mono font-bold truncate">{formatCurrency(movie.revenue)}</span>
                         </div>
-                        <div className="flex justify-end items-baseline gap-3 border-b border-white/10 pb-1">
-                            <span className="text-[10px] text-white/40 uppercase tracking-wider">ROI</span>
-                            <span className="text-xs font-mono font-bold text-emerald-500">
+                        <div className="flex justify-between md:justify-end items-center md:items-baseline gap-2 border-b border-white/10 pb-0.5">
+                            <span className="text-[9px] md:text-[10px] text-white/40 uppercase tracking-wider">ROI</span>
+                            <span className="text-[10px] md:text-xs font-mono font-bold text-emerald-500">
                                 {movie.budget > 0 ? ((movie.revenue - movie.budget) / movie.budget * 100).toFixed(1) + '%' : 'N/A'}
                             </span>
                         </div>

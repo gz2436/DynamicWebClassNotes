@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid3x3, Shuffle, Eye, Check, Bookmark, Plus } from 'lucide-react';
+import { Play, Info, Plus, Check, Eye, Shuffle, Bookmark, Grid3x3, MoreVertical, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlitchLogo from '../GlitchLogo';
 import CalendarDropdown from '../CalendarDropdown.tsx';
@@ -36,7 +36,32 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
+    const [showTrailer, setShowTrailer] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
+    const [isIdle, setIsIdle] = useState(false);
+    const idleTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const resetIdleTimer = () => {
+        setIsIdle(false);
+        if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        idleTimerRef.current = setTimeout(() => {
+            setIsIdle(true);
+        }, 3000); // Hide after 3 seconds of inactivity
+    };
+
+    // Clean up timer on unmount or when modal closes
+    useEffect(() => {
+        if (!showTrailer) {
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+            setIsIdle(false);
+        } else {
+            resetIdleTimer();
+        }
+        return () => {
+            if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+        };
+    }, [showTrailer]);
     const { isSeen, isInBucket, toggleSeen, toggleBucket } = useEngagement(movie.id);
 
     // Refs
@@ -76,7 +101,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
     }, [isDiscoverOpen, isCalendarOpen]);
 
     // TRAILER LOGIC
-    const [showTrailer, setShowTrailer] = useState(false);
+
     const trailer = movie?.videos?.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube') || movie?.videos?.results?.find(v => v.site === 'YouTube');
 
     // Handle ESC key to close trailer
@@ -100,24 +125,18 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="fixed inset-0 z-[200] bg-black flex items-center justify-center p-4 md:p-12"
+                        className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center p-4 md:p-12"
+                        onMouseMove={() => resetIdleTimer()}
+                        onTouchStart={() => resetIdleTimer()}
+                        onClick={() => resetIdleTimer()}
                     >
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setShowTrailer(false)}
-                            className="absolute top-6 right-6 md:top-12 md:right-12 z-50 text-white/50 hover:text-white transition-colors flex items-center gap-2 group"
-                        >
-                            <span className="text-xs font-mono tracking-widest hidden md:block group-hover:tracking-[0.2em] transition-all">CLOSE THEATER</span>
-                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-
                         {/* Iframe Container */}
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
                             transition={{ delay: 0.2, duration: 0.4 }}
-                            className="w-full max-w-6xl aspect-video bg-black shadow-2xl relative overflow-hidden ring-1 ring-white/10"
+                            className="w-full max-w-6xl aspect-video bg-black shadow-2xl relative overflow-hidden ring-1 ring-white/10 shrink-0"
                         >
                             <iframe
                                 src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`}
@@ -127,6 +146,16 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 allowFullScreen
                             ></iframe>
                         </motion.div>
+
+                        {/* Close Button (Below Video, Auto-Hide) */}
+                        <div className={`mt-8 md:mt-10 transition-opacity duration-500 ${isIdle ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                            <button
+                                onClick={() => setShowTrailer(false)}
+                                className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/50 hover:bg-white hover:text-black transition-all flex items-center justify-center group"
+                            >
+                                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -262,63 +291,185 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                        Mobile: 2 Columns (Vertical Stacks)
                        Desktop: Single Row (Horizontal) 
                     */}
-                    <div className="flex flex-row items-end gap-2 md:gap-0 ml-4 mb-0 md:mb-1 mr-4 md:mr-0">
+                    {/* Desktop Action Group (Hidden on Mobile) */}
+                    <div className="hidden md:flex flex-row items-center gap-2 ml-4 mb-1 mr-0">
 
-                        {/* Group 1: Personal (Mobile: Col, Desktop: Row) */}
-                        <div className="flex flex-col md:flex-row items-end gap-2 md:gap-2">
+                        {/* Group 1: Personal */}
+                        <div className="flex flex-row items-center gap-2">
                             <button
                                 onClick={toggleSeen}
-                                className={`border ${isSeen ? 'border-green-500/50 bg-green-500/20 text-green-400' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none`}
+                                className={`border ${isSeen ? 'border-green-500/50 bg-green-500/20 text-green-400' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-auto h-auto rounded-none`}
                                 title={isSeen ? "Seen" : "Mark as Seen"}
                             >
                                 {isSeen ? <Check className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                <span className="hidden md:inline">{isSeen ? 'SEEN' : 'SEEN'}</span>
+                                <span>{isSeen ? 'SEEN' : 'SEEN'}</span>
                             </button>
 
                             <button
                                 onClick={toggleBucket}
-                                className={`border ${isInBucket ? 'border-orange-500/50 bg-orange-500/20 text-orange-400' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none`}
+                                className={`border ${isInBucket ? 'border-orange-500/50 bg-orange-500/20 text-orange-400' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-auto h-auto rounded-none`}
                                 title={isInBucket ? "In Bucket List" : "Add to Bucket List"}
                             >
                                 {isInBucket ? <Bookmark className="w-4 h-4 fill-current" /> : <Plus className="w-4 h-4" />}
-                                <span className="hidden md:inline">{isInBucket ? 'LIST' : 'LIST'}</span>
+                                <span>{isInBucket ? 'LIST' : 'LIST'}</span>
                             </button>
                         </div>
 
-                        {/* Divider (Desktop Only) */}
-                        <div className="hidden md:block w-px h-8 bg-white/20 mx-3"></div>
+                        {/* Divider (Vertically Centered, no extra margin, relying on parent gap) */}
+                        <div className="w-px h-8 bg-white/20 self-center"></div>
 
-                        {/* Group 2: Media (Mobile: Col, Desktop: Row) */}
-                        <div className="flex flex-col md:flex-row items-end gap-2 md:gap-2">
-                            {trailer && (
-                                <button
-                                    onClick={() => setShowTrailer(true)}
-                                    className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none"
-                                    title="Play Trailer"
-                                >
-                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
-                                    <span className="hidden md:inline">TRAILER</span>
-                                </button>
-                            )}
-
+                        {/* Group 2: Media */}
+                        <div className="flex flex-row items-center gap-2">
                             <button
                                 onClick={() => setIsShareOpen(true)}
-                                className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none"
+                                className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-auto h-auto rounded-none"
                                 title="Share"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
-                                <span className="hidden md:inline">SHARE</span>
+                                <span>SHARE</span>
                             </button>
 
                             <button
                                 onClick={handleRandomNavigation}
-                                className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-10 h-10 md:w-auto md:h-auto rounded-none"
+                                className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-auto h-auto rounded-none"
                                 title="Switch to another candidate"
                             >
                                 <Shuffle className="w-4 h-4" />
-                                <span className="hidden md:inline">REROLL</span>
+                                <span>REROLL</span>
                             </button>
+
+                            {trailer && (
+                                <button
+                                    onClick={() => setShowTrailer(true)}
+                                    className="border border-white/20 bg-black/20 backdrop-blur-sm p-2 md:p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors flex items-center justify-center gap-2 w-auto h-auto rounded-none"
+                                    title="Play Trailer"
+                                >
+                                    <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
+                                    <span>TRAILER</span>
+                                </button>
+                            )}
                         </div>
+                    </div>
+
+                    {/* Mobile Control Panel (Expandable Play Stack) */}
+                    <div className="md:hidden flex flex-col items-end gap-0 mb-1 ml-4 mr-4 relative">
+
+                        {/* Expandable Menu (Absolute Positioned Upwards) */}
+                        <AnimatePresence>
+                            {isMobileMenuOpen && (
+                                <motion.div
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    variants={{
+                                        hidden: { opacity: 1 },
+                                        visible: {
+                                            opacity: 1,
+                                            transition: {
+                                                staggerChildren: 0.08,
+                                                delayChildren: 0,
+                                                staggerDirection: -1 // Start from bottom (Reroll) to top (Share)
+                                            }
+                                        },
+                                        exit: {
+                                            opacity: 0,
+                                            transition: {
+                                                staggerChildren: 0.05,
+                                                staggerDirection: 1 // Start from top (Share) to bottom (Reroll)
+                                            }
+                                        }
+                                    }}
+                                    className="absolute bottom-[calc(100%)] right-0 flex flex-col gap-0 p-0 bg-transparent z-50 w-12 items-center"
+                                >
+                                    {/* Menu Items Order: Share (Top) -> Seen -> List -> Reroll */}
+                                    {/* Unified Background: bg-black/20 (Lighter Glass) to match Trigger & Play */}
+
+                                    {/* SHARE - Closes Menu */}
+                                    <motion.button
+                                        variants={{
+                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
+                                            visible: { opacity: 1, y: 0, scale: 1 },
+                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                        }}
+                                        onClick={() => {
+                                            setIsShareOpen(true);
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                        className="w-12 h-12 flex items-center justify-center border-x border-t border-b-0 border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-black transition-colors"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
+                                    </motion.button>
+
+                                    {/* SEEN - Keeps Menu Open */}
+                                    <motion.button
+                                        variants={{
+                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
+                                            visible: { opacity: 1, y: 0, scale: 1 },
+                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                        }}
+                                        onClick={() => {
+                                            toggleSeen();
+                                            // No Auto-Close
+                                        }}
+                                        className={`w-12 h-12 flex items-center justify-center border-x border-t border-b-0 ${isSeen ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300`}
+                                    >
+                                        {isSeen ? <Check className="w-5 h-5 drop-shadow-[0_0_3px_rgba(74,222,128,0.5)]" strokeWidth={3} /> : <Eye className="w-5 h-5" strokeWidth={2.5} />}
+                                    </motion.button>
+
+                                    {/* LIST - Keeps Menu Open */}
+                                    <motion.button
+                                        variants={{
+                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
+                                            visible: { opacity: 1, y: 0, scale: 1 },
+                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                        }}
+                                        onClick={() => {
+                                            toggleBucket();
+                                            // No Auto-Close
+                                        }}
+                                        className={`w-12 h-12 flex items-center justify-center border-x border-t border-b-0 ${isInBucket ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300`}
+                                    >
+                                        {isInBucket ? <Bookmark className="w-5 h-5 fill-current drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" /> : <Plus className="w-5 h-5" strokeWidth={3} />}
+                                    </motion.button>
+
+                                    {/* REROLL - Closes Menu (Navigation) */}
+                                    <motion.button
+                                        variants={{
+                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
+                                            visible: { opacity: 1, y: 0, scale: 1 },
+                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                        }}
+                                        onClick={() => {
+                                            handleRandomNavigation();
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                        className="w-12 h-12 flex items-center justify-center border-x border-t border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-black transition-colors"
+                                    >
+                                        <Shuffle className="w-5 h-5" strokeWidth={2.5} />
+                                    </motion.button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        {/* Trigger Button (Menu) */}
+                        {/* Active State: Background stays bg-black/20 (lighter glass). Removed shadow-lg. */}
+                        <button
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className={`w-12 h-12 flex items-center justify-center border ${isMobileMenuOpen ? 'border-white text-white' : 'border-white/20 text-white'} bg-black/20 backdrop-blur-md transition-all z-40`}
+                        >
+                            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <MoreVertical className="w-6 h-6" />}
+                        </button>
+
+                        {/* Play Button (Anchor) */}
+                        {/* Background aligned with Trigger (bg-black/20). Removed shadow-[...]. */}
+                        {trailer && (
+                            <button
+                                onClick={() => setShowTrailer(true)}
+                                className="w-12 h-12 flex items-center justify-center border border-white/20 bg-black/20 text-white backdrop-blur-md z-40 border-t-0"
+                            >
+                                <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                            </button>
+                        )}
                     </div>
                 </div>
 
@@ -337,15 +488,17 @@ const HomeHero: React.FC<HomeHeroProps> = ({
             </div>
 
             {/* Share Modal */}
-            {isShareOpen && (
-                <SharePosterModal
-                    movie={movie}
-                    isDaily={true} // HomeHero is theoretically the "Daily" view, but can show past dates.
-                    date={displayDate} // Explicitly pass the currently viewed date
-                    onClose={() => setIsShareOpen(false)}
-                />
-            )}
-        </div>
+            {
+                isShareOpen && (
+                    <SharePosterModal
+                        movie={movie}
+                        isDaily={true} // HomeHero is theoretically the "Daily" view, but can show past dates.
+                        date={displayDate} // Explicitly pass the currently viewed date
+                        onClose={() => setIsShareOpen(false)}
+                    />
+                )
+            }
+        </div >
     );
 };
 

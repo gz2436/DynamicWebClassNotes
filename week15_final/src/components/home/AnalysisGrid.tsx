@@ -34,7 +34,7 @@ const AnalysisGrid: React.FC<AnalysisGridProps> = ({ children, title, icon: Icon
                 </div>
 
                 {/* Content */}
-                <div className="text-white/80 text-sm font-mono leading-relaxed relative z-10">
+                <div className="text-white/80 text-sm font-mono leading-relaxed relative z-10 flex-1 flex flex-col">
                     {children}
                 </div>
 

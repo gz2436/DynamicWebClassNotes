@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, KeyboardEvent } from 'react';
 import { Link, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import BackButton from '../components/BackButton.tsx';
+// import BackButton from '../components/BackButton.tsx';
 // Removed unused imports: ArrowLeft, MovieCard, InlineBackRow
 import { getPopularMovies, getNowPlayingMovies, getUpcomingMovies, getTopRatedMovies, getImageUrl } from '../services/tmdbClient';
 import ImageWithFallback from '../components/ImageWithFallback.tsx';
@@ -202,12 +202,8 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ type, title }) => {
             transition={{ duration: 0.2, ease: "easeInOut" }}
             className="min-h-screen bg-[#080808] text-white font-mono p-6 md:p-12 pb-20"
         >
-            <div className="pt-32 md:pt-40 max-w-6xl mx-auto px-4 md:px-24 relative">
+            <div className="pt-24 md:pt-32 max-w-6xl mx-auto px-4 md:px-24 relative">
                 <div className="flex flex-col items-center text-center mb-12 gap-6">
-                    {/* Back Button (Centered) */}
-                    <div className="relative z-10 -translate-y-8 md:-translate-y-12">
-                        <BackButton />
-                    </div>
 
                     <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4">
                         {title}
@@ -273,8 +269,13 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ type, title }) => {
                     </button>
                 </div>
 
+                {/* Grid */}
                 {loading ? (
-                    <div className="text-center text-xs animate-pulse text-white/50 tracking-widest py-24">{/* Silent Loading */}</div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-12 animate-pulse">
+                        {[...Array(10)].map((_, i) => (
+                            <div key={i} className="aspect-[2/3] bg-white/5" />
+                        ))}
+                    </div>
                 ) : movies.length === 0 ? (
                     <div className="flex flex-col items-center justify-center py-24 space-y-4 opacity-50">
                         <div className="text-4xl">∅</div>
@@ -284,37 +285,46 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ type, title }) => {
                         </button>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-8">
-                        {movies
-                            .filter(m => filterGenre === 'all' || (m.genres || []).some(g => g.id === parseInt(filterGenre)) || (m.genre_ids || []).includes(parseInt(filterGenre)))
-                            // Note: genre_ids vs genres. TMDB API list response uses genre_ids. Detail uses genres.
-                            .sort((a, b) => {
-                                if (sortBy === 'popularity') return b.popularity - a.popularity;
-                                if (sortBy === 'date') return new Date(b.release_date).getTime() - new Date(a.release_date).getTime();
-                                if (sortBy === 'rating') return b.vote_average - a.vote_average;
-                                return 0;
-                            })
-                            .map(movie => (
-                                <Link key={movie.id} to={`/movie/${movie.id}`} state={{ category: type }} className="group block space-y-2">
-                                    <div className="aspect-[2/3] overflow-hidden bg-neutral-900 border border-white/10 relative">
-                                        <ImageWithFallback
-                                            src={getImageUrl(movie.poster_path, 'w500') || undefined}
-                                            alt={movie.title}
-                                            className="w-full h-full object-cover transition-transform duration-500 opacity-80 group-hover:opacity-100"
-                                        />
-                                        <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                            {/* Removed View Data text per user request */}
-                                        </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-12">
+                        {movies.map((movie, index) => (
+                            <Link
+                                key={movie.id}
+                                to={`/movie/${movie.id}`}
+                                state={{ category: type, page: page }} // Pass state for back nav logic if needed
+                                className="group block relative"
+                            >
+                                <div className="aspect-[2/3] overflow-hidden bg-[#111] mb-4 relative border border-white/0 group-hover:border-white/20 transition-all">
+                                    <ImageWithFallback
+                                        src={getImageUrl(movie.poster_path, 'w500')}
+                                        alt={movie.title}
+                                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                                        loading={index < 5 ? "eager" : "lazy"}
+                                    />
+                                    {/* ID Overlay */}
+                                    <div className="absolute top-2 right-2 text-[8px] font-mono text-white/40 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        BTC-{(movie.id % 1000).toString().padStart(3, '0')}
                                     </div>
-                                    <div>
-                                        <h3 className="text-xs font-bold uppercase truncate pr-4">{movie.title}</h3>
-                                        <div className="flex justify-between text-[10px] text-white/40 mt-1">
-                                            <span>{movie.release_date?.split('-')[0] || 'N/A'}</span>
-                                            <span>★ {movie.vote_average?.toFixed(1)}</span>
-                                        </div>
+                                </div>
+
+                                <div className="space-y-1">
+                                    <h3 className="text-xs md:text-sm font-bold uppercase tracking-tight leading-tight group-hover:text-[#00ff41] transition-colors line-clamp-1">
+                                        {movie.title}
+                                    </h3>
+                                    <div className="flex items-center justify-between text-[10px] text-white/40 font-mono">
+                                        <span>
+                                            {movie.release_date
+                                                ? new Date(movie.release_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase()
+                                                : 'TBA'}
+                                        </span>
+                                        <span className="flex items-center gap-1">
+                                            {movie.vote_average > 0 ? (
+                                                <>★ {movie.vote_average.toFixed(1)}</>
+                                            ) : 'NR'}
+                                        </span>
                                     </div>
-                                </Link>
-                            ))}
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 )}
 

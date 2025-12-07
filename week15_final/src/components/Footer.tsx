@@ -27,20 +27,25 @@ const Footer: React.FC = () => {
 
                 {/* Col 1: Brand */}
                 <div className="space-y-4">
-                    <Link
-                        to="/"
-                        state={{ resetScroll: true }}
-                        className="text-white font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity block text-base"
-                    >
-                        DAILY_FILM
-                    </Link>
-                    <p className="leading-relaxed">
-                        Experimental cinema archive.<br />
-                        Est. 2025. New York, NY.<br />
-                        <span className="inline-block mt-2 px-1.5 py-0.5 border border-white/20 rounded text-[9px] uppercase tracking-wider text-white/30">
-                            v3.0.0
-                        </span>
-                    </p>
+                    <div className="flex items-baseline gap-3">
+                        <Link
+                            to="/"
+                            state={{ resetScroll: true }}
+                            className="text-white font-bold uppercase tracking-widest cursor-pointer hover:opacity-70 transition-opacity block text-base"
+                        >
+                            DAILY_FILM
+                        </Link>
+                        {/* Interactive Version Link - Placed after Brand */}
+                        <Link to="/manifesto" className="hover:opacity-80 transition-opacity">
+                            <span className="inline-block px-1.5 py-0.5 border border-white/20 rounded text-[9px] uppercase tracking-wider text-white/30 hover:text-white hover:border-white transition-colors cursor-pointer">
+                                v3.0
+                            </span>
+                        </Link>
+                    </div>
+                    <div className="leading-relaxed text-white/60 text-sm">
+                        <p>Experimental cinema archive.</p>
+                        <p>Est. 2025. New York, NY.</p>
+                    </div>
                 </div>
 
                 {/* Col 2: Navigation */}
@@ -72,15 +77,15 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Column 4: Project */}
-                <div className="space-y-4">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40">Project</h4>
-                    <p className="text-white/60">
+                {/* Column 4: Project - Clickable */}
+                <Link to="/about" className="block space-y-4 group cursor-pointer">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">Project</h4>
+                    <p className="text-white/60 group-hover:text-white/80 transition-colors">
                         A dynamic web experiment.<br />
                         Powered by TMDB API.
                     </p>
-                    <p className="text-white/40">© 2025 Daily_Film.</p>
-                </div>
+                    <p className="text-white/40 group-hover:text-white/60 transition-colors">© 2025 Daily_Film.</p>
+                </Link>
 
             </div>
         </footer >

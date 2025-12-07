@@ -12,19 +12,24 @@ const ProductionInfo: React.FC<ProductionInfoProps> = ({ movie }) => {
     return (
         <div className="p-6 md:p-12 flex flex-col gap-8">
             {/* Production Units */}
-            <div>
-                <h3 className="text-xs uppercase tracking-widest text-white/50 mb-4 font-mono">// PRODUCTION_UNITS</h3>
-                <div className="flex flex-wrap gap-4">
-                    {(movie.production_companies || []).filter(c => c.logo_path).slice(0, 4).map(company => (
-                        <Link key={company.id} to={`/company/${company.id}`} className="bg-white p-3 h-12 flex items-center justify-center border border-white/10 hover:opacity-80 transition-opacity min-w-[80px]">
-                            <ImageWithFallback
-                                src={getImageUrl(company.logo_path, 'w300') || undefined}
+            {/* Production Units */}
+            {/* Production Companies - Colorful & Linked (Original Layout) */}
+            <h3 className="text-xs uppercase tracking-widest text-white/50 mb-1 font-mono text-left">
+                // PRODUCTION_UNITS
+            </h3>
+
+            <div className="flex flex-wrap gap-4 items-center justify-center md:justify-start">
+                {movie.production_companies?.filter(c => c.logo_path).map(company => (
+                    <Link key={company.id} to={`/company/${company.id}`} className="group relative">
+                        <div className="bg-white p-3 h-12 flex items-center justify-center border border-white/10 hover:opacity-80 transition-opacity min-w-[80px]">
+                            <img
+                                src={getImageUrl(company.logo_path || null, 'w300') || undefined}
                                 alt={company.name}
-                                className="max-h-full max-w-full object-contain brightness-0"
+                                className="h-full w-auto object-contain"
                             />
-                        </Link>
-                    ))}
-                </div>
+                        </div>
+                    </Link>
+                ))}
             </div>
 
             {/* Media Archive */}

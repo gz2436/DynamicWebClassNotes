@@ -50,7 +50,7 @@ const Feedback: React.FC = () => {
                 variants={containerVariants}
                 initial="hidden"
                 animate="show"
-                className="max-w-4xl mx-auto pt-32 space-y-24 relative z-10"
+                className="max-w-4xl mx-auto pt-24 space-y-24 relative z-10"
             >
 
                 {/* Header Section */}
@@ -138,11 +138,11 @@ const Feedback: React.FC = () => {
                                     </div>
 
                                     {/* Submit Action */}
-                                    <div className="pt-8 flex justify-end">
+                                    <div className="pt-8 flex justify-center md:justify-end">
                                         <button
                                             type="submit"
                                             disabled={status === 'SUBMITTING'}
-                                            className="group relative inline-flex items-center justify-center gap-4 bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden w-full md:w-auto"
+                                            className="group relative inline-flex items-center justify-center gap-4 bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest hover:bg-white/90 transition-all disabled:opacity-50 disabled:cursor-not-allowed overflow-hidden w-auto"
                                         >
                                             <span className="relative z-10">{status === 'SUBMITTING' ? 'Transmitting...' : 'Execute Transmission'}</span>
                                             {status === 'SUBMITTING' ? (

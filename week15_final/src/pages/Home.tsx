@@ -336,7 +336,7 @@ const Home: React.FC = () => {
                                     <ExpandableSection key={movie.id} text={selectedReview ? selectedReview.cleanContent : (movie.tagline || movie.overview)} />
                                 </div>
                                 {selectedReview && (
-                                    <div className="text-right mt-4">
+                                    <div className="text-left md:text-right mt-4">
                                         <span className="text-[10px] uppercase tracking-widest text-[#00ff41] font-mono border-b border-[#00ff41]/30 pb-1">
                                             // INTELLIGENCE_SOURCE: {selectedReview.author}
                                         </span>
@@ -365,49 +365,32 @@ const Home: React.FC = () => {
                             </AnalysisGrid>
 
                             <AnalysisGrid title="MARKET_METRICS" icon={Aperture} className="h-full">
-                                <div className="space-y-6">
-                                    {/* Dynamic Vote Gauge */}
+                                <div className="flex flex-col h-full justify-between gap-4">
+                                    {/* Top: Score & Verification */}
                                     <div className="flex items-center justify-between gap-4">
-                                        <div>
-                                            <div className="text-[10px] text-white/40 mb-1">GLOBAL_RESONANCE</div>
-                                            <div className="text-[10px] text-white/60 mb-2">{movie.vote_count} Verified Logged Votes</div>
-
-                                            {/* Merged Score Text */}
-                                            <div className="text-3xl font-bold text-[#00ff41] flex items-baseline gap-1">
-                                                {movie.vote_average?.toFixed(1)}
-                                                <span className="text-xs text-white/40 font-normal">/10</span>
+                                        <div className="flex flex-col justify-center">
+                                            <div className="text-[10px] text-[#00ff41] font-bold tracking-wider mb-0.5">GLOBAL_RESONANCE</div>
+                                            <div className="text-[10px] text-white/40 font-mono">
+                                                Based on <span className="text-white">{movie.vote_count}</span> Verified Logged Votes
                                             </div>
                                         </div>
-
-                                        {/* Real Dynamic SVG Gauge */}
-                                        <div className="relative w-16 h-16 flex-shrink-0">
-                                            <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                                {/* Background Circle */}
-                                                <path
-                                                    className="text-white/10"
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="3"
-                                                />
-                                                {/* Progress Circle */}
-                                                <path
-                                                    className="text-[#00ff41] transition-all duration-1000 ease-out"
-                                                    strokeDasharray={`${(movie.vote_average || 0) * 10}, 100`}
-                                                    d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    strokeWidth="3"
-                                                    strokeLinecap="round"
-                                                />
-                                            </svg>
-                                            <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">
-                                                {Math.round((movie.vote_average || 0) * 10)}%
+                                        <div className="relative flex-shrink-0 flex items-center justify-end">
+                                            <div className="text-4xl font-black text-white flex items-start gap-1 z-10 relative">
+                                                {movie.vote_average?.toFixed(1)}
+                                                <span className="text-[10px] text-white/40 font-normal mt-1">/10</span>
+                                            </div>
+                                            <div className="absolute right-0 bottom-0 top-0 w-full flex items-end justify-between gap-1 opacity-30 pointer-events-none mix-blend-screen">
+                                                <div className="w-1 h-[30%] bg-[#00ff41]/20"></div>
+                                                <div className="w-1 h-[50%] bg-[#00ff41]/40"></div>
+                                                <div className="w-1 h-[80%] bg-[#00ff41]/80"></div>
+                                                <div className="w-1 h-[40%] bg-[#00ff41]/30"></div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Trend Sparkline */}
+
+
+                                    {/* Bottom: Trend Index (Pushed Down) */}
                                     <div>
                                         <div className="text-[10px] text-white/40 mb-2 flex justify-between">
                                             <span>TREND_INDEX</span>
@@ -429,26 +412,28 @@ const Home: React.FC = () => {
                         {/* Analysis Grid 2: Swapped Positions (Linguistic Left, Production Right) */}
                         <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-6 items-stretch">
                             {/* Replaced Linguistic Data with Financial Intelligence */}
-                            <AnalysisGrid title="FINANCIAL_INTELLIGENCE" icon={Mic2} className="h-full">
-                                <div className="space-y-4 h-full flex flex-col justify-center">
-                                    <div className="flex justify-between border-b border-white/5 pb-2 border-dashed">
-                                        <span className="text-white/40 text-[10px]">BUDGET</span>
-                                        <span className="text-right font-bold text-xs">{movie.budget > 0 ? `$${(movie.budget / 1000000).toFixed(1)}M` : 'CLASSIFIED'}</span>
+                            <div className="h-full bg-[#050505] border border-white/10 relative overflow-hidden group hover:border-white/20 transition-colors">
+                                <AnalysisGrid title={isMobile ? "FINANCIAL_DATA" : "FINANCIAL_INTELLIGENCE"} icon={Mic2} className="h-full">
+                                    <div className="space-y-4 h-full flex flex-col justify-center">
+                                        <div className="flex justify-between border-b border-white/5 pb-2 border-dashed">
+                                            <span className="text-white/40 text-[10px]">BUDGET</span>
+                                            <span className="text-right font-bold text-xs">{movie.budget > 0 ? `$${(movie.budget / 1000000).toFixed(1)}M` : 'CLASSIFIED'}</span>
+                                        </div>
+                                        <div className="flex justify-between border-b border-white/5 pb-2 border-dashed">
+                                            <span className="text-white/40 text-[10px]">REVENUE</span>
+                                            <span className="text-right font-bold text-xs">{movie.revenue > 0 ? `$${(movie.revenue / 1000000).toFixed(1)}M` : 'N/A'}</span>
+                                        </div>
+                                        <div className="flex justify-between border-b-0 pb-0">
+                                            <span className="text-white/40 text-[10px]">ROI_INDEX</span>
+                                            <span className={`text-right font-bold text-xs ${movie.revenue > movie.budget ? 'text-[#00ff41]' : 'text-red-500'}`}>
+                                                {movie.budget > 0 && movie.revenue > 0
+                                                    ? `${((movie.revenue - movie.budget) / movie.budget * 100).toFixed(0)}%`
+                                                    : 'UNK'}
+                                            </span>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between border-b border-white/5 pb-2 border-dashed">
-                                        <span className="text-white/40 text-[10px]">REVENUE</span>
-                                        <span className="text-right font-bold text-xs">{movie.revenue > 0 ? `$${(movie.revenue / 1000000).toFixed(1)}M` : 'N/A'}</span>
-                                    </div>
-                                    <div className="flex justify-between border-b-0 pb-0">
-                                        <span className="text-white/40 text-[10px]">ROI_INDEX</span>
-                                        <span className={`text-right font-bold text-xs ${movie.revenue > movie.budget ? 'text-[#00ff41]' : 'text-red-500'}`}>
-                                            {movie.budget > 0 && movie.revenue > 0
-                                                ? `${((movie.revenue - movie.budget) / movie.budget * 100).toFixed(0)}%`
-                                                : 'UNK'}
-                                        </span>
-                                    </div>
-                                </div>
-                            </AnalysisGrid>
+                                </AnalysisGrid>
+                            </div>
 
                             <AnalysisGrid title="PRODUCTION_DATA" icon={Film} className="h-full">
                                 <div className="space-y-4 h-full flex flex-col justify-center">
@@ -487,7 +472,7 @@ const Home: React.FC = () => {
                                         <ImageWithFallback
                                             src={getImageUrl(sim.poster_path, 'w342')}
                                             alt={sim.title}
-                                            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0 duration-500"
+                                            className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity md:grayscale group-hover:grayscale-0 duration-500"
                                             loading="lazy"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
@@ -507,7 +492,7 @@ const Home: React.FC = () => {
                         <div className="pt-12 border-t border-white/10 grid grid-cols-1 md:grid-cols-2 gap-12">
                             <div className="hidden md:block"></div>
                             <div className="flex justify-center md:justify-end">
-                                <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="group inline-flex items-center gap-4 bg-white text-black px-6 py-3 hover:bg-neutral-200 transition-colors duration-300 w-full md:w-auto justify-center uppercase tracking-wider text-xs font-mono font-bold">
+                                <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="group inline-flex items-center gap-4 bg-white text-black px-6 py-3 hover:bg-neutral-200 transition-colors duration-300 w-auto justify-center uppercase tracking-wider text-xs font-mono font-bold">
                                     <span>Access_Full_Dossier</span>
                                     <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                                 </Link>
