@@ -1,6 +1,6 @@
 # Week 07-09: Midterm Projects
 
-This directory contains the midterm project iterations for the Dynamic Web Development course.
+This directory contains the midterm project iterations for the Dynamic Web course.
 
 ## 📂 Directory Structure
 

@@ -1,6 +1,6 @@
-# Dynamic Web Development - Fall 2025
+# Dynamic Web - Fall 2025
 
-This repository serves as a comprehensive archive of coursework, assignments, and projects completed for the Dynamic Web Development course at New York University. It documents the progression from fundamental web technologies to advanced single-page application architecture using modern React ecosystems.
+This repository serves as a comprehensive archive of coursework, assignments, and projects completed for the Dynamic Web course at New York University. It documents the progression from fundamental web technologies to advanced single-page application architecture using modern React ecosystems.
 
 ## Technical Stack
 <div align="center">
