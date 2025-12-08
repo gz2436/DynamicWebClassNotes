@@ -113,7 +113,7 @@ const Home: React.FC = () => {
     const dateKey = displayDate.toISOString().split('T')[0];
 
     const dateString = isMobile
-        ? displayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
+        ? displayDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })
         : displayDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
 
     // Fetch Movie for Current Date (Or Mood)
