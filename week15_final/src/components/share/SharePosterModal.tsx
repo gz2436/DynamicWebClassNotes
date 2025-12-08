@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
+
 import { Share2, X } from 'lucide-react';
 import { Movie } from '../../types/tmdb';
 
@@ -27,7 +28,7 @@ const drawPosterContent = async (
     width: number,
     height: number,
     posterSrc: string,
-    qrImage: HTMLImageElement,
+    qrAssets: { light: HTMLImageElement | null; dark: HTMLImageElement | null }, // Changed signature
     movie: Movie,
     isLandscape: boolean,
     scale: number,
@@ -169,10 +170,36 @@ const drawPosterContent = async (
         const qrX = width - qrRightMargin - qrSize;
         const qrY = height - qrBottomMargin - qrSize;
 
+        // Auto-Detect Background Brightness
+        // Get the pixel data from the QR area
+        let brightness = 0; // Default to Dark (so we use Light QR) if cant read
+        try {
+            const imageData = ctx.getImageData(qrX, qrY, qrSize, qrSize);
+            const data = imageData.data;
+            let colorSum = 0;
+            let sampleCount = 0;
+
+            for (let x = 0; x < data.length; x += 40) {
+                const r = data[x];
+                const g = data[x + 1];
+                const b = data[x + 2];
+                const avg = (r + g + b) / 3;
+                colorSum += avg;
+                sampleCount++;
+            }
+            brightness = Math.floor(colorSum / sampleCount);
+        } catch (e) {
+            console.warn("Could not analyze canvas pixel data (CORS?)", e);
+            brightness = 0; // Fallback
+        }
+
+        // Dark BG (<100) -> Use Light QR (2764). Light BG -> Use Dark QR (2765).
+        const qrToDraw = brightness < 100 ? qrAssets.light : qrAssets.dark;
+
         ctx.save();
         ctx.shadowColor = 'rgba(0,0,0,0.8)';
         ctx.shadowBlur = 12 * scale;
-        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+        if (qrToDraw) ctx.drawImage(qrToDraw, qrX, qrY, qrSize, qrSize);
         ctx.restore();
 
         ctx.textAlign = 'left';
@@ -233,10 +260,36 @@ const drawPosterContent = async (
         const qrX = width - pSide - qrSize;
         const qrY = height - pBottom - qrSize;
 
+        // Auto-Detect Background Brightness
+        // Get the pixel data from the QR area
+        let brightness = 0;
+        try {
+            const imageData = ctx.getImageData(qrX, qrY, qrSize, qrSize);
+            const data = imageData.data;
+            let colorSum = 0;
+            let sampleCount = 0;
+
+            for (let x = 0; x < data.length; x += 40) {
+                const r = data[x];
+                const g = data[x + 1];
+                const b = data[x + 2];
+                const avg = (r + g + b) / 3;
+                colorSum += avg;
+                sampleCount++;
+            }
+            brightness = Math.floor(colorSum / sampleCount);
+        } catch (e) {
+            console.warn("Could not analyze canvas pixel data (CORS?)", e);
+            brightness = 0;
+        }
+
+        // Dark BG (<100) -> Use Light QR (2764). Light BG -> Use Dark QR (2765).
+        const qrToDraw = brightness < 100 ? qrAssets.light : qrAssets.dark;
+
         ctx.save();
         ctx.shadowColor = 'rgba(0,0,0,0.8)';
         ctx.shadowBlur = 12 * scale;
-        ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+        if (qrToDraw) ctx.drawImage(qrToDraw, qrX, qrY, qrSize, qrSize);
         ctx.restore();
 
         let cursorY = height - pBottom;
@@ -295,7 +348,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
     const posterRef = useRef<HTMLDivElement>(null);
     const [isGenerating, setIsGenerating] = useState(false);
     const [posterSrc, setPosterSrc] = useState<string | null>(null);
-    const [qrSrc, setQrSrc] = useState<HTMLImageElement | null>(null);
+    const [qrAssets, setQrAssets] = useState<{ light: HTMLImageElement | null; dark: HTMLImageElement | null }>({ light: null, dark: null });
     const [error, setError] = useState<string | null>(null);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [generatedImage, setGeneratedImage] = useState<string | null>(null);
@@ -327,7 +380,6 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
             setError(null);
             setIsImageLoaded(false);
             setPosterSrc(null);
-            setQrSrc(null);
             setIsPreviewReady(false);
 
             try {
@@ -374,20 +426,23 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                     img.src = safeImgUrl;
                 });
 
-                const qrCodeUrl = "/IMG_2764.PNG";
-                await new Promise<void>((resolve, reject) => {
-                    const qrImg = new Image();
-                    qrImg.onload = () => {
-                        if (isMounted) setQrSrc(qrImg);
-                        resolve();
+                // Load QR Codes Robustly (don't fail entire modal if one fails)
+                const loadQr = (src: string) => new Promise<HTMLImageElement | null>((resolve) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = () => {
+                        console.warn(`Failed to load QR: ${src}`);
+                        resolve(null);
                     };
-                    qrImg.onerror = (e) => {
-                        console.error("QR load error:", e);
-                        if (isMounted) setError('Failed to load QR');
-                        reject(e);
-                    };
-                    qrImg.src = qrCodeUrl;
+                    img.src = src;
                 });
+
+                const [qrLight, qrDark] = await Promise.all([
+                    loadQr("/IMG_2764.PNG"),
+                    loadQr("/IMG_2765.PNG")
+                ]);
+
+                if (isMounted) setQrAssets({ light: qrLight, dark: qrDark });
 
                 await document.fonts.ready;
                 if (isMounted) setIsImageLoaded(true);
@@ -405,7 +460,8 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
     // Draw Preview
     useEffect(() => {
         const renderPreview = async () => {
-            if (!posterSrc || !qrSrc || !isImageLoaded || !canvasRef.current) return;
+            // Relaxed check: We can render even if QR is missing (just won't draw it)
+            if (!posterSrc || !isImageLoaded || !canvasRef.current) return;
 
             const canvas = canvasRef.current;
             canvas.width = WIDTH;
@@ -419,7 +475,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 WIDTH,
                 HEIGHT,
                 posterSrc,
-                qrSrc,
+                qrAssets,
                 movie,
                 isLandscape,
                 SCALE,
@@ -431,12 +487,12 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
         };
 
         renderPreview();
-    }, [posterSrc, qrSrc, isImageLoaded, WIDTH, HEIGHT, SCALE, isLandscape, movie, isDaily, date]);
+    }, [posterSrc, qrAssets, isImageLoaded, WIDTH, HEIGHT, SCALE, isLandscape, movie, isDaily, date]);
 
 
     const handleDownload = async () => {
         const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-        if (!posterSrc || !qrSrc) return;
+        if (!posterSrc) return;
         setIsGenerating(true);
 
         try {
@@ -451,7 +507,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 WIDTH,
                 HEIGHT,
                 posterSrc,
-                qrSrc,
+                qrAssets,
                 movie,
                 isLandscape,
                 SCALE,
@@ -479,7 +535,8 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
         }
     };
 
-    const canSave = posterSrc && qrSrc && isImageLoaded && !isGenerating && !error && isPreviewReady;
+    // Can save if we have the poster source and image is loaded. QR can be optional/missing.
+    const canSave = posterSrc && isImageLoaded && !isGenerating && !error && isPreviewReady;
 
     if (!movie) return null;
 
@@ -536,7 +593,7 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                 {generatedImage ? (
                     <button
                         onClick={onClose}
-                        className="px-10 py-3 bg-white text-black font-mono font-bold text-sm tracking-widest hover:bg-gray-200 shadow-xl transition-all rounded-sm uppercase"
+                        className="border border-white/20 bg-white text-black backdrop-blur-sm p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors rounded-none w-auto"
                     >
                         DONE
                     </button>
@@ -544,16 +601,16 @@ const SharePosterModal: React.FC<SharePosterModalProps> = ({ movie, onClose, isD
                     <>
                         <button
                             onClick={onClose}
-                            className="px-6 py-2 border border-white/20 bg-black/40 text-white font-mono text-xs tracking-widest hover:bg-white/10 transition-all backdrop-blur-md rounded-sm uppercase"
+                            className="border border-white/20 bg-black/20 backdrop-blur-sm p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-white hover:text-black transition-colors rounded-none w-auto text-white"
                         >
                             CLOSE
                         </button>
                         <button
                             onClick={handleDownload}
                             disabled={!canSave}
-                            className="px-8 py-2 bg-white text-black font-mono font-bold text-xs tracking-widest hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.2)] transition-all flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed rounded-sm uppercase"
+                            className="border border-white/20 bg-white text-black backdrop-blur-sm p-3 md:px-5 md:py-2.5 text-[10px] font-bold tracking-widest uppercase hover:bg-gray-200 transition-colors flex items-center justify-center gap-2 rounded-none disabled:opacity-50 disabled:cursor-not-allowed w-auto"
                         >
-                            {isGenerating ? 'SAVING...' : error ? 'Error' : !isPreviewReady ? 'LOADING...' : 'SAVE POSTER'}
+                            {isGenerating ? 'SAVING...' : error ? 'Error' : !isPreviewReady ? 'LOADING...' : 'SAVE_POSTER'}
                         </button>
                     </>
                 )}

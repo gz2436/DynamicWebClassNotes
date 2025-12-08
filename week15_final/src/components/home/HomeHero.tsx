@@ -36,7 +36,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
-    const [isImmersive, setIsImmersive] = useState(true); // Immersive Mode State
+    // Immersive mode removed per user request
     const [showTrailer, setShowTrailer] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -167,9 +167,9 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.7 }}
+                    transition={{ duration: 0.45 }}
                     className="absolute inset-0 z-0"
-                    onClick={() => isImmersive && setIsImmersive(false)} // Click anywhere to exit Zen
+                // Click handler removed - no immersive mode to exit
                 >
                     <ImageWithFallback
                         mobileSrc={getImageUrl(movie.poster_path, 'w780') || undefined}
@@ -180,10 +180,10 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         loading="eager"
                     />
 
-                    {/* Immersive Mode: Clean Image. Normal Mode: Gradients active. */}
+                    {/* Normal Mode: Gradients active. */}
                     <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: isImmersive ? 0 : 1 }}
+                        animate={{ opacity: 1 }}
                         transition={{ duration: 1 }}
                         className="absolute inset-0 pointer-events-none"
                     >
@@ -193,43 +193,15 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                 </motion.div>
             </AnimatePresence>
 
-            {/* Immersive Center Logo (The Gatekeeper) */}
-            <AnimatePresence>
-                {isImmersive && (
-                    <motion.div
-                        className="absolute inset-0 z-[100] flex flex-col items-center justify-center cursor-pointer"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, pointerEvents: "none" }}
-                        onClick={() => setIsImmersive(false)}
-                    >
-                        <motion.div layoutId="hero-logo" className="transform scale-150 md:scale-[2]">
-                            {/* Static Global Logo Style */}
-                            <button
-                                onClick={() => setIsImmersive(false)}
-                                className="block border border-white px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-colors font-mono font-bold"
-                            >
-                                DAILY_FILM
-                            </button>
-                        </motion.div>
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 0.6, y: 0 }}
-                            transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
-                            className="mt-8 text-[10px] tracking-[0.5em] font-mono text-white/60 uppercase"
-                        >
-                            Tap to Enter
-                        </motion.div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+            {/* Immersive Center Logo REMOVED */}
 
 
             {/* Content Container (Standard UI) */}
+            {/* Content Container (Standard UI) */}
             <motion.div
-                className={`relative z-50 h-full w-full flex flex-col justify-between p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none ${isImmersive ? 'invisible' : 'visible'}`}
+                className="relative z-50 h-full w-full flex flex-col justify-between p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none visible"
                 initial={{ opacity: 0 }}
-                animate={{ opacity: isImmersive ? 0 : 1 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
             >
 
@@ -288,19 +260,14 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 
                     {/* CENTER: Title (Destination for Logo) */}
                     <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 -mt-2 md:-mt-4 pointer-events-auto">
-                        {!isImmersive && (
-                            <motion.div layoutId="hero-logo">
-                                <button
-                                    onClick={() => {
-                                        setCurrentIndex(0);
-                                        window.scrollTo(0, 0);
-                                    }}
-                                    className="block border border-white px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-colors font-mono font-bold"
-                                >
-                                    DAILY_FILM
-                                </button>
-                            </motion.div>
-                        )}
+                        <motion.div layoutId="hero-logo">
+                            <GlitchLogo
+                                onClick={() => {
+                                    setCurrentIndex(0);
+                                    window.scrollTo(0, 0);
+                                }}
+                            />
+                        </motion.div>
                     </div>
 
                     {/* RIGHT: Date & Calendar */}
@@ -342,22 +309,30 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                 {/* Center: Title */}
                 <div className="relative z-20 flex-1 flex items-end justify-between pb-4 pointer-events-auto">
                     <div className="text-left max-w-[70%] md:max-w-[60%]">
-                        {movie.tagline && (
-                            <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
-                                {movie.tagline}
-                            </p>
-                        )}
-                        <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                            {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
-                            <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
-                                {movie.title}
-                                <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-70 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
-                                    {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
-                                </span>
-                            </h1>
-                        </Link>
-
-
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={movie.id}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.45 }}
+                            >
+                                {movie.tagline && (
+                                    <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
+                                        {movie.tagline}
+                                    </p>
+                                )}
+                                <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
+                                    {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
+                                    <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
+                                        {movie.title}
+                                        <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-70 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
+                                            {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
+                                        </span>
+                                    </h1>
+                                </Link>
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
 
                     {/* Action Group: Responsive Layout 
