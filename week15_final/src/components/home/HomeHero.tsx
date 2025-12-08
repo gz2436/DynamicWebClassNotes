@@ -263,7 +263,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 {/* Desktop: FULL DATE (DEC 08 2024) - Underlined now */}
                                 <span className="hidden md:block underline decoration-white/50 underline-offset-4">{dateString}</span>
                                 {/* Mobile: SHORT DATE (DEC 08) */}
-                                <span className="md:hidden">{dateString}</span>
+                                <span className="md:hidden underline decoration-white/50 underline-offset-4">{dateString}</span>
                             </button>
                             {/* Calendar Dropdown */}
                             <div ref={calendarDropdownRef}>
