@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts';
+import { BarChart, Bar, Tooltip, Cell, Legend } from 'recharts';
 import { DollarSign } from 'lucide-react';
 import { Movie } from '../../types/tmdb';
 
@@ -10,7 +10,32 @@ interface FinancialsProps {
 const Financials: React.FC<FinancialsProps> = ({ movie }) => {
     const budget = movie.budget || 0;
     const revenue = movie.revenue || 0;
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
+    // Use ResizeObserver to drive chart size manually, bypassing ResponsiveContainer's initial -1 state warning.
+    const containerRef = React.useRef<HTMLDivElement>(null);
+    // Default to mobile size (96px) or desktop (192px) based on initial window check to minimize layout shift
+    const getInitialSize = () => (typeof window !== 'undefined' && window.innerWidth >= 768 ? 192 : 96);
+    const [chartSize, setChartSize] = React.useState({ width: getInitialSize(), height: getInitialSize() });
+
+    // Track mobile state for bar size
+    const [isMobile, setIsMobile] = React.useState(typeof window !== 'undefined' ? window.innerWidth < 768 : true);
+
+    React.useEffect(() => {
+        if (!containerRef.current) return;
+
+        const observer = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const { width, height } = entry.contentRect;
+                if (width > 0 && height > 0) {
+                    setChartSize({ width, height });
+                    setIsMobile(window.innerWidth < 768);
+                }
+            }
+        });
+
+        observer.observe(containerRef.current);
+        return () => observer.disconnect();
+    }, []);
 
     const financialData = [
         { name: 'Budget', value: budget, color: '#333333' },
@@ -31,22 +56,23 @@ const Financials: React.FC<FinancialsProps> = ({ movie }) => {
             {/* Mobile: Row Layout (Chart Left, Data Right) */}
             <div className="flex flex-row gap-4 md:gap-8 flex-1 items-center md:items-stretch">
                 {/* Chart (Fixed small width on mobile) */}
-                <div className="w-24 h-24 md:w-48 md:h-48 border border-white/10 bg-white/5 p-1 md:p-2 shrink-0">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <BarChart data={financialData}>
-                            <Tooltip
-                                cursor={{ fill: '#ffffff10' }}
-                                contentStyle={{ backgroundColor: '#000000', border: '1px solid #ffffff30', fontFamily: 'Inter', fontSize: '10px' }}
-                                itemStyle={{ color: '#fff' }}
-                                formatter={(value: number) => formatCurrency(value)}
-                            />
-                            <Bar dataKey="value" radius={[0, 0, 0, 0]} barSize={isMobile ? 10 : 20} isAnimationActive={false}>
-                                {financialData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} stroke="transparent" />
-                                ))}
-                            </Bar>
-                        </BarChart>
-                    </ResponsiveContainer>
+                <div
+                    ref={containerRef}
+                    className="w-24 h-24 md:w-48 md:h-48 border border-white/10 bg-white/5 p-1 md:p-2 shrink-0 relative"
+                >
+                    <BarChart width={chartSize.width} height={chartSize.height} data={financialData}>
+                        <Tooltip
+                            cursor={{ fill: '#ffffff10' }}
+                            contentStyle={{ backgroundColor: '#000000', border: '1px solid #ffffff30', fontFamily: 'Inter', fontSize: '10px' }}
+                            itemStyle={{ color: '#fff' }}
+                            formatter={(value: number) => formatCurrency(value)}
+                        />
+                        <Bar dataKey="value" radius={[0, 0, 0, 0]} barSize={isMobile ? 10 : 20} isAnimationActive={false}>
+                            {financialData.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={entry.color} stroke="transparent" />
+                            ))}
+                        </Bar>
+                    </BarChart>
                 </div>
 
                 {/* Data Points (Right) */}

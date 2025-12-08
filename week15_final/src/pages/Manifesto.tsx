@@ -64,7 +64,7 @@ const Manifesto: React.FC = () => {
 
                 {/* Title Section */}
                 <motion.section variants={itemVariants} className="space-y-6 md:space-y-8 border-b border-white/20 pb-8 md:pb-12 text-left">
-                    <h1 className="text-4xl md:text-7xl font-black uppercase tracking-tighter leading-none">
+                    <h1 className="text-[clamp(2.5rem,7vw,6rem)] font-black uppercase tracking-tighter leading-none">
                         Protocol<br />V3.0
                     </h1>
                     <div className="flex flex-col md:flex-row gap-8 md:items-end justify-between">

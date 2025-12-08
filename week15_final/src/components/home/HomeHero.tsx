@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Info, Plus, Check, Eye, Shuffle, Bookmark, Grid3x3, MoreVertical, X } from 'lucide-react';
+import { Play, Info, Plus, Check, Eye, Shuffle, Bookmark, Grid3x3, MoreVertical, X, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlitchLogo from '../GlitchLogo';
 import CalendarDropdown from '../CalendarDropdown.tsx';
@@ -116,7 +116,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
     const microTextStyle = "text-[10px] opacity-50 uppercase tracking-widest font-mono";
 
     return (
-        <div className="relative h-screen w-full overflow-hidden">
+        <div className="relative h-[100dvh] w-full overflow-hidden">
             {/* Immersive Trailer Overlay */}
             <AnimatePresence>
                 {showTrailer && trailer && (
@@ -211,17 +211,28 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                             >
                                 DISCOVER
                             </button>
-                            {/* Dropdown Menu */}
-                            {isDiscoverOpen && (
-                                <div className="absolute top-full left-0 pt-4 z-50">
-                                    <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3">
-                                        <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
-                                        <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
-                                        <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
-                                        <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Top Rated</Link>
-                                    </div>
-                                </div>
-                            )}
+                            <AnimatePresence>
+                                {isDiscoverOpen && (
+                                    <motion.div
+                                        initial="hidden"
+                                        animate="visible"
+                                        exit="exit"
+                                        variants={{
+                                            hidden: { clipPath: "inset(0% 0% 100% 0%)", opacity: 0 },
+                                            visible: { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+                                            exit: { clipPath: "inset(0% 0% 100% 0%)", opacity: 0, transition: { duration: 0.2 } }
+                                        }}
+                                        className="absolute top-full left-0 pt-4 z-50 origin-top"
+                                    >
+                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl">
+                                            <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
+                                            <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
+                                            <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
+                                            <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Top Rated</Link>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                         </div>
                     </div>
 
@@ -276,7 +287,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         )}
                         <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
                             {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
-                            <h1 className="text-5xl md:text-7xl 2xl:text-8xl font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
+                            <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
                                 {movie.title}
                                 <span className="inline-block align-middle ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest align-super">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
@@ -351,123 +362,119 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         </div>
                     </div>
 
-                    {/* Mobile Control Panel (Expandable Play Stack) */}
-                    <div className="md:hidden flex flex-col items-end gap-0 mb-1 ml-4 mr-4 relative">
+                    {/* Mobile Control Panel (Floating Glass Orbs) */}
+                    <div className="md:hidden flex flex-col items-end gap-4 mb-2 ml-4 mr-5 relative z-50">
 
-                        {/* Expandable Menu (Absolute Positioned Upwards) */}
+                        {/* Expandable Menu (Floating Bubbles) */}
                         <AnimatePresence>
                             {isMobileMenuOpen && (
                                 <motion.div
                                     initial="hidden"
                                     animate="visible"
                                     exit="exit"
+                                    className="absolute bottom-full mb-4 right-0 flex flex-col items-center gap-3"
                                     variants={{
-                                        hidden: { opacity: 1 },
+                                        hidden: { opacity: 0 },
                                         visible: {
                                             opacity: 1,
                                             transition: {
                                                 staggerChildren: 0.08,
-                                                delayChildren: 0,
-                                                staggerDirection: -1 // Start from bottom (Reroll) to top (Share)
+                                                staggerDirection: -1
                                             }
                                         },
                                         exit: {
                                             opacity: 0,
                                             transition: {
                                                 staggerChildren: 0.05,
-                                                staggerDirection: 1 // Start from top (Share) to bottom (Reroll)
+                                                staggerDirection: 1,
+                                                when: "afterChildren"
                                             }
                                         }
                                     }}
-                                    className="absolute bottom-[calc(100%)] right-0 flex flex-col gap-0 p-0 bg-transparent z-50 w-12 items-center"
                                 >
-                                    {/* Menu Items Order: Share (Top) -> Seen -> List -> Reroll */}
-                                    {/* Unified Background: bg-black/20 (Lighter Glass) to match Trigger & Play */}
+                                    {/* MENU ITEMS: Share -> Seen -> List -> Reroll (Rendered Top-Down) */}
+                                    {/* Stagger Direction -1 means animation starts from Bottom (Reroll) to Top (Share) */}
 
-                                    {/* SHARE - Closes Menu */}
+                                    {/* SHARE */}
                                     <motion.button
                                         variants={{
-                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
-                                            visible: { opacity: 1, y: 0, scale: 1 },
-                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                            hidden: { opacity: 0 },
+                                            visible: { opacity: 1, transition: { duration: 0.2 } },
+                                            exit: { opacity: 0, transition: { duration: 0.15 } }
                                         }}
                                         onClick={() => {
                                             setIsShareOpen(true);
                                             setIsMobileMenuOpen(false);
                                         }}
-                                        className="w-12 h-12 flex items-center justify-center border-x border-t border-b-0 border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-black transition-colors"
+                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all"
                                     >
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
                                     </motion.button>
 
-                                    {/* SEEN - Keeps Menu Open */}
+                                    {/* SEEN */}
                                     <motion.button
                                         variants={{
-                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
-                                            visible: { opacity: 1, y: 0, scale: 1 },
-                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                            hidden: { opacity: 0 },
+                                            visible: { opacity: 1, transition: { duration: 0.2 } },
+                                            exit: { opacity: 0, transition: { duration: 0.15 } }
                                         }}
                                         onClick={() => {
                                             toggleSeen();
-                                            // No Auto-Close
                                         }}
-                                        className={`w-12 h-12 flex items-center justify-center border-x border-t border-b-0 ${isSeen ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300`}
+                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all ${isSeen ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
                                     >
-                                        {isSeen ? <Check className="w-5 h-5 drop-shadow-[0_0_3px_rgba(74,222,128,0.5)]" strokeWidth={3} /> : <Eye className="w-5 h-5" strokeWidth={2.5} />}
+                                        {isSeen ? <Check className="w-5 h-5 drop-shadow-[0_0_3px_rgba(74,222,128,0.5)]" strokeWidth={2} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
                                     </motion.button>
 
-                                    {/* LIST - Keeps Menu Open */}
+                                    {/* LIST */}
                                     <motion.button
                                         variants={{
-                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
-                                            visible: { opacity: 1, y: 0, scale: 1 },
-                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                            hidden: { opacity: 0 },
+                                            visible: { opacity: 1, transition: { duration: 0.2 } },
+                                            exit: { opacity: 0, transition: { duration: 0.15 } }
                                         }}
                                         onClick={() => {
                                             toggleBucket();
-                                            // No Auto-Close
                                         }}
-                                        className={`w-12 h-12 flex items-center justify-center border-x border-t border-b-0 ${isInBucket ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'border-white/20 bg-black/20 text-white'} backdrop-blur-md hover:bg-white hover:text-black transition-all duration-300`}
+                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all ${isInBucket ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
                                     >
-                                        {isInBucket ? <Bookmark className="w-5 h-5 fill-current drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" /> : <Plus className="w-5 h-5" strokeWidth={3} />}
+                                        {isInBucket ? <Bookmark className="w-5 h-5 fill-current drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" /> : <Plus className="w-5 h-5" strokeWidth={1.5} />}
                                     </motion.button>
 
-                                    {/* REROLL - Closes Menu (Navigation) */}
+                                    {/* REROLL */}
                                     <motion.button
                                         variants={{
-                                            hidden: { opacity: 0, y: 15, scale: 0.9 },
-                                            visible: { opacity: 1, y: 0, scale: 1 },
-                                            exit: { opacity: 0, y: 10, scale: 0.9 }
+                                            hidden: { opacity: 0 },
+                                            visible: { opacity: 1, transition: { duration: 0.2 } },
+                                            exit: { opacity: 0, transition: { duration: 0.15 } }
                                         }}
-                                        onClick={() => {
-                                            handleRandomNavigation();
+                                        onClick={(e) => {
+                                            handleRandomNavigation(e);
                                             setIsMobileMenuOpen(false);
                                         }}
-                                        className="w-12 h-12 flex items-center justify-center border-x border-t border-white/20 bg-black/20 backdrop-blur-md text-white hover:bg-white hover:text-black transition-colors"
+                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all"
                                     >
-                                        <Shuffle className="w-5 h-5" strokeWidth={2.5} />
+                                        <Shuffle className="w-5 h-5" strokeWidth={1.5} />
                                     </motion.button>
                                 </motion.div>
                             )}
                         </AnimatePresence>
 
                         {/* Trigger Button (Menu) */}
-                        {/* Active State: Background stays bg-black/20 (lighter glass). Removed shadow-lg. */}
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className={`w-12 h-12 flex items-center justify-center border ${isMobileMenuOpen ? 'border-white text-white' : 'border-white/20 text-white'} bg-black/20 backdrop-blur-md transition-all z-40`}
+                            className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all z-40 ${isMobileMenuOpen ? 'border-white text-white bg-white/20' : 'border-white/10 text-white bg-black/30'}`}
                         >
-                            {isMobileMenuOpen ? <X className="w-6 h-6" /> : <MoreVertical className="w-6 h-6" />}
+                            {isMobileMenuOpen ? <X className="w-6 h-6" strokeWidth={1.5} /> : <ChevronUp className="w-6 h-6" strokeWidth={1.5} />}
                         </button>
 
                         {/* Play Button (Anchor) */}
-                        {/* Background aligned with Trigger (bg-black/20). Removed shadow-[...]. */}
                         {trailer && (
                             <button
                                 onClick={() => setShowTrailer(true)}
-                                className="w-12 h-12 flex items-center justify-center border border-white/20 bg-black/20 text-white backdrop-blur-md z-40 border-t-0"
+                                className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:scale-105 transition-transform z-40"
                             >
-                                <svg className="w-6 h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                                <svg className="w-5 h-5 fill-current mr-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                             </button>
                         )}
                     </div>

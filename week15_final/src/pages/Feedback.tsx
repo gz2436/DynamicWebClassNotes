@@ -78,7 +78,7 @@ const Feedback: React.FC = () => {
                 {/* Header Section */}
                 <motion.section variants={itemVariants} className="space-y-4 md:space-y-8">
                     <div className="relative">
-                        <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none relative z-10 mix-blend-difference">
+                        <h1 className="text-[clamp(3rem,8vw,8rem)] font-black uppercase tracking-tighter leading-none relative z-10 mix-blend-difference">
                             System<br />Input
                         </h1>
                         <h1 className="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none absolute top-1 left-1 text-white/10 z-0 pointer-events-none select-none">

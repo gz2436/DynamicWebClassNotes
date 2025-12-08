@@ -336,7 +336,7 @@ const Home: React.FC = () => {
                                     <ExpandableSection key={movie.id} text={selectedReview ? selectedReview.cleanContent : (movie.tagline || movie.overview)} />
                                 </div>
                                 {selectedReview && (
-                                    <div className="text-left md:text-right mt-4">
+                                    <div className="text-right mt-4">
                                         <span className="text-[10px] uppercase tracking-widest text-[#00ff41] font-mono border-b border-[#00ff41]/30 pb-1">
                                             // INTELLIGENCE_SOURCE: {selectedReview.author}
                                         </span>
@@ -467,7 +467,7 @@ const Home: React.FC = () => {
                                         key={sim.id}
                                         to={`/movie/${sim.id}`}
                                         state={{ category: 'popular', fromHome: true }}
-                                        className="snap-center shrink-0 w-[140px] group relative aspect-[2/3] bg-white/5 border border-white/10 overflow-hidden hover:border-white/40 transition-colors"
+                                        className="snap-center shrink-0 w-[40vw] md:w-[14vw] max-w-[200px] group relative aspect-[2/3] bg-white/5 border border-white/10 overflow-hidden hover:border-white/40 transition-colors"
                                     >
                                         <ImageWithFallback
                                             src={getImageUrl(sim.poster_path, 'w342')}

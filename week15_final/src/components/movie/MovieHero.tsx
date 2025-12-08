@@ -84,7 +84,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({
     }, [showTrailer]);
 
     return (
-        <div className="relative min-h-[100dvh] w-full flex items-end text-white overflow-hidden">
+        <div className="relative min-h-[100svh] w-full flex items-end text-white overflow-hidden">
 
             {/* Share Modal - High Z-Index to ensure it sits on top */}
             {isShareOpen && (
@@ -106,24 +106,15 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="fixed inset-0 z-[200] bg-black flex items-center justify-center p-4 md:p-12"
+                        className="fixed inset-0 z-[200] bg-black flex flex-col items-center justify-center p-4 md:p-12"
                     >
-                        {/* Close Button */}
-                        <button
-                            onClick={() => setShowTrailer(false)}
-                            className="absolute top-6 right-6 md:top-12 md:right-12 z-50 text-white/50 hover:text-white transition-colors flex items-center gap-2 group"
-                        >
-                            <span className="text-xs font-mono tracking-widest hidden md:block group-hover:tracking-[0.2em] transition-all">CLOSE THEATER</span>
-                            <svg className="w-8 h-8 md:w-10 md:h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-
                         {/* Iframe Container */}
                         <motion.div
                             initial={{ scale: 0.95, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.95, opacity: 0 }}
                             transition={{ delay: 0.2, duration: 0.4 }}
-                            className="w-full max-w-6xl aspect-video bg-black shadow-2xl relative overflow-hidden ring-1 ring-white/10"
+                            className="w-full max-w-6xl aspect-video bg-black shadow-2xl relative overflow-hidden ring-1 ring-white/10 shrink-0"
                         >
                             <iframe
                                 src={`https://www.youtube.com/embed/${trailer.key}?autoplay=1&rel=0&modestbranding=1&iv_load_policy=3`}
@@ -133,6 +124,16 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                                 allowFullScreen
                             ></iframe>
                         </motion.div>
+
+                        {/* Close Button (Below Video, HomeHero Style) */}
+                        <div className="mt-8 md:mt-10">
+                            <button
+                                onClick={() => setShowTrailer(false)}
+                                className="w-10 h-10 md:w-12 md:h-12 rounded-full border border-white/20 bg-white/10 backdrop-blur-md text-white/50 hover:bg-white hover:text-black transition-all flex items-center justify-center group"
+                            >
+                                <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>
@@ -190,7 +191,7 @@ const MovieHero: React.FC<MovieHeroProps> = ({
                     )}
 
                     {/* Main Title - Centered & Huge */}
-                    <h1 className="text-5xl md:text-9xl font-black leading-none tracking-tighter uppercase text-white opacity-100 w-full break-words px-2 drop-shadow-2xl">
+                    <h1 className="text-[clamp(3rem,10vw,9rem)] font-black leading-none tracking-tighter uppercase text-white opacity-100 w-full break-words px-2 drop-shadow-2xl">
                         {movie.title}
                     </h1>
 
