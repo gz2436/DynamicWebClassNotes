@@ -23,12 +23,12 @@ const GlitchLogo: React.FC<GlitchLogoProps> = ({ onClick }) => {
         };
     }, []);
 
-    const handleGlitch = () => {
+    const handleGlitch = (e?: React.MouseEvent) => {
+        // Trigger parent onClick (reset logic) ONLY if it's a user interaction (event exists)
+        if (e && onClick) onClick();
+
         if (isGlitching) return;
         setIsGlitching(true);
-
-        // Trigger parent onClick (reset logic)
-        if (onClick) onClick();
 
         const originalText = 'DAILY_FILM';
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?';

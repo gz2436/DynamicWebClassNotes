@@ -36,6 +36,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 }) => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isDiscoverOpen, setIsDiscoverOpen] = useState(false);
+    const [isImmersive, setIsImmersive] = useState(true); // Immersive Mode State
     const [showTrailer, setShowTrailer] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -159,15 +160,16 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     </motion.div>
                 )}
             </AnimatePresence>
-
+            {/* Background Image (Persist across modes) */}
             <AnimatePresence mode="wait">
                 <motion.div
                     key={movie.id}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                    transition={{ duration: 0.7 }}
                     className="absolute inset-0 z-0"
+                    onClick={() => isImmersive && setIsImmersive(false)} // Click anywhere to exit Zen
                 >
                     <ImageWithFallback
                         mobileSrc={getImageUrl(movie.poster_path, 'w780') || undefined}
@@ -177,16 +179,61 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         className="w-full h-full object-cover"
                         loading="eager"
                     />
-                    {/* Removed mix-blend-multiply for cleaner look */}
-                    <div className="absolute inset-0 bg-black/10" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+
+                    {/* Immersive Mode: Clean Image. Normal Mode: Gradients active. */}
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: isImmersive ? 0 : 1 }}
+                        transition={{ duration: 1 }}
+                        className="absolute inset-0 pointer-events-none"
+                    >
+                        <div className="absolute inset-0 bg-black/10" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
+                    </motion.div>
                 </motion.div>
             </AnimatePresence>
 
-            {/* Content Container */}
-            <div className="relative z-50 h-full w-full flex flex-col justify-between p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none">
+            {/* Immersive Center Logo (The Gatekeeper) */}
+            <AnimatePresence>
+                {isImmersive && (
+                    <motion.div
+                        className="absolute inset-0 z-[100] flex flex-col items-center justify-center cursor-pointer"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, pointerEvents: "none" }}
+                        onClick={() => setIsImmersive(false)}
+                    >
+                        <motion.div layoutId="hero-logo" className="transform scale-150 md:scale-[2]">
+                            {/* Static Global Logo Style */}
+                            <button
+                                onClick={() => setIsImmersive(false)}
+                                className="block border border-white px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-colors font-mono font-bold"
+                            >
+                                DAILY_FILM
+                            </button>
+                        </motion.div>
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 0.6, y: 0 }}
+                            transition={{ delay: 1, duration: 1, repeat: Infinity, repeatType: "reverse" }}
+                            className="mt-8 text-[10px] tracking-[0.5em] font-mono text-white/60 uppercase"
+                        >
+                            Tap to Enter
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-                {/* Industrial Grid Lines */}
+
+            {/* Content Container (Standard UI) */}
+            <motion.div
+                className={`relative z-50 h-full w-full flex flex-col justify-between p-6 md:p-12 max-w-[1920px] mx-auto pointer-events-none ${isImmersive ? 'invisible' : 'visible'}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: isImmersive ? 0 : 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+            >
+
+                {/* Industrial Grid Lines (Fade in with UI) */}
                 <div className="absolute inset-0 z-10 pointer-events-none border-[20px] border-transparent md:border-white/5">
                     <div className="w-full h-full border border-white/10 relative">
                         <div className="absolute top-0 left-1/4 w-px h-full bg-white/5"></div>
@@ -199,8 +246,8 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                 <div className="relative w-full flex items-center justify-between z-[70] h-12 pointer-events-none">
 
                     {/* LEFT: Discover Menu */}
-                    <div className="w-1/3 flex items-center pl-2">
-                        <div className="relative flex items-center pointer-events-auto" ref={discoverRef}>
+                    <div className="w-1/3 flex items-center pl-2 pointer-events-auto">
+                        <div className="relative flex items-center" ref={discoverRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -239,19 +286,26 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         </div>
                     </div>
 
-                    {/* CENTER: Title */}
+                    {/* CENTER: Title (Destination for Logo) */}
                     <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-4 -mt-2 md:-mt-4 pointer-events-auto">
-                        <GlitchLogo
-                            onClick={() => {
-                                setCurrentIndex(0);
-                                window.scrollTo(0, 0);
-                            }}
-                        />
+                        {!isImmersive && (
+                            <motion.div layoutId="hero-logo">
+                                <button
+                                    onClick={() => {
+                                        setCurrentIndex(0);
+                                        window.scrollTo(0, 0);
+                                    }}
+                                    className="block border border-white px-2 py-1 md:px-3 md:py-1.5 text-[10px] md:text-xs tracking-[0.2em] uppercase hover:bg-white hover:text-black transition-colors font-mono font-bold"
+                                >
+                                    DAILY_FILM
+                                </button>
+                            </motion.div>
+                        )}
                     </div>
 
                     {/* RIGHT: Date & Calendar */}
-                    <div className="text-right w-1/3 flex flex-col items-end pr-2">
-                        <div className="relative flex items-center pointer-events-auto" ref={calendarButtonRef}>
+                    <div className="text-right w-1/3 flex flex-col items-end pr-2 pointer-events-auto">
+                        <div className="relative flex items-center" ref={calendarButtonRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -471,7 +525,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         <div className={microTextStyle}>REF. {movie.id}</div>
                     </div>
                 </div>
-            </div>
+            </motion.div>
 
             {/* Share Modal */}
             {
