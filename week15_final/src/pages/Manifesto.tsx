@@ -48,7 +48,7 @@ const Manifesto: React.FC = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black px-8 py-8 md:p-12 relative overflow-hidden">
+        <div className="min-h-[100svh] bg-[#080808] text-white font-mono selection:bg-white selection:text-black px-8 py-8 md:p-12 relative overflow-hidden">
 
             {/* Background Watermark */}
             <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.03] select-none">

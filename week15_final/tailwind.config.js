@@ -10,8 +10,8 @@ export default {
         black: '#080808',
       },
       fontFamily: {
-        sans: ['"Inter"', 'sans-serif'],
-        mono: ['"Inter"', 'sans-serif'],
+        sans: ['"Inter"', 'system-ui', 'sans-serif'],
+        mono: ['"JetBrains Mono"', 'monospace'],
       },
       borderRadius: {
         '3xl': '1.5rem',

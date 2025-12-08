@@ -61,7 +61,7 @@ const PersonDetail: React.FC = () => {
 
     if (loading && !activePerson) {
         return (
-            <div className="min-h-screen bg-[#080808] text-white font-mono">
+            <div className="min-h-[100svh] bg-[#080808] text-white font-mono">
                 <div className="h-screen w-full flex items-center justify-center">
                     {/* Silent Loading */}
                 </div>
@@ -71,7 +71,7 @@ const PersonDetail: React.FC = () => {
 
     if (!activePerson) {
         return (
-            <div className="min-h-screen bg-[#080808] text-white font-mono flex flex-col items-center justify-center p-6">
+            <div className="min-h-[100svh] bg-[#080808] text-white font-mono flex flex-col items-center justify-center p-6">
                 <div className="text-4xl mb-4 opacity-50">∅</div>
                 <div className="text-xs uppercase tracking-widest mb-4">PERSONNEL_DATA_MISSING</div>
                 <Link to="/" className="border border-white/30 px-4 py-2 hover:bg-white hover:text-black transition-colors text-[10px] uppercase">
@@ -98,7 +98,7 @@ const PersonDetail: React.FC = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="min-h-screen bg-[#080808] text-white font-mono selection:bg-white selection:text-black"
+            className="min-h-[100svh] bg-[#080808] text-white font-mono selection:bg-white selection:text-black"
         >
             {/* Floating Back Button */}
             <FloatingBackButton />

@@ -200,7 +200,7 @@ const CategoryPage: React.FC<CategoryPageProps> = ({ type, title }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: "easeInOut" }}
-            className="min-h-screen bg-[#080808] text-white font-mono p-6 md:p-12 pb-20"
+            className="min-h-[100svh] bg-[#080808] text-white font-mono p-6 md:p-12 pb-20"
         >
             <div className="pt-24 md:pt-32 max-w-6xl mx-auto px-4 md:px-24 relative">
                 <div className="flex flex-col items-center text-center mb-12 gap-6">

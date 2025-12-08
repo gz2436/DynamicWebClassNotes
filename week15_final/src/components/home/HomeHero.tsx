@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Play, Info, Plus, Check, Eye, Shuffle, Bookmark, Grid3x3, MoreVertical, X, ChevronUp } from 'lucide-react';
+import { Play, Info, Plus, Check, Eye, Shuffle, Bookmark, Grid3x3, MoreVertical, X, ChevronUp, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import GlitchLogo from '../GlitchLogo';
 import CalendarDropdown from '../CalendarDropdown.tsx';
@@ -116,7 +116,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
     const microTextStyle = "text-[10px] opacity-50 uppercase tracking-widest font-mono";
 
     return (
-        <div className="relative h-[100dvh] w-full overflow-hidden">
+        <div className="relative h-[100svh] w-full overflow-hidden">
             {/* Immersive Trailer Overlay */}
             <AnimatePresence>
                 {showTrailer && trailer && (
@@ -195,21 +195,24 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         <div className="absolute bottom-1/3 left-0 w-full h-px bg-white/5"></div>
                     </div>
                 </div>
-
                 {/* Top Bar */}
                 <div className="relative w-full flex items-center justify-between z-[70] h-12 pointer-events-none">
 
                     {/* LEFT: Discover Menu */}
-                    <div className="w-1/3 flex items-center">
+                    <div className="w-1/3 flex items-center pl-2">
                         <div className="relative pointer-events-auto" ref={discoverRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsDiscoverOpen(!isDiscoverOpen);
                                 }}
-                                className="text-xs font-bold uppercase tracking-widest hover:opacity-50 transition-opacity flex items-center gap-2 ml-4"
+                                className="text-white hover:opacity-50 transition-opacity flex items-center p-2"
+                                title="Discover"
                             >
-                                DISCOVER
+                                {/* Mobile: Icon */}
+                                <Menu className="w-5 h-5 stroke-[1.5] md:hidden" />
+                                {/* Desktop: Text */}
+                                <span className="hidden md:block text-xs font-bold uppercase tracking-widest ml-2">DISCOVER</span>
                             </button>
                             <AnimatePresence>
                                 {isDiscoverOpen && (
@@ -224,7 +227,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                         }}
                                         className="absolute top-full left-0 pt-4 z-50 origin-top"
                                     >
-                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl">
+                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl ml-4">
                                             <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
                                             <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
                                             <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
@@ -247,18 +250,24 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     </div>
 
                     {/* RIGHT: Date & Calendar */}
-                    <div className="text-right w-1/3 flex flex-col items-end gap-1 pr-0">
-                        <div className="relative flex items-center gap-3 mr-2 pointer-events-auto" ref={calendarButtonRef}>
+                    <div className="text-right w-1/3 flex flex-col items-end gap-1 pr-2">
+                        <div className="relative flex items-center gap-3 pointer-events-auto" ref={calendarButtonRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsCalendarOpen(!isCalendarOpen);
                                 }}
-                                className="group flex items-center gap-2 text-xs tracking-widest uppercase font-mono font-bold hover:opacity-50 transition-opacity cursor-pointer"
+                                className="group flex items-center gap-2 text-xs tracking-widest uppercase font-mono font-bold hover:opacity-50 transition-opacity cursor-pointer whitespace-nowrap"
                                 title="View Archive"
                             >
-                                <span>{dateString}</span>
-                                <Grid3x3 className="hidden md:block h-4 w-4 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                {/* Desktop: FULL DATE (DEC 08 2024) - Underlined now */}
+                                <span className="hidden md:inline underline decoration-white/50 underline-offset-4">
+                                    {displayDate.toLocaleString('en-US', { month: 'short' }).toUpperCase()} {displayDate.getDate().toString().padStart(2, '0')} {displayDate.getFullYear()}
+                                </span>
+                                {/* Mobile: MM/DD (12/08) + Underline */}
+                                <span className="md:hidden underline decoration-white/50 underline-offset-4">
+                                    {displayDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}
+                                </span>
                             </button>
                             {/* Calendar Dropdown */}
                             <div ref={calendarDropdownRef}>
@@ -476,7 +485,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     />
                 )
             }
-        </div >
+        </div>
     );
 };
 
