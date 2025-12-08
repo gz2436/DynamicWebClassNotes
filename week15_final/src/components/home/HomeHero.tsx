@@ -180,16 +180,11 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         loading="eager"
                     />
 
-                    {/* Normal Mode: Gradients active. */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1 }}
-                        className="absolute inset-0 pointer-events-none"
-                    >
+                    {/* Normal Mode: Gradients active (Always visible, no generic fade) */}
+                    <div className="absolute inset-0 pointer-events-none">
                         <div className="absolute inset-0 bg-black/10" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/40" />
-                    </motion.div>
+                    </div>
                 </motion.div>
             </AnimatePresence>
 
