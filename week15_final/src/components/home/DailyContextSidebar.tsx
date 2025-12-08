@@ -42,9 +42,9 @@ const DailyContextSidebar: React.FC<DailyContextSidebarProps> = ({ movie }) => {
                     {movie.recommendationContext && (
                         <div className="flex flex-col gap-2 border-l-2 border-white/20 pl-4">
                             <div className="flex items-center gap-2 text-xs font-mono text-white/80">
-                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${movie.recommendationContext.name === 'GLOBAL_PREMIERE'
-                                    ? 'bg-red-600 text-white'
-                                    : 'bg-white/20 text-white'
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider ${movie.recommendationContext.name === 'GLOBAL_PREMIERE' ? 'bg-red-600 text-white' :
+                                        movie.recommendationContext.label === 'THE_FINAL_CHAPTER' ? 'bg-red-900/50 text-red-400 border border-red-500/50 shadow-[0_0_10px_rgba(220,38,38,0.3)] animate-pulse' :
+                                            'bg-white/20 text-white'
                                     }`}>
                                     {movie.recommendationContext.name}
                                 </span>

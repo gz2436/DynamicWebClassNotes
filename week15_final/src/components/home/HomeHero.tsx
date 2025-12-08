@@ -312,11 +312,21 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 0.45 }}
                             >
-                                {movie.tagline && (
-                                    <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
-                                        {movie.tagline}
-                                    </p>
+                                {/* FINAL CHAPTER BADGE */}
+                                {(displayDate.getFullYear() === 2025 && displayDate.getMonth() === 11 && displayDate.getDate() === 9) && (
+                                    <div className="mb-4 inline-block px-3 py-1 border border-green-500/50 bg-green-500/10 text-green-400 text-xs font-mono tracking-widest uppercase backdrop-blur-md">
+                                        THE FINAL CHAPTER
+                                    </div>
                                 )}
+
+
+                                <p className="text-white/60 text-sm md:text-base font-mono mb-2 tracking-wide max-w-2xl">
+                                    {(displayDate.getFullYear() === 2025 && displayDate.getMonth() === 11 && displayDate.getDate() === 9)
+                                        ? "\"Life isn't like in the movies. You have to leave. Because leaving proves it was real.\""
+                                        : movie.tagline
+                                    }
+                                </p>
+
                                 <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
                                     {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
                                     <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">

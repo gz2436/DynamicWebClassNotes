@@ -48,6 +48,25 @@ export const recommendationEngine = {
         let poolSize = 200; // Smaller pool for holidays (Top 10 pages)
 
         // --- STEP 1: MANUAL OVERRIDES ---
+        // Finals Day Easter Egg: Cinema Paradiso
+        // Check exact date string match "2025-12-09"
+        console.log(`[RecEngine] Checking Date: ${dateString}`);
+        if (dateString === '2025-12-09') {
+            console.log(`[RecEngine] THE FINAL CHAPTER: Returning Cinema Paradiso`);
+            // We return a skeleton candidate here. The UI (Home.tsx) will see valid ID and standard fetch details via useMovie hook.
+            return {
+                id: 11216, // Cinema Paradiso
+                title: "Cinema Paradiso",
+                // We add specific context to ensuring correct badging if needed, but UI override handles badge
+                source: 'THE_FINAL_CHAPTER',
+                recommendationContext: {
+                    label: 'THE_FINAL_CHAPTER',
+                    name: 'The Final Chapter',
+                    description: 'Life isn\'t like in the movies.'
+                }
+            } as any as DailyMovie;
+        }
+
         // Suppress TS implicit any for config access
         const manualOverrides = MANUAL_OVERRIDES as Record<string, number>;
         if (manualOverrides[monthDay]) {

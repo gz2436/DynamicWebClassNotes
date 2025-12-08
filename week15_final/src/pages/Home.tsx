@@ -91,6 +91,25 @@ const Home: React.FC = () => {
 
     // Ensure we don't go back before a baseline if needed, but mostly rely on 'now'
     const targetToday = new Date('2025-12-02T00:00:00');
+    // Finals Day Logic:
+    // 1. Early Access: If today is Dec 8, allow jump to Dec 9.
+    // 2. Time Freeze: If today is AFTER Dec 9, stay on Dec 9 (The Final Chapter is the end).
+    const finalsDay = new Date('2025-12-09T00:00:00');
+    // Reset hours for accurate comparison
+    const nowCheck = new Date(now);
+    nowCheck.setHours(0, 0, 0, 0);
+
+    // Logic:
+    // If it's Dec 8, we want to simulate Dec 9 availability (Early Access).
+    // If it's Dec 10+, we want to CLAMP it to Dec 9.
+
+    if (nowCheck.getFullYear() === 2025 && nowCheck.getMonth() === 11) {
+        if (nowCheck.getDate() === 8) {
+            // Early Access
+            now.setDate(9);
+        }
+    }
+
     const latestDate = now > targetToday ? now : targetToday;
 
     // Generate Available Dates (Memoized)
