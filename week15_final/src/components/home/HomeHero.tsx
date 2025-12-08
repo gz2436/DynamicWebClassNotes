@@ -200,7 +200,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
 
                     {/* LEFT: Discover Menu */}
                     <div className="w-1/3 flex items-center pl-2">
-                        <div className="relative pointer-events-auto" ref={discoverRef}>
+                        <div className="relative flex items-center pointer-events-auto" ref={discoverRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
@@ -225,9 +225,9 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                             visible: { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
                                             exit: { clipPath: "inset(0% 0% 100% 0%)", opacity: 0, transition: { duration: 0.2 } }
                                         }}
-                                        className="absolute top-full left-0 pt-4 z-50 origin-top"
+                                        className="absolute top-full left-2 pt-2 z-[100] origin-top"
                                     >
-                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl ml-4">
+                                        <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl">
                                             <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
                                             <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
                                             <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
@@ -250,14 +250,14 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     </div>
 
                     {/* RIGHT: Date & Calendar */}
-                    <div className="text-right w-1/3 flex flex-col items-end gap-1 pr-2">
-                        <div className="relative flex items-center gap-3 pointer-events-auto" ref={calendarButtonRef}>
+                    <div className="text-right w-1/3 flex flex-col items-end pr-2">
+                        <div className="relative flex items-center pointer-events-auto" ref={calendarButtonRef}>
                             <button
                                 onClick={(e) => {
                                     e.stopPropagation();
                                     setIsCalendarOpen(!isCalendarOpen);
                                 }}
-                                className="group flex items-center gap-2 text-xs tracking-widest uppercase font-mono font-bold hover:opacity-50 transition-opacity cursor-pointer whitespace-nowrap"
+                                className="group flex items-center gap-2 text-xs tracking-widest uppercase font-mono font-bold hover:opacity-50 transition-opacity cursor-pointer whitespace-nowrap p-2"
                                 title="View Archive"
                             >
                                 {/* Desktop: FULL DATE (DEC 08 2024) - Underlined now */}
@@ -274,7 +274,10 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 <CalendarDropdown
                                     isOpen={isCalendarOpen}
                                     onClose={() => setIsCalendarOpen(false)}
-                                    onDateSelect={handleDateSelect}
+                                    onDateSelect={(index) => {
+                                        handleDateSelect(index);
+                                        setIsCalendarOpen(false);
+                                    }}
                                     availableDates={availableDates}
                                     currentDate={displayDate}
                                 />
@@ -485,7 +488,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     />
                 )
             }
-        </div>
+        </div >
     );
 };
 

@@ -178,40 +178,42 @@ const CalendarDropdown = ({
                         visible: { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
                         exit: { clipPath: "inset(0% 0% 100% 0%)", opacity: 0, transition: { duration: 0.2 } }
                     }}
-                    className="absolute top-full right-0 mt-4 bg-[#080808]/90 backdrop-blur-md border border-white/10 p-4 z-[100] w-60 overflow-hidden shadow-2xl origin-top"
+                    className="absolute top-full right-2 pt-2 z-[100] origin-top"
                     onClick={(e) => e.stopPropagation()}
                     role="dialog"
                     aria-modal="true"
                     aria-label="Calendar Date Picker"
                 >
-                    {/* Header */}
-                    <div className="flex justify-between items-center mb-4">
-                        <button
-                            onClick={handlePrev}
-                            className="p-1 hover:bg-white/10 rounded-full transition-colors text-white/50 hover:text-white"
-                            aria-label="Previous"
-                        >
-                            <ChevronLeft className="h-3 w-3" />
-                        </button>
-                        <button
-                            onClick={handleHeaderClick}
-                            className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono text-white hover:text-white/70 transition-colors"
-                            aria-label={`Change view, currently ${viewMode}`}
-                        >
-                            {getHeaderText()}
-                        </button>
-                        <button
-                            onClick={handleNext}
-                            className="p-1 hover:bg-white/10 rounded-full transition-colors text-white/50 hover:text-white"
-                            aria-label="Next"
-                        >
-                            <ChevronRight className="h-3 w-3" />
-                        </button>
-                    </div>
+                    <div className="bg-[#080808]/90 backdrop-blur-md border border-white/10 p-4 w-60 overflow-hidden shadow-2xl">
+                        {/* Header */}
+                        <div className="flex justify-between items-center mb-4">
+                            <button
+                                onClick={handlePrev}
+                                className="p-1 hover:bg-white/10 rounded-full transition-colors text-white/50 hover:text-white"
+                                aria-label="Previous"
+                            >
+                                <ChevronLeft className="h-3 w-3" />
+                            </button>
+                            <button
+                                onClick={handleHeaderClick}
+                                className="text-[10px] font-bold tracking-[0.2em] uppercase font-mono text-white hover:text-white/70 transition-colors"
+                                aria-label={`Change view, currently ${viewMode}`}
+                            >
+                                {getHeaderText()}
+                            </button>
+                            <button
+                                onClick={handleNext}
+                                className="p-1 hover:bg-white/10 rounded-full transition-colors text-white/50 hover:text-white"
+                                aria-label="Next"
+                            >
+                                <ChevronRight className="h-3 w-3" />
+                            </button>
+                        </div>
 
-                    {viewMode === 'days' && renderDays()}
-                    {viewMode === 'months' && renderMonths()}
-                    {viewMode === 'years' && renderYears()}
+                        {viewMode === 'days' && renderDays()}
+                        {viewMode === 'months' && renderMonths()}
+                        {viewMode === 'years' && renderYears()}
+                    </div>
                 </motion.div>
             )}
         </AnimatePresence>
