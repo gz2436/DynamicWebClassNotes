@@ -289,7 +289,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                             {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
                             <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
                                 {movie.title}
-                                <span className="inline-block align-middle ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest align-super">
+                                <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
                                 </span>
                             </h1>
@@ -372,90 +372,61 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                     initial="hidden"
                                     animate="visible"
                                     exit="exit"
-                                    className="absolute bottom-full mb-4 right-0 flex flex-col items-center gap-3"
+                                    // Origin bottom for upward expansion
+                                    className="absolute bottom-full mb-4 right-0 flex flex-col items-center gap-3 origin-bottom"
                                     variants={{
-                                        hidden: { opacity: 0 },
-                                        visible: {
-                                            opacity: 1,
-                                            transition: {
-                                                staggerChildren: 0.08,
-                                                staggerDirection: -1
-                                            }
-                                        },
-                                        exit: {
-                                            opacity: 0,
-                                            transition: {
-                                                staggerChildren: 0.05,
-                                                staggerDirection: 1,
-                                                when: "afterChildren"
-                                            }
-                                        }
+                                        hidden: { clipPath: "inset(100% 0% 0% 0%)", opacity: 0 },
+                                        visible: { clipPath: "inset(0% 0% 0% 0%)", opacity: 1, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } },
+                                        exit: { clipPath: "inset(100% 0% 0% 0%)", opacity: 0, transition: { duration: 0.2 } }
                                     }}
                                 >
-                                    {/* MENU ITEMS: Share -> Seen -> List -> Reroll (Rendered Top-Down) */}
-                                    {/* Stagger Direction -1 means animation starts from Bottom (Reroll) to Top (Share) */}
+                                    {/* MENU ITEMS: Rendered flat, animation handled by parent clip-path */}
 
                                     {/* SHARE */}
-                                    <motion.button
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: { opacity: 1, transition: { duration: 0.2 } },
-                                            exit: { opacity: 0, transition: { duration: 0.15 } }
-                                        }}
+                                    <button
                                         onClick={() => {
                                             setIsShareOpen(true);
                                             setIsMobileMenuOpen(false);
                                         }}
-                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all"
+                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all active:scale-90"
+                                        style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" /><polyline points="16 6 12 2 8 6" /><line x1="12" y1="2" x2="12" y2="15" /></svg>
-                                    </motion.button>
+                                    </button>
 
                                     {/* SEEN */}
-                                    <motion.button
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: { opacity: 1, transition: { duration: 0.2 } },
-                                            exit: { opacity: 0, transition: { duration: 0.15 } }
-                                        }}
+                                    <button
                                         onClick={() => {
                                             toggleSeen();
                                         }}
-                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all ${isSeen ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
+                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all active:scale-90 ${isSeen ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
+                                        style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         {isSeen ? <Check className="w-5 h-5 drop-shadow-[0_0_3px_rgba(74,222,128,0.5)]" strokeWidth={2} /> : <Eye className="w-5 h-5" strokeWidth={1.5} />}
-                                    </motion.button>
+                                    </button>
 
                                     {/* LIST */}
-                                    <motion.button
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: { opacity: 1, transition: { duration: 0.2 } },
-                                            exit: { opacity: 0, transition: { duration: 0.15 } }
-                                        }}
+                                    <button
                                         onClick={() => {
                                             toggleBucket();
                                         }}
-                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all ${isInBucket ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
+                                        className={`w-11 h-11 flex items-center justify-center rounded-full border shadow-lg backdrop-blur-xl transition-all active:scale-90 ${isInBucket ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : 'border-white/10 bg-black/30 text-white'} hover:bg-white hover:text-black`}
+                                        style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         {isInBucket ? <Bookmark className="w-5 h-5 fill-current drop-shadow-[0_0_3px_rgba(251,191,36,0.5)]" /> : <Plus className="w-5 h-5" strokeWidth={1.5} />}
-                                    </motion.button>
+                                    </button>
 
                                     {/* REROLL */}
-                                    <motion.button
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: { opacity: 1, transition: { duration: 0.2 } },
-                                            exit: { opacity: 0, transition: { duration: 0.15 } }
-                                        }}
+                                    <button
                                         onClick={(e) => {
                                             handleRandomNavigation(e);
                                             setIsMobileMenuOpen(false);
                                         }}
-                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all"
+                                        className="w-11 h-11 flex items-center justify-center rounded-full border border-white/10 bg-black/30 backdrop-blur-xl text-white shadow-lg hover:bg-white hover:text-black transition-all active:scale-90"
+                                        style={{ WebkitTapHighlightColor: 'transparent' }}
                                     >
                                         <Shuffle className="w-5 h-5" strokeWidth={1.5} />
-                                    </motion.button>
+                                    </button>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -487,7 +458,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                         <div className={microTextStyle}>DUR. {movie.runtime} MIN</div>
                     </div>
 
-                    <div className="text-right space-y-1 mr-4 md:mr-0">
+                    <div className="text-right space-y-1">
                         <div className={microTextStyle}>VOL. {movie.vote_average?.toFixed(1)}</div>
                         <div className={microTextStyle}>REF. {movie.id}</div>
                     </div>
