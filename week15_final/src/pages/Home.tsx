@@ -83,21 +83,22 @@ const Home: React.FC = () => {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Date Logic (UTC)
-    const getUTCDate = (dateStr: string) => new Date(dateStr.endsWith('Z') ? dateStr : dateStr + 'Z');
-    const startDate = getUTCDate('2025-01-01T00:00:00');
-    const targetToday = getUTCDate('2025-12-02T00:00:00');
-    // Use Local Time instead of UTC to prevent "Tomorrow's Movie" showing up at 8PM EST
+    // Date Logic (Local Time)
+    const startDate = new Date('2025-01-01T00:00:00');
     const now = new Date();
-    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    const realNow = getUTCDate(todayStr + 'T00:00:00');
-    const latestDate = realNow > targetToday ? realNow : targetToday;
+    // Reset to start of day in local time to avoid time comparison issues
+    now.setHours(0, 0, 0, 0);
+
+    // Ensure we don't go back before a baseline if needed, but mostly rely on 'now'
+    const targetToday = new Date('2025-12-02T00:00:00');
+    const latestDate = now > targetToday ? now : targetToday;
 
     // Generate Available Dates (Memoized)
     const availableDates = useMemo(() => {
         const dates: Date[] = [];
         let d = new Date(latestDate);
-        const effectiveStartDate = startDate;
+        // Safety break to prevent infinite loop if startDate is future
+        const effectiveStartDate = startDate > latestDate ? latestDate : startDate;
 
         while (d >= effectiveStartDate) {
             dates.push(new Date(d));
@@ -112,8 +113,8 @@ const Home: React.FC = () => {
     const dateKey = displayDate.toISOString().split('T')[0];
 
     const dateString = isMobile
-        ? displayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
-        : displayDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }).toUpperCase();
+        ? displayDate.toLocaleDateString('en-US', { month: 'numeric', day: 'numeric', year: 'numeric' })
+        : displayDate.toLocaleDateString('en-US', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
 
     // Fetch Movie for Current Date (Or Mood)
     useEffect(() => {

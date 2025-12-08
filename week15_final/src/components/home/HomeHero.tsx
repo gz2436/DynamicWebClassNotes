@@ -171,10 +171,10 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                 >
                     <ImageWithFallback
                         mobileSrc={getImageUrl(movie.poster_path, 'w780') || undefined}
-                        desktopSrc={getImageUrl(movie.backdrop_path, 'w1280') || undefined}
-                        src={getImageUrl(movie.backdrop_path, 'w1280') || undefined}
+                        desktopSrc={getImageUrl(movie.backdrop_path, 'original') || undefined}
+                        src={getImageUrl(movie.backdrop_path, 'original') || undefined}
                         alt={movie.title}
-                        className="w-full h-full object-cover opacity-80"
+                        className="w-full h-full object-cover"
                         loading="eager"
                     />
                     {/* Removed mix-blend-multiply for cleaner look */}
@@ -228,10 +228,10 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                         className="absolute top-full left-2 pt-2 z-[100] origin-top"
                                     >
                                         <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 min-w-[160px] max-w-[90vw] flex flex-col gap-3 shadow-2xl">
-                                            <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Popular</Link>
-                                            <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Now Playing</Link>
-                                            <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Upcoming</Link>
-                                            <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/60 transition-colors">Top Rated</Link>
+                                            <Link to="/popular" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/80 transition-colors">Popular</Link>
+                                            <Link to="/now-playing" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/80 transition-colors">Now Playing</Link>
+                                            <Link to="/upcoming" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/80 transition-colors">Upcoming</Link>
+                                            <Link to="/top-rated" state={{ resetPage: true }} className="text-[10px] uppercase tracking-widest hover:text-white text-white/80 transition-colors">Top Rated</Link>
                                         </div>
                                     </motion.div>
                                 )}
@@ -261,13 +261,9 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 title="View Archive"
                             >
                                 {/* Desktop: FULL DATE (DEC 08 2024) - Underlined now */}
-                                <span className="hidden md:inline underline decoration-white/50 underline-offset-4">
-                                    {displayDate.toLocaleString('en-US', { month: 'short' }).toUpperCase()} {displayDate.getDate().toString().padStart(2, '0')} {displayDate.getFullYear()}
-                                </span>
-                                {/* Mobile: MM/DD (12/08) + Underline */}
-                                <span className="md:hidden underline decoration-white/50 underline-offset-4">
-                                    {displayDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit' })}
-                                </span>
+                                <span className="hidden md:block underline decoration-white/50 underline-offset-4">{dateString}</span>
+                                {/* Mobile: SHORT DATE (DEC 08) */}
+                                <span className="md:hidden">{dateString}</span>
                             </button>
                             {/* Calendar Dropdown */}
                             <div ref={calendarDropdownRef}>
@@ -301,7 +297,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                             {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
                             <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
                                 {movie.title}
-                                <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-50 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
+                                <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-70 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
                                     {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
                                 </span>
                             </h1>
