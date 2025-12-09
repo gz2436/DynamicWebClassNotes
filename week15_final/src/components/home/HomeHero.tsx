@@ -328,8 +328,11 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                                 </p>
 
                                 <Link to={`/movie/${movie.id}`} state={{ category: 'popular', fromHome: true }} className="block group w-fit">
-                                    {/* REMOVED mix-blend-overlay from title for better visibility on brighter bg */}
-                                    <h1 className="text-[clamp(3.5rem,9vw,8rem)] font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-balance text-white">
+                                    {/* Nov 26 Mobile Optimization: Force Single Line */}
+                                    <h1 className={`font-black leading-none tracking-tighter uppercase opacity-100 drop-shadow-2xl font-mono group-hover:opacity-100 transition-opacity text-white ${(displayDate.getMonth() === 10 && displayDate.getDate() === 26)
+                                            ? 'whitespace-nowrap text-[2.5rem] md:text-[clamp(3.5rem,9vw,8rem)]' // Force smaller single line on mobile for Nov 26
+                                            : 'text-balance text-[clamp(3.5rem,9vw,8rem)]'
+                                        }`}>
                                         {movie.title}
                                         <span className="inline-block align-baseline ml-3 md:ml-4 text-[9px] md:text-xs opacity-70 font-normal text-white/60 border border-white/10 px-2 py-0.5 rounded-full tracking-widest relative -top-[2px] md:-top-[4px]">
                                             {movie.release_date ? new Date(movie.release_date).getFullYear() : ''}
@@ -405,7 +408,7 @@ const HomeHero: React.FC<HomeHeroProps> = ({
                     </div>
 
                     {/* Mobile Control Panel (Floating Glass Orbs) */}
-                    <div className="md:hidden flex flex-col items-end gap-4 mb-2 ml-4 mr-5 relative z-50">
+                    <div className="md:hidden flex flex-col items-end gap-4 mb-2 ml-4 mr-3 relative z-50">
 
                         {/* Expandable Menu (Floating Bubbles) */}
                         <AnimatePresence>
