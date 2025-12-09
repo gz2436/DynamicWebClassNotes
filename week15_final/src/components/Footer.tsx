@@ -78,11 +78,13 @@ const Footer: React.FC = () => {
                 </div>
 
                 {/* Column 4: Project - Clickable */}
-                <Link to="/about" className="block space-y-4 group cursor-pointer">
-                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">Project</h4>
+                <Link to="/presentation" className="block space-y-4 group cursor-pointer">
+                    <h4 className="text-xs font-bold uppercase tracking-widest text-white/40 group-hover:text-white transition-colors">
+                        Project Presentation
+                    </h4>
                     <p className="text-white/60 group-hover:text-white/80 transition-colors">
-                        A dynamic web experiment.<br />
-                        Powered by TMDB API.
+                        View the final presentation<br />
+                        deck for this semester.
                     </p>
                     <p className="text-white/40 group-hover:text-white/60 transition-colors">© 2025 Daily_Film.</p>
                 </Link>

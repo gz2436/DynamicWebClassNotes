@@ -10,6 +10,8 @@ import Home from './pages/Home.tsx';
 import NotFound from './pages/NotFound.tsx';
 import Layout from './components/Layout.tsx';
 
+
+import { Presentation } from './presentation';
 // Lazy load secondary pages
 const MovieDetail = lazy(() => import('./pages/MovieDetail.tsx'));
 const CategoryPage = lazy(() => import('./pages/CategoryPage.tsx'));
@@ -51,6 +53,7 @@ function AnimatedRoutes() {
         >
             <Suspense fallback={<PageLoader />}>
                 <Routes location={location} key={location.pathname}>
+                    <Route path="/presentation" element={<Presentation />} />
                     <Route element={<Layout />}>
                         <Route path="/" element={<Home />} />
 
